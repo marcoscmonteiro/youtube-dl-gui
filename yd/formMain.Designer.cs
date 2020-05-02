@@ -47,11 +47,11 @@
             this.toolStripMenuItemView = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemStop = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemRetry = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemDeletePartial = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxClipboardPaste = new System.Windows.Forms.CheckBox();
             this.buttonHelpOptions = new System.Windows.Forms.Button();
             this.buttonWorkDir = new System.Windows.Forms.Button();
             this.folderBrowserDialogWorkDir = new System.Windows.Forms.FolderBrowserDialog();
-            this.ToolStripMenuItemDeletePartial = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripListView.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -96,9 +96,9 @@
             // buttonDownload
             // 
             this.buttonDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDownload.Location = new System.Drawing.Point(624, 115);
+            this.buttonDownload.Location = new System.Drawing.Point(651, 88);
             this.buttonDownload.Name = "buttonDownload";
-            this.buttonDownload.Size = new System.Drawing.Size(112, 23);
+            this.buttonDownload.Size = new System.Drawing.Size(85, 23);
             this.buttonDownload.TabIndex = 7;
             this.buttonDownload.Text = "&Download";
             this.buttonDownload.UseVisualStyleBackColor = true;
@@ -110,7 +110,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxURL.Location = new System.Drawing.Point(67, 89);
             this.textBoxURL.Name = "textBoxURL";
-            this.textBoxURL.Size = new System.Drawing.Size(563, 20);
+            this.textBoxURL.Size = new System.Drawing.Size(472, 20);
             this.textBoxURL.TabIndex = 5;
             // 
             // label3
@@ -151,9 +151,9 @@
             this.Status,
             this.File});
             this.listViewDownload.HideSelection = false;
-            this.listViewDownload.Location = new System.Drawing.Point(6, 144);
+            this.listViewDownload.Location = new System.Drawing.Point(6, 115);
             this.listViewDownload.Name = "listViewDownload";
-            this.listViewDownload.Size = new System.Drawing.Size(730, 211);
+            this.listViewDownload.Size = new System.Drawing.Size(730, 240);
             this.listViewDownload.TabIndex = 8;
             this.listViewDownload.UseCompatibleStateImageBehavior = false;
             this.listViewDownload.View = System.Windows.Forms.View.Details;
@@ -206,13 +206,20 @@
             this.toolStripMenuItemRetry.Text = "Retry Download";
             this.toolStripMenuItemRetry.Click += new System.EventHandler(this.toolStripMenuItemRetry_Click);
             // 
+            // ToolStripMenuItemDeletePartial
+            // 
+            this.ToolStripMenuItemDeletePartial.Name = "ToolStripMenuItemDeletePartial";
+            this.ToolStripMenuItemDeletePartial.Size = new System.Drawing.Size(200, 22);
+            this.ToolStripMenuItemDeletePartial.Text = "Delete partial Download";
+            this.ToolStripMenuItemDeletePartial.Click += new System.EventHandler(this.ToolStripMenuItemDeletePartial_Click);
+            // 
             // checkBoxClipboardPaste
             // 
             this.checkBoxClipboardPaste.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxClipboardPaste.AutoSize = true;
             this.checkBoxClipboardPaste.Checked = true;
             this.checkBoxClipboardPaste.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxClipboardPaste.Location = new System.Drawing.Point(636, 92);
+            this.checkBoxClipboardPaste.Location = new System.Drawing.Point(545, 91);
             this.checkBoxClipboardPaste.Name = "checkBoxClipboardPaste";
             this.checkBoxClipboardPaste.Size = new System.Drawing.Size(100, 17);
             this.checkBoxClipboardPaste.TabIndex = 6;
@@ -244,13 +251,6 @@
             // folderBrowserDialogWorkDir
             // 
             this.folderBrowserDialogWorkDir.RootFolder = System.Environment.SpecialFolder.MyComputer;
-            // 
-            // ToolStripMenuItemDeletePartial
-            // 
-            this.ToolStripMenuItemDeletePartial.Name = "ToolStripMenuItemDeletePartial";
-            this.ToolStripMenuItemDeletePartial.Size = new System.Drawing.Size(200, 22);
-            this.ToolStripMenuItemDeletePartial.Text = "Delete partial Download";
-            this.ToolStripMenuItemDeletePartial.Click += new System.EventHandler(this.ToolStripMenuItemDeletePartial_Click);
             // 
             // formMain
             // 

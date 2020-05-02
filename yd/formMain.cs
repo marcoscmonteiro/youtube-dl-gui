@@ -21,6 +21,12 @@ namespace youtubedlgui
             InitializeComponent();
         }
 
+        public void SetDefaultOptions()
+        {
+            youtubedlgui.Properties.Settings.Default.Reset();
+            textBoxOptions.Text = youtubedlgui.Properties.Settings.Default.Options;
+        }
+
         private void formMain_Load(object sender, EventArgs e)
         {
             youtubedlgui.Properties.Settings.Default.Reload();
