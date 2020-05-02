@@ -197,7 +197,7 @@ namespace youtubedlgui
             Process ps = new Process();
 
             ps.StartInfo.UseShellExecute = false;
-            ps.StartInfo.FileName = textBoxCommand.Text;
+            ps.StartInfo.FileName = AppContext.BaseDirectory + "\\" + textBoxCommand.Text;
             ps.StartInfo.WorkingDirectory = textBoxWorkDir.Text;
             ps.StartInfo.Arguments = "--help";
             ps.StartInfo.RedirectStandardOutput = true;
