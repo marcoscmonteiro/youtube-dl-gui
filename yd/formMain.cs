@@ -11,14 +11,14 @@ using System.Windows.Forms;
 
 namespace yd
 {
-    public partial class MainForm : Form
+    public partial class formMain : Form
     {
-        public MainForm()
+        public formMain()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void formMain_Load(object sender, EventArgs e)
         {
             youtubedlgui.Properties.Settings.Default.Reload();
             if (youtubedlgui.Properties.Settings.Default.WorkDir == "") {
@@ -41,11 +41,8 @@ namespace yd
                 lv.Items.Find(p.Id.ToString(), false)[0].SubItems[1].Text = text;
                 if (text.StartsWith("[download] Destination: ")) { lv.Items.Find(p.Id.ToString(), false)[0].SubItems[2].Text = text.Substring(24); }
                 lv.Refresh();
-                //tx.Text = text;
-                //tx.Refresh();
             } else
             {
-                //lstThreadResult.Invoke(new InformaTerminoIncluiGEDDelegate(InformaTerminoIncluiGED), TempoExecucao, TotalThreads, TempFileError, sArqErroFinal);
                 lv.Invoke(new AddTextDelegate(AddText), p, text);
                 return;
             }
@@ -54,7 +51,6 @@ namespace yd
 
         private static void ProcessOutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
-            //(sendingProcess as Process).
             // Collect the sort command output.
             if (!String.IsNullOrEmpty(outLine.Data))
             {
@@ -62,36 +58,43 @@ namespace yd
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void VideoDownload(String URL)
         {
             Process ps = new Process();
 
             ps.StartInfo.UseShellExecute = false;
             ps.StartInfo.FileName = textBoxCommand.Text;
             ps.StartInfo.WorkingDirectory = textBoxWorkDir.Text;
-            ps.StartInfo.Arguments = textBoxOptions.Text + " \"" + textBoxURL.Text + "\"";
+            ps.StartInfo.Arguments = textBoxOptions.Text + " \"" + URL + "\"";
             ps.StartInfo.RedirectStandardOutput = true;
             ps.StartInfo.RedirectStandardError = true;
             ps.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             ps.StartInfo.CreateNoWindow = true;
             ps.OutputDataReceived += ProcessOutputHandler;
+            ps.ErrorDataReceived += ProcessOutputHandler;
 
             ps.Start();
-            
+
             ListViewItem lvi = new ListViewItem(textBoxURL.Text);
             lvi.SubItems.Add("");
             lvi.SubItems.Add("");
             lvi.Tag = ps;
             lvi.Name = ps.Id.ToString();
 
-            listView1.Items.Add(lvi);
+            listViewDownload.Items.Add(lvi);
 
-            lv = listView1;
+            lv = listViewDownload;
+
             ps.BeginOutputReadLine();
-
+            ps.BeginErrorReadLine();
         }
 
-        private void Form1_Activated(object sender, EventArgs e)
+        private void buttonDownload_Click(object sender, EventArgs e)
+        {
+            VideoDownload(textBoxURL.Text);
+        }
+
+        private void formMain_Activated(object sender, EventArgs e)
         {
             if (checkBoxClipboardPaste.Checked)
             {
@@ -101,36 +104,37 @@ namespace yd
           
         }
 
-        private void listView1_MouseClick(object sender, MouseEventArgs e)
+        private void listViewDownload_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right) {
 
-                if (listView1.SelectedItems.Count > 0)
+                if (listViewDownload.SelectedItems.Count > 0)
                 {
-                    String strVideo = textBoxWorkDir.Text + "\\" + listView1.SelectedItems[0].SubItems[2].Text;
+                    String strVideo = textBoxWorkDir.Text + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text;
                     toolStripMenuItemView.Enabled = System.IO.File.Exists(strVideo);
-                    Process ps = (Process)(listView1.SelectedItems[0].Tag);
+                    Process ps = (Process)(listViewDownload.SelectedItems[0].Tag);
                     toolStripMenuItemStop.Enabled = (!(ps == null) && !ps.HasExited);
+                    toolStripMenuItemRetry.Enabled = ((ps == null) || ps.HasExited);
                 }
 
-                contextMenuStripListView.Show(listView1, e.Location); 
+                contextMenuStripListView.Show(listViewDownload, e.Location); 
             }
         }
 
         private void toolStripMenuItemStop_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count > 0)
+            if (listViewDownload.SelectedItems.Count > 0)
             {
-                Process ps = (Process)(listView1.SelectedItems[0].Tag);
+                Process ps = (Process)(listViewDownload.SelectedItems[0].Tag);
                 if (!(ps==null) && !ps.HasExited) { ps.Kill(); }
             }
         }
 
         private void toolStripMenuItemView_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count > 0)
+            if (listViewDownload.SelectedItems.Count > 0)
             {
-                String strVideo = textBoxWorkDir.Text + "\\" + listView1.SelectedItems[0].SubItems[2].Text;
+                String strVideo = textBoxWorkDir.Text + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text;
                 if (System.IO.File.Exists(strVideo)) { Process.Start(strVideo); }
             }
 
@@ -143,6 +147,27 @@ namespace yd
             youtubedlgui.Properties.Settings.Default.Options = textBoxOptions.Text;
             youtubedlgui.Properties.Settings.Default.ClipboardPaste = checkBoxClipboardPaste.Checked;
             youtubedlgui.Properties.Settings.Default.Save();
+        }
+
+        private void listViewDownload_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            toolStripMenuItemView_Click(sender, e);
+        }
+
+        private void toolStripMenuItemRetry_Click(object sender, EventArgs e)
+        {
+            if (listViewDownload.SelectedItems.Count > 0)
+            {
+                Process ps = (Process)(listViewDownload.SelectedItems[0].Tag);
+                if ((ps == null) || ps.HasExited)
+                {
+                    if (listViewDownload.SelectedItems.Count > 0)
+                    {
+                        String URL = listViewDownload.SelectedItems[0].SubItems[0].Text;
+                        VideoDownload(URL);
+                    }
+                }
+            }
         }
     }
 }

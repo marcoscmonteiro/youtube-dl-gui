@@ -1,6 +1,6 @@
 ﻿namespace yd
 {
-    partial class MainForm
+    partial class formMain
     {
         /// <summary>
         /// Variável de designer necessária.
@@ -29,17 +29,17 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formMain));
             this.textBoxOptions = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxCommand = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonDownload = new System.Windows.Forms.Button();
             this.textBoxURL = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxWorkDir = new System.Windows.Forms.TextBox();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.listViewDownload = new System.Windows.Forms.ListView();
             this.URL = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Status = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.File = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -47,6 +47,7 @@
             this.toolStripMenuItemView = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemStop = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxClipboardPaste = new System.Windows.Forms.CheckBox();
+            this.toolStripMenuItemRetry = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripListView.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,7 +59,7 @@
             this.textBoxOptions.Name = "textBoxOptions";
             this.textBoxOptions.Size = new System.Drawing.Size(670, 20);
             this.textBoxOptions.TabIndex = 0;
-            this.textBoxOptions.Text = "--no-playlist";
+            this.textBoxOptions.Text = "--no-playlist --no-cache-dir";
             // 
             // label1
             // 
@@ -88,16 +89,16 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Command:";
             // 
-            // button1
+            // buttonDownload
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(625, 115);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(112, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "&Execute";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDownload.Location = new System.Drawing.Point(625, 115);
+            this.buttonDownload.Name = "buttonDownload";
+            this.buttonDownload.Size = new System.Drawing.Size(112, 23);
+            this.buttonDownload.TabIndex = 4;
+            this.buttonDownload.Text = "&Download";
+            this.buttonDownload.UseVisualStyleBackColor = true;
+            this.buttonDownload.Click += new System.EventHandler(this.buttonDownload_Click);
             // 
             // textBoxURL
             // 
@@ -136,23 +137,24 @@
             this.textBoxWorkDir.TabIndex = 8;
             this.textBoxWorkDir.Text = "c:\\users\\marco\\Downloads";
             // 
-            // listView1
+            // listViewDownload
             // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.listViewDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listViewDownload.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.URL,
             this.Status,
             this.File});
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(6, 144);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(731, 232);
-            this.listView1.TabIndex = 10;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseClick);
+            this.listViewDownload.HideSelection = false;
+            this.listViewDownload.Location = new System.Drawing.Point(6, 144);
+            this.listViewDownload.Name = "listViewDownload";
+            this.listViewDownload.Size = new System.Drawing.Size(731, 232);
+            this.listViewDownload.TabIndex = 10;
+            this.listViewDownload.UseCompatibleStateImageBehavior = false;
+            this.listViewDownload.View = System.Windows.Forms.View.Details;
+            this.listViewDownload.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewDownload_MouseClick);
+            this.listViewDownload.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listViewDownload_MouseDoubleClick);
             // 
             // URL
             // 
@@ -173,22 +175,23 @@
             // 
             this.contextMenuStripListView.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemView,
-            this.toolStripMenuItemStop});
+            this.toolStripMenuItemStop,
+            this.toolStripMenuItemRetry});
             this.contextMenuStripListView.Name = "contextMenuStripListView";
-            this.contextMenuStripListView.Size = new System.Drawing.Size(100, 48);
+            this.contextMenuStripListView.Size = new System.Drawing.Size(187, 92);
             // 
             // toolStripMenuItemView
             // 
             this.toolStripMenuItemView.Name = "toolStripMenuItemView";
-            this.toolStripMenuItemView.Size = new System.Drawing.Size(99, 22);
-            this.toolStripMenuItemView.Text = "View";
+            this.toolStripMenuItemView.Size = new System.Drawing.Size(186, 22);
+            this.toolStripMenuItemView.Text = "Play Video Download";
             this.toolStripMenuItemView.Click += new System.EventHandler(this.toolStripMenuItemView_Click);
             // 
             // toolStripMenuItemStop
             // 
             this.toolStripMenuItemStop.Name = "toolStripMenuItemStop";
-            this.toolStripMenuItemStop.Size = new System.Drawing.Size(99, 22);
-            this.toolStripMenuItemStop.Text = "Stop";
+            this.toolStripMenuItemStop.Size = new System.Drawing.Size(186, 22);
+            this.toolStripMenuItemStop.Text = "Stop Download";
             this.toolStripMenuItemStop.Click += new System.EventHandler(this.toolStripMenuItemStop_Click);
             // 
             // checkBoxClipboardPaste
@@ -204,28 +207,35 @@
             this.checkBoxClipboardPaste.Text = "Clipboard Paste";
             this.checkBoxClipboardPaste.UseVisualStyleBackColor = true;
             // 
-            // MainForm
+            // toolStripMenuItemRetry
+            // 
+            this.toolStripMenuItemRetry.Name = "toolStripMenuItemRetry";
+            this.toolStripMenuItemRetry.Size = new System.Drawing.Size(186, 22);
+            this.toolStripMenuItemRetry.Text = "Retry Download";
+            this.toolStripMenuItemRetry.Click += new System.EventHandler(this.toolStripMenuItemRetry_Click);
+            // 
+            // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(745, 382);
             this.Controls.Add(this.checkBoxClipboardPaste);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.listViewDownload);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textBoxWorkDir);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBoxURL);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonDownload);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBoxCommand);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxOptions);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "MainForm";
+            this.Name = "formMain";
             this.Text = "Youtube-DL GUI";
-            this.Activated += new System.EventHandler(this.Form1_Activated);
+            this.Activated += new System.EventHandler(this.formMain_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.formMain_Load);
             this.contextMenuStripListView.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -238,12 +248,12 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxCommand;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonDownload;
         private System.Windows.Forms.TextBox textBoxURL;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBoxWorkDir;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView listViewDownload;
         private System.Windows.Forms.ColumnHeader URL;
         private System.Windows.Forms.ColumnHeader Status;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripListView;
@@ -251,6 +261,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemStop;
         private System.Windows.Forms.ColumnHeader File;
         private System.Windows.Forms.CheckBox checkBoxClipboardPaste;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemRetry;
     }
 }
 
