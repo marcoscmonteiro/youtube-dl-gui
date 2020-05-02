@@ -51,6 +51,7 @@
             this.buttonHelpOptions = new System.Windows.Forms.Button();
             this.buttonWorkDir = new System.Windows.Forms.Button();
             this.folderBrowserDialogWorkDir = new System.Windows.Forms.FolderBrowserDialog();
+            this.ToolStripMenuItemDeletePartial = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripListView.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,7 +61,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxOptions.Location = new System.Drawing.Point(67, 64);
             this.textBoxOptions.Name = "textBoxOptions";
-            this.textBoxOptions.Size = new System.Drawing.Size(645, 20);
+            this.textBoxOptions.Size = new System.Drawing.Size(644, 20);
             this.textBoxOptions.TabIndex = 3;
             this.textBoxOptions.Text = "--no-playlist --no-cache-dir";
             // 
@@ -79,7 +80,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCommand.Location = new System.Drawing.Point(67, 12);
             this.textBoxCommand.Name = "textBoxCommand";
-            this.textBoxCommand.Size = new System.Drawing.Size(670, 20);
+            this.textBoxCommand.Size = new System.Drawing.Size(669, 20);
             this.textBoxCommand.TabIndex = 0;
             this.textBoxCommand.Text = "youtube-dl.exe";
             // 
@@ -95,7 +96,7 @@
             // buttonDownload
             // 
             this.buttonDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDownload.Location = new System.Drawing.Point(625, 115);
+            this.buttonDownload.Location = new System.Drawing.Point(624, 115);
             this.buttonDownload.Name = "buttonDownload";
             this.buttonDownload.Size = new System.Drawing.Size(112, 23);
             this.buttonDownload.TabIndex = 7;
@@ -109,7 +110,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxURL.Location = new System.Drawing.Point(67, 89);
             this.textBoxURL.Name = "textBoxURL";
-            this.textBoxURL.Size = new System.Drawing.Size(564, 20);
+            this.textBoxURL.Size = new System.Drawing.Size(563, 20);
             this.textBoxURL.TabIndex = 5;
             // 
             // label3
@@ -136,7 +137,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxWorkDir.Location = new System.Drawing.Point(67, 38);
             this.textBoxWorkDir.Name = "textBoxWorkDir";
-            this.textBoxWorkDir.Size = new System.Drawing.Size(645, 20);
+            this.textBoxWorkDir.Size = new System.Drawing.Size(644, 20);
             this.textBoxWorkDir.TabIndex = 1;
             this.textBoxWorkDir.Text = "c:\\users\\marco\\Downloads";
             // 
@@ -152,7 +153,7 @@
             this.listViewDownload.HideSelection = false;
             this.listViewDownload.Location = new System.Drawing.Point(6, 144);
             this.listViewDownload.Name = "listViewDownload";
-            this.listViewDownload.Size = new System.Drawing.Size(731, 232);
+            this.listViewDownload.Size = new System.Drawing.Size(730, 211);
             this.listViewDownload.TabIndex = 8;
             this.listViewDownload.UseCompatibleStateImageBehavior = false;
             this.listViewDownload.View = System.Windows.Forms.View.Details;
@@ -167,7 +168,7 @@
             // Status
             // 
             this.Status.Text = "Status";
-            this.Status.Width = 200;
+            this.Status.Width = 311;
             // 
             // File
             // 
@@ -179,28 +180,29 @@
             this.contextMenuStripListView.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemView,
             this.toolStripMenuItemStop,
-            this.toolStripMenuItemRetry});
+            this.toolStripMenuItemRetry,
+            this.ToolStripMenuItemDeletePartial});
             this.contextMenuStripListView.Name = "contextMenuStripListView";
-            this.contextMenuStripListView.Size = new System.Drawing.Size(187, 70);
+            this.contextMenuStripListView.Size = new System.Drawing.Size(201, 92);
             // 
             // toolStripMenuItemView
             // 
             this.toolStripMenuItemView.Name = "toolStripMenuItemView";
-            this.toolStripMenuItemView.Size = new System.Drawing.Size(186, 22);
-            this.toolStripMenuItemView.Text = "Play Video Download";
+            this.toolStripMenuItemView.Size = new System.Drawing.Size(200, 22);
+            this.toolStripMenuItemView.Text = "Play Video";
             this.toolStripMenuItemView.Click += new System.EventHandler(this.toolStripMenuItemView_Click);
             // 
             // toolStripMenuItemStop
             // 
             this.toolStripMenuItemStop.Name = "toolStripMenuItemStop";
-            this.toolStripMenuItemStop.Size = new System.Drawing.Size(186, 22);
+            this.toolStripMenuItemStop.Size = new System.Drawing.Size(200, 22);
             this.toolStripMenuItemStop.Text = "Stop Download";
             this.toolStripMenuItemStop.Click += new System.EventHandler(this.toolStripMenuItemStop_Click);
             // 
             // toolStripMenuItemRetry
             // 
             this.toolStripMenuItemRetry.Name = "toolStripMenuItemRetry";
-            this.toolStripMenuItemRetry.Size = new System.Drawing.Size(186, 22);
+            this.toolStripMenuItemRetry.Size = new System.Drawing.Size(200, 22);
             this.toolStripMenuItemRetry.Text = "Retry Download";
             this.toolStripMenuItemRetry.Click += new System.EventHandler(this.toolStripMenuItemRetry_Click);
             // 
@@ -210,7 +212,7 @@
             this.checkBoxClipboardPaste.AutoSize = true;
             this.checkBoxClipboardPaste.Checked = true;
             this.checkBoxClipboardPaste.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxClipboardPaste.Location = new System.Drawing.Point(637, 92);
+            this.checkBoxClipboardPaste.Location = new System.Drawing.Point(636, 92);
             this.checkBoxClipboardPaste.Name = "checkBoxClipboardPaste";
             this.checkBoxClipboardPaste.Size = new System.Drawing.Size(100, 17);
             this.checkBoxClipboardPaste.TabIndex = 6;
@@ -219,7 +221,8 @@
             // 
             // buttonHelpOptions
             // 
-            this.buttonHelpOptions.Location = new System.Drawing.Point(713, 64);
+            this.buttonHelpOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonHelpOptions.Location = new System.Drawing.Point(712, 64);
             this.buttonHelpOptions.Name = "buttonHelpOptions";
             this.buttonHelpOptions.Size = new System.Drawing.Size(24, 20);
             this.buttonHelpOptions.TabIndex = 4;
@@ -229,7 +232,8 @@
             // 
             // buttonWorkDir
             // 
-            this.buttonWorkDir.Location = new System.Drawing.Point(713, 38);
+            this.buttonWorkDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonWorkDir.Location = new System.Drawing.Point(712, 38);
             this.buttonWorkDir.Name = "buttonWorkDir";
             this.buttonWorkDir.Size = new System.Drawing.Size(24, 20);
             this.buttonWorkDir.TabIndex = 2;
@@ -241,11 +245,18 @@
             // 
             this.folderBrowserDialogWorkDir.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
+            // ToolStripMenuItemDeletePartial
+            // 
+            this.ToolStripMenuItemDeletePartial.Name = "ToolStripMenuItemDeletePartial";
+            this.ToolStripMenuItemDeletePartial.Size = new System.Drawing.Size(200, 22);
+            this.ToolStripMenuItemDeletePartial.Text = "Delete partial Download";
+            this.ToolStripMenuItemDeletePartial.Click += new System.EventHandler(this.ToolStripMenuItemDeletePartial_Click);
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(745, 382);
+            this.ClientSize = new System.Drawing.Size(744, 361);
             this.Controls.Add(this.buttonWorkDir);
             this.Controls.Add(this.buttonHelpOptions);
             this.Controls.Add(this.checkBoxClipboardPaste);
@@ -260,6 +271,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxOptions);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(760, 400);
             this.Name = "formMain";
             this.Text = "Youtube-DL GUI";
             this.Activated += new System.EventHandler(this.formMain_Activated);
@@ -294,6 +306,7 @@
         private System.Windows.Forms.Button buttonHelpOptions;
         private System.Windows.Forms.Button buttonWorkDir;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialogWorkDir;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDeletePartial;
     }
 }
 

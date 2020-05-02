@@ -31,6 +31,11 @@ namespace youtubedlgui
             textBoxCommand.Text = youtubedlgui.Properties.Settings.Default.YoutubeDlExe;
             textBoxOptions.Text = youtubedlgui.Properties.Settings.Default.Options;
             checkBoxClipboardPaste.Checked = youtubedlgui.Properties.Settings.Default.ClipboardPaste;
+            if (youtubedlgui.Properties.Settings.Default.FormWidth > 0) this.Width = youtubedlgui.Properties.Settings.Default.FormWidth;
+            if (youtubedlgui.Properties.Settings.Default.FormHeight > 0) this.Height = youtubedlgui.Properties.Settings.Default.FormHeight;
+            if (youtubedlgui.Properties.Settings.Default.ListColumn1Width > 0) listViewDownload.Columns[0].Width = youtubedlgui.Properties.Settings.Default.ListColumn1Width;
+            if (youtubedlgui.Properties.Settings.Default.ListColumn2Width > 0) listViewDownload.Columns[1].Width = youtubedlgui.Properties.Settings.Default.ListColumn2Width;
+            if (youtubedlgui.Properties.Settings.Default.ListColumn3Width > 0) listViewDownload.Columns[2].Width = youtubedlgui.Properties.Settings.Default.ListColumn3Width;
         }
 
         private static ListView lv;
@@ -114,10 +119,12 @@ namespace youtubedlgui
                 if (listViewDownload.SelectedItems.Count > 0)
                 {
                     String strVideo = textBoxWorkDir.Text + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text;
+                    String strVideoPart = textBoxWorkDir.Text + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text + ".part";
                     toolStripMenuItemView.Enabled = System.IO.File.Exists(strVideo);
                     Process ps = (Process)(listViewDownload.SelectedItems[0].Tag);
                     toolStripMenuItemStop.Enabled = (!(ps == null) && !ps.HasExited);
                     toolStripMenuItemRetry.Enabled = ((ps == null) || ps.HasExited);
+                    ToolStripMenuItemDeletePartial.Enabled = (((ps == null) || ps.HasExited) && System.IO.File.Exists(strVideoPart));
                 }
 
                 contextMenuStripListView.Show(listViewDownload, e.Location); 
@@ -149,6 +156,12 @@ namespace youtubedlgui
             youtubedlgui.Properties.Settings.Default.YoutubeDlExe = textBoxCommand.Text;
             youtubedlgui.Properties.Settings.Default.Options = textBoxOptions.Text;
             youtubedlgui.Properties.Settings.Default.ClipboardPaste = checkBoxClipboardPaste.Checked;
+            youtubedlgui.Properties.Settings.Default.FormWidth = this.Width;
+            youtubedlgui.Properties.Settings.Default.FormHeight = this.Height;
+            youtubedlgui.Properties.Settings.Default.ListColumn1Width = listViewDownload.Columns[0].Width;
+            youtubedlgui.Properties.Settings.Default.ListColumn2Width = listViewDownload.Columns[1].Width;
+            youtubedlgui.Properties.Settings.Default.ListColumn3Width = listViewDownload.Columns[2].Width;
+
             youtubedlgui.Properties.Settings.Default.Save();
         }
 
@@ -207,6 +220,12 @@ namespace youtubedlgui
         {
             folderBrowserDialogWorkDir.SelectedPath = textBoxWorkDir.Text;
             if (folderBrowserDialogWorkDir.ShowDialog() == DialogResult.OK) textBoxWorkDir.Text = folderBrowserDialogWorkDir.SelectedPath;
+        }
+
+        private void ToolStripMenuItemDeletePartial_Click(object sender, EventArgs e)
+        {
+            String strVideoPartial = textBoxWorkDir.Text + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text + ".part";
+            if (System.IO.File.Exists(strVideoPartial)) { System.IO.File.Delete(strVideoPartial); }
         }
     }
 }

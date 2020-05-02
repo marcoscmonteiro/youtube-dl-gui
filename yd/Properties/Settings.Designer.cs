@@ -70,5 +70,65 @@ namespace youtubedlgui.Properties {
                 this["ClipboardPaste"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int FormWidth {
+            get {
+                return ((int)(this["FormWidth"]));
+            }
+            set {
+                this["FormWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int FormHeight {
+            get {
+                return ((int)(this["FormHeight"]));
+            }
+            set {
+                this["FormHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ListColumn1Width {
+            get {
+                return ((int)(this["ListColumn1Width"]));
+            }
+            set {
+                this["ListColumn1Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ListColumn2Width {
+            get {
+                return ((int)(this["ListColumn2Width"]));
+            }
+            set {
+                this["ListColumn2Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ListColumn3Width {
+            get {
+                return ((int)(this["ListColumn3Width"]));
+            }
+            set {
+                this["ListColumn3Width"] = value;
+            }
+        }
     }
 }
