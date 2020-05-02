@@ -77,7 +77,7 @@ namespace youtubedlgui
             Process ps = new Process();
 
             ps.StartInfo.UseShellExecute = false;
-            ps.StartInfo.FileName = textBoxCommand.Text;
+            ps.StartInfo.FileName = AppContext.BaseDirectory + "\\" + textBoxCommand.Text;
             ps.StartInfo.WorkingDirectory = textBoxWorkDir.Text;
             ps.StartInfo.Arguments = textBoxOptions.Text + " \"" + URL + "\"";
             ps.StartInfo.RedirectStandardOutput = true;
@@ -232,6 +232,13 @@ namespace youtubedlgui
         {
             String strVideoPartial = textBoxWorkDir.Text + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text + ".part";
             if (System.IO.File.Exists(strVideoPartial)) { System.IO.File.Delete(strVideoPartial); }
+        }
+
+        private void buttonUpdate_Click(object sender, EventArgs e)
+        {
+            formUpdate fu = new formUpdate();
+            fu.command = AppContext.BaseDirectory + "\\" + textBoxCommand.Text;
+            fu.ShowDialog();
         }
     }
 }

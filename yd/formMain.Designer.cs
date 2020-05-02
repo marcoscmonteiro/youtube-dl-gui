@@ -52,6 +52,7 @@
             this.buttonHelpOptions = new System.Windows.Forms.Button();
             this.buttonWorkDir = new System.Windows.Forms.Button();
             this.folderBrowserDialogWorkDir = new System.Windows.Forms.FolderBrowserDialog();
+            this.buttonUpdate = new System.Windows.Forms.Button();
             this.contextMenuStripListView.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,9 +79,10 @@
             // 
             this.textBoxCommand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCommand.Enabled = false;
             this.textBoxCommand.Location = new System.Drawing.Point(67, 12);
             this.textBoxCommand.Name = "textBoxCommand";
-            this.textBoxCommand.Size = new System.Drawing.Size(669, 20);
+            this.textBoxCommand.Size = new System.Drawing.Size(591, 20);
             this.textBoxCommand.TabIndex = 0;
             this.textBoxCommand.Text = "youtube-dl.exe";
             // 
@@ -252,11 +254,22 @@
             // 
             this.folderBrowserDialogWorkDir.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
+            // buttonUpdate
+            // 
+            this.buttonUpdate.Location = new System.Drawing.Point(664, 12);
+            this.buttonUpdate.Name = "buttonUpdate";
+            this.buttonUpdate.Size = new System.Drawing.Size(72, 20);
+            this.buttonUpdate.TabIndex = 10;
+            this.buttonUpdate.Text = "Update";
+            this.buttonUpdate.UseVisualStyleBackColor = true;
+            this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(744, 361);
+            this.Controls.Add(this.buttonUpdate);
             this.Controls.Add(this.buttonWorkDir);
             this.Controls.Add(this.buttonHelpOptions);
             this.Controls.Add(this.checkBoxClipboardPaste);
@@ -307,6 +320,7 @@
         private System.Windows.Forms.Button buttonWorkDir;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialogWorkDir;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDeletePartial;
+        private System.Windows.Forms.Button buttonUpdate;
     }
 }
 

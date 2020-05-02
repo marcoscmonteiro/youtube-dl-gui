@@ -58,6 +58,9 @@
             // textHelpOptions
             // 
             this.textHelpOptions.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
+            this.textHelpOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textHelpOptions.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textHelpOptions.HideSelection = false;
             this.textHelpOptions.Location = new System.Drawing.Point(0, 28);
@@ -69,6 +72,7 @@
             // 
             // buttonDefaultOptions
             // 
+            this.buttonDefaultOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDefaultOptions.Location = new System.Drawing.Point(499, 2);
             this.buttonDefaultOptions.Name = "buttonDefaultOptions";
             this.buttonDefaultOptions.Size = new System.Drawing.Size(108, 21);
@@ -97,6 +101,7 @@
             this.Controls.Add(this.buttonFind);
             this.Controls.Add(this.textBoxFind);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(625, 566);
             this.Name = "formHelpOptions";
             this.Text = "--Help Options";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.formHelpOptions_FormClosing);
