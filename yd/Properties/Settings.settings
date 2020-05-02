@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="youtubedlgui.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="WorkDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="YoutubeDlExe" Type="System.String" Scope="User">
+      <Value Profile="(Default)">youtube-dl.exe</Value>
+    </Setting>
+    <Setting Name="Options" Type="System.String" Scope="User">
+      <Value Profile="(Default)">--no-playlist</Value>
+    </Setting>
+    <Setting Name="ClipboardPaste" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
