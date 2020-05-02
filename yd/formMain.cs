@@ -9,10 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace yd
+namespace youtubedlgui
 {
     public partial class formMain : Form
     {
+
+        public formHelpOptions formHelpOptionsInstance;
+
         public formMain()
         {
             InitializeComponent();
@@ -168,6 +171,42 @@ namespace yd
                     }
                 }
             }
+        }
+
+        private void buttonHelpOptions_Click(object sender, EventArgs e)
+        {
+            Process ps = new Process();
+
+            ps.StartInfo.UseShellExecute = false;
+            ps.StartInfo.FileName = textBoxCommand.Text;
+            ps.StartInfo.WorkingDirectory = textBoxWorkDir.Text;
+            ps.StartInfo.Arguments = "--help";
+            ps.StartInfo.RedirectStandardOutput = true;
+            ps.StartInfo.RedirectStandardError = true;
+            ps.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            ps.StartInfo.CreateNoWindow = true;
+
+            ps.Start();
+
+            String HelpText = ps.StandardOutput.ReadToEnd();
+
+            ps.WaitForExit();
+
+            if (formHelpOptionsInstance == null)
+            {
+                formHelpOptionsInstance = new formHelpOptions();
+                formHelpOptionsInstance.ParentMainForm = this;
+            }
+            formHelpOptionsInstance.Show();
+            formHelpOptionsInstance.setText(HelpText);
+            formHelpOptionsInstance.BringToFront();
+
+        }
+
+        private void buttonWorkDir_Click(object sender, EventArgs e)
+        {
+            folderBrowserDialogWorkDir.SelectedPath = textBoxWorkDir.Text;
+            if (folderBrowserDialogWorkDir.ShowDialog() == DialogResult.OK) textBoxWorkDir.Text = folderBrowserDialogWorkDir.SelectedPath;
         }
     }
 }
