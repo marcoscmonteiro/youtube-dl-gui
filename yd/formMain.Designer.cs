@@ -48,6 +48,7 @@
             this.toolStripMenuItemStop = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemRetry = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemDeletePartial = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemViewLog = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxClipboardPaste = new System.Windows.Forms.CheckBox();
             this.buttonHelpOptions = new System.Windows.Forms.Button();
             this.buttonWorkDir = new System.Windows.Forms.Button();
@@ -59,7 +60,6 @@
             this.numericUpDownMaxDownloads = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.timerMonitor = new System.Windows.Forms.Timer(this.components);
-            this.toolStripMenuItemViewLog = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripListView.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).BeginInit();
@@ -193,7 +193,7 @@
             this.ToolStripMenuItemDeletePartial,
             this.toolStripMenuItemViewLog});
             this.contextMenuStripListView.Name = "contextMenuStripListView";
-            this.contextMenuStripListView.Size = new System.Drawing.Size(201, 136);
+            this.contextMenuStripListView.Size = new System.Drawing.Size(201, 114);
             // 
             // toolStripMenuItemView
             // 
@@ -222,6 +222,13 @@
             this.ToolStripMenuItemDeletePartial.Size = new System.Drawing.Size(200, 22);
             this.ToolStripMenuItemDeletePartial.Text = "Delete partial Download";
             this.ToolStripMenuItemDeletePartial.Click += new System.EventHandler(this.ToolStripMenuItemDeletePartial_Click);
+            // 
+            // toolStripMenuItemViewLog
+            // 
+            this.toolStripMenuItemViewLog.Name = "toolStripMenuItemViewLog";
+            this.toolStripMenuItemViewLog.Size = new System.Drawing.Size(200, 22);
+            this.toolStripMenuItemViewLog.Text = "View Log";
+            this.toolStripMenuItemViewLog.Click += new System.EventHandler(this.toolStripMenuItemViewLog_Click);
             // 
             // checkBoxClipboardPaste
             // 
@@ -266,7 +273,7 @@
             // 
             this.buttonUpdate.Location = new System.Drawing.Point(157, 12);
             this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(72, 20);
+            this.buttonUpdate.Size = new System.Drawing.Size(72, 22);
             this.buttonUpdate.TabIndex = 10;
             this.buttonUpdate.Text = "Update";
             this.buttonUpdate.UseVisualStyleBackColor = true;
@@ -323,13 +330,6 @@
             // 
             this.timerMonitor.Interval = 200;
             this.timerMonitor.Tick += new System.EventHandler(this.timerMonitor_Tick);
-            // 
-            // toolStripMenuItemViewLog
-            // 
-            this.toolStripMenuItemViewLog.Name = "toolStripMenuItemViewLog";
-            this.toolStripMenuItemViewLog.Size = new System.Drawing.Size(200, 22);
-            this.toolStripMenuItemViewLog.Text = "View Log";
-            this.toolStripMenuItemViewLog.Click += new System.EventHandler(this.toolStripMenuItemViewLog_Click);
             // 
             // formMain
             // 

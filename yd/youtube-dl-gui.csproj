@@ -142,4 +142,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "%25USERPROFILE%25\marcoscmonteiro@gmail.com\FreePrograms"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
