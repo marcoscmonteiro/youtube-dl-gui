@@ -290,5 +290,10 @@ namespace youtubedlgui
             }
             
         }
+
+        private void textBoxURL_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r') buttonDownload_Click(sender, null);
+        }
     }
 }

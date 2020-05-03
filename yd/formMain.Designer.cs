@@ -69,16 +69,16 @@
             // 
             this.textBoxOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxOptions.Location = new System.Drawing.Point(67, 64);
+            this.textBoxOptions.Location = new System.Drawing.Point(69, 85);
             this.textBoxOptions.Name = "textBoxOptions";
             this.textBoxOptions.Size = new System.Drawing.Size(644, 20);
-            this.textBoxOptions.TabIndex = 3;
+            this.textBoxOptions.TabIndex = 9;
             this.textBoxOptions.Text = "--no-playlist --no-cache-dir";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 67);
+            this.label1.Location = new System.Drawing.Point(5, 88);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(46, 13);
             this.label1.TabIndex = 1;
@@ -87,16 +87,16 @@
             // textBoxCommand
             // 
             this.textBoxCommand.Enabled = false;
-            this.textBoxCommand.Location = new System.Drawing.Point(67, 12);
+            this.textBoxCommand.Location = new System.Drawing.Point(69, 33);
             this.textBoxCommand.Name = "textBoxCommand";
             this.textBoxCommand.Size = new System.Drawing.Size(84, 20);
-            this.textBoxCommand.TabIndex = 0;
+            this.textBoxCommand.TabIndex = 2;
             this.textBoxCommand.Text = "youtube-dl.exe";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 15);
+            this.label2.Location = new System.Drawing.Point(5, 36);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 13);
             this.label2.TabIndex = 3;
@@ -105,10 +105,10 @@
             // buttonDownload
             // 
             this.buttonDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDownload.Location = new System.Drawing.Point(651, 88);
+            this.buttonDownload.Location = new System.Drawing.Point(651, 5);
             this.buttonDownload.Name = "buttonDownload";
             this.buttonDownload.Size = new System.Drawing.Size(85, 23);
-            this.buttonDownload.TabIndex = 7;
+            this.buttonDownload.TabIndex = 1;
             this.buttonDownload.Text = "&Download";
             this.buttonDownload.UseVisualStyleBackColor = true;
             this.buttonDownload.Click += new System.EventHandler(this.buttonDownload_Click);
@@ -117,15 +117,16 @@
             // 
             this.textBoxURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxURL.Location = new System.Drawing.Point(67, 89);
+            this.textBoxURL.Location = new System.Drawing.Point(69, 7);
             this.textBoxURL.Name = "textBoxURL";
-            this.textBoxURL.Size = new System.Drawing.Size(472, 20);
-            this.textBoxURL.TabIndex = 5;
+            this.textBoxURL.Size = new System.Drawing.Size(578, 20);
+            this.textBoxURL.TabIndex = 0;
+            this.textBoxURL.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxURL_KeyPress);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 92);
+            this.label3.Location = new System.Drawing.Point(5, 10);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(32, 13);
             this.label3.TabIndex = 6;
@@ -134,7 +135,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 41);
+            this.label4.Location = new System.Drawing.Point(5, 62);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(58, 13);
             this.label4.TabIndex = 9;
@@ -144,10 +145,10 @@
             // 
             this.textBoxWorkDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxWorkDir.Location = new System.Drawing.Point(67, 38);
+            this.textBoxWorkDir.Location = new System.Drawing.Point(69, 59);
             this.textBoxWorkDir.Name = "textBoxWorkDir";
             this.textBoxWorkDir.Size = new System.Drawing.Size(644, 20);
-            this.textBoxWorkDir.TabIndex = 1;
+            this.textBoxWorkDir.TabIndex = 7;
             this.textBoxWorkDir.Text = "c:\\users\\marco\\Downloads";
             // 
             // listViewDownload
@@ -236,20 +237,20 @@
             this.checkBoxClipboardPaste.AutoSize = true;
             this.checkBoxClipboardPaste.Checked = true;
             this.checkBoxClipboardPaste.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxClipboardPaste.Location = new System.Drawing.Point(545, 91);
+            this.checkBoxClipboardPaste.Location = new System.Drawing.Point(588, 36);
             this.checkBoxClipboardPaste.Name = "checkBoxClipboardPaste";
-            this.checkBoxClipboardPaste.Size = new System.Drawing.Size(100, 17);
+            this.checkBoxClipboardPaste.Size = new System.Drawing.Size(150, 17);
             this.checkBoxClipboardPaste.TabIndex = 6;
-            this.checkBoxClipboardPaste.Text = "Clipboard Paste";
+            this.checkBoxClipboardPaste.Text = "Auto URL Clipboard Paste";
             this.checkBoxClipboardPaste.UseVisualStyleBackColor = true;
             // 
             // buttonHelpOptions
             // 
             this.buttonHelpOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonHelpOptions.Location = new System.Drawing.Point(712, 64);
+            this.buttonHelpOptions.Location = new System.Drawing.Point(714, 85);
             this.buttonHelpOptions.Name = "buttonHelpOptions";
             this.buttonHelpOptions.Size = new System.Drawing.Size(24, 20);
-            this.buttonHelpOptions.TabIndex = 4;
+            this.buttonHelpOptions.TabIndex = 10;
             this.buttonHelpOptions.Text = "...";
             this.buttonHelpOptions.UseVisualStyleBackColor = true;
             this.buttonHelpOptions.Click += new System.EventHandler(this.buttonHelpOptions_Click);
@@ -257,10 +258,10 @@
             // buttonWorkDir
             // 
             this.buttonWorkDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonWorkDir.Location = new System.Drawing.Point(712, 38);
+            this.buttonWorkDir.Location = new System.Drawing.Point(714, 59);
             this.buttonWorkDir.Name = "buttonWorkDir";
             this.buttonWorkDir.Size = new System.Drawing.Size(24, 20);
-            this.buttonWorkDir.TabIndex = 2;
+            this.buttonWorkDir.TabIndex = 8;
             this.buttonWorkDir.Text = "...";
             this.buttonWorkDir.UseVisualStyleBackColor = true;
             this.buttonWorkDir.Click += new System.EventHandler(this.buttonWorkDir_Click);
@@ -271,10 +272,10 @@
             // 
             // buttonUpdate
             // 
-            this.buttonUpdate.Location = new System.Drawing.Point(157, 12);
+            this.buttonUpdate.Location = new System.Drawing.Point(159, 31);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(72, 22);
-            this.buttonUpdate.TabIndex = 10;
+            this.buttonUpdate.TabIndex = 3;
             this.buttonUpdate.Text = "Update";
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
@@ -302,7 +303,7 @@
             // 
             // numericUpDownMaxDownloads
             // 
-            this.numericUpDownMaxDownloads.Location = new System.Drawing.Point(330, 12);
+            this.numericUpDownMaxDownloads.Location = new System.Drawing.Point(332, 33);
             this.numericUpDownMaxDownloads.Minimum = new decimal(new int[] {
             1,
             0,
@@ -310,7 +311,7 @@
             0});
             this.numericUpDownMaxDownloads.Name = "numericUpDownMaxDownloads";
             this.numericUpDownMaxDownloads.Size = new System.Drawing.Size(39, 20);
-            this.numericUpDownMaxDownloads.TabIndex = 12;
+            this.numericUpDownMaxDownloads.TabIndex = 5;
             this.numericUpDownMaxDownloads.Value = new decimal(new int[] {
             5,
             0,
@@ -320,10 +321,10 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(235, 15);
+            this.label5.Location = new System.Drawing.Point(237, 36);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(89, 13);
-            this.label5.TabIndex = 13;
+            this.label5.TabIndex = 4;
             this.label5.Text = "Max. Downloads:";
             // 
             // timerMonitor
