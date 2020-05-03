@@ -60,25 +60,27 @@
             this.numericUpDownMaxDownloads = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.timerMonitor = new System.Windows.Forms.Timer(this.components);
+            this.groupBoxOptions = new System.Windows.Forms.GroupBox();
             this.contextMenuStripListView.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).BeginInit();
+            this.groupBoxOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBoxOptions
             // 
             this.textBoxOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxOptions.Location = new System.Drawing.Point(69, 85);
+            this.textBoxOptions.Location = new System.Drawing.Point(65, 36);
             this.textBoxOptions.Name = "textBoxOptions";
-            this.textBoxOptions.Size = new System.Drawing.Size(644, 20);
-            this.textBoxOptions.TabIndex = 9;
+            this.textBoxOptions.Size = new System.Drawing.Size(636, 20);
+            this.textBoxOptions.TabIndex = 4;
             this.textBoxOptions.Text = "--no-playlist --no-cache-dir";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 88);
+            this.label1.Location = new System.Drawing.Point(1, 39);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(46, 13);
             this.label1.TabIndex = 1;
@@ -87,16 +89,16 @@
             // textBoxCommand
             // 
             this.textBoxCommand.Enabled = false;
-            this.textBoxCommand.Location = new System.Drawing.Point(69, 33);
+            this.textBoxCommand.Location = new System.Drawing.Point(65, 10);
             this.textBoxCommand.Name = "textBoxCommand";
             this.textBoxCommand.Size = new System.Drawing.Size(84, 20);
-            this.textBoxCommand.TabIndex = 2;
+            this.textBoxCommand.TabIndex = 0;
             this.textBoxCommand.Text = "youtube-dl.exe";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(5, 36);
+            this.label2.Location = new System.Drawing.Point(1, 13);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 13);
             this.label2.TabIndex = 3;
@@ -135,7 +137,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(5, 62);
+            this.label4.Location = new System.Drawing.Point(5, 36);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(58, 13);
             this.label4.TabIndex = 9;
@@ -145,10 +147,10 @@
             // 
             this.textBoxWorkDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxWorkDir.Location = new System.Drawing.Point(69, 59);
+            this.textBoxWorkDir.Location = new System.Drawing.Point(69, 33);
             this.textBoxWorkDir.Name = "textBoxWorkDir";
             this.textBoxWorkDir.Size = new System.Drawing.Size(644, 20);
-            this.textBoxWorkDir.TabIndex = 7;
+            this.textBoxWorkDir.TabIndex = 2;
             this.textBoxWorkDir.Text = "c:\\users\\marco\\Downloads";
             // 
             // listViewDownload
@@ -161,10 +163,10 @@
             this.Status,
             this.File});
             this.listViewDownload.HideSelection = false;
-            this.listViewDownload.Location = new System.Drawing.Point(6, 115);
+            this.listViewDownload.Location = new System.Drawing.Point(6, 126);
             this.listViewDownload.Name = "listViewDownload";
-            this.listViewDownload.Size = new System.Drawing.Size(730, 221);
-            this.listViewDownload.TabIndex = 8;
+            this.listViewDownload.Size = new System.Drawing.Size(730, 210);
+            this.listViewDownload.TabIndex = 5;
             this.listViewDownload.UseCompatibleStateImageBehavior = false;
             this.listViewDownload.View = System.Windows.Forms.View.Details;
             this.listViewDownload.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewDownload_MouseClick);
@@ -237,20 +239,20 @@
             this.checkBoxClipboardPaste.AutoSize = true;
             this.checkBoxClipboardPaste.Checked = true;
             this.checkBoxClipboardPaste.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxClipboardPaste.Location = new System.Drawing.Point(588, 36);
+            this.checkBoxClipboardPaste.Location = new System.Drawing.Point(576, 12);
             this.checkBoxClipboardPaste.Name = "checkBoxClipboardPaste";
             this.checkBoxClipboardPaste.Size = new System.Drawing.Size(150, 17);
-            this.checkBoxClipboardPaste.TabIndex = 6;
+            this.checkBoxClipboardPaste.TabIndex = 3;
             this.checkBoxClipboardPaste.Text = "Auto URL Clipboard Paste";
             this.checkBoxClipboardPaste.UseVisualStyleBackColor = true;
             // 
             // buttonHelpOptions
             // 
             this.buttonHelpOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonHelpOptions.Location = new System.Drawing.Point(714, 85);
+            this.buttonHelpOptions.Location = new System.Drawing.Point(702, 36);
             this.buttonHelpOptions.Name = "buttonHelpOptions";
             this.buttonHelpOptions.Size = new System.Drawing.Size(24, 20);
-            this.buttonHelpOptions.TabIndex = 10;
+            this.buttonHelpOptions.TabIndex = 5;
             this.buttonHelpOptions.Text = "...";
             this.buttonHelpOptions.UseVisualStyleBackColor = true;
             this.buttonHelpOptions.Click += new System.EventHandler(this.buttonHelpOptions_Click);
@@ -258,10 +260,10 @@
             // buttonWorkDir
             // 
             this.buttonWorkDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonWorkDir.Location = new System.Drawing.Point(714, 59);
+            this.buttonWorkDir.Location = new System.Drawing.Point(714, 33);
             this.buttonWorkDir.Name = "buttonWorkDir";
             this.buttonWorkDir.Size = new System.Drawing.Size(24, 20);
-            this.buttonWorkDir.TabIndex = 8;
+            this.buttonWorkDir.TabIndex = 3;
             this.buttonWorkDir.Text = "...";
             this.buttonWorkDir.UseVisualStyleBackColor = true;
             this.buttonWorkDir.Click += new System.EventHandler(this.buttonWorkDir_Click);
@@ -272,10 +274,10 @@
             // 
             // buttonUpdate
             // 
-            this.buttonUpdate.Location = new System.Drawing.Point(159, 31);
+            this.buttonUpdate.Location = new System.Drawing.Point(155, 9);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(72, 22);
-            this.buttonUpdate.TabIndex = 3;
+            this.buttonUpdate.TabIndex = 1;
             this.buttonUpdate.Text = "Update";
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
@@ -288,7 +290,7 @@
             this.statusStrip1.Location = new System.Drawing.Point(0, 339);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(744, 22);
-            this.statusStrip1.TabIndex = 11;
+            this.statusStrip1.TabIndex = 6;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLabelDownloads
@@ -303,7 +305,7 @@
             // 
             // numericUpDownMaxDownloads
             // 
-            this.numericUpDownMaxDownloads.Location = new System.Drawing.Point(332, 33);
+            this.numericUpDownMaxDownloads.Location = new System.Drawing.Point(328, 12);
             this.numericUpDownMaxDownloads.Minimum = new decimal(new int[] {
             1,
             0,
@@ -311,7 +313,7 @@
             0});
             this.numericUpDownMaxDownloads.Name = "numericUpDownMaxDownloads";
             this.numericUpDownMaxDownloads.Size = new System.Drawing.Size(39, 20);
-            this.numericUpDownMaxDownloads.TabIndex = 5;
+            this.numericUpDownMaxDownloads.TabIndex = 2;
             this.numericUpDownMaxDownloads.Value = new decimal(new int[] {
             5,
             0,
@@ -321,10 +323,10 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(237, 36);
+            this.label5.Location = new System.Drawing.Point(233, 14);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(89, 13);
-            this.label5.TabIndex = 4;
+            this.label5.TabIndex = 0;
             this.label5.Text = "Max. Downloads:";
             // 
             // timerMonitor
@@ -332,28 +334,39 @@
             this.timerMonitor.Interval = 200;
             this.timerMonitor.Tick += new System.EventHandler(this.timerMonitor_Tick);
             // 
+            // groupBoxOptions
+            // 
+            this.groupBoxOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxOptions.Controls.Add(this.textBoxCommand);
+            this.groupBoxOptions.Controls.Add(this.textBoxOptions);
+            this.groupBoxOptions.Controls.Add(this.label5);
+            this.groupBoxOptions.Controls.Add(this.label1);
+            this.groupBoxOptions.Controls.Add(this.numericUpDownMaxDownloads);
+            this.groupBoxOptions.Controls.Add(this.label2);
+            this.groupBoxOptions.Controls.Add(this.checkBoxClipboardPaste);
+            this.groupBoxOptions.Controls.Add(this.buttonUpdate);
+            this.groupBoxOptions.Controls.Add(this.buttonHelpOptions);
+            this.groupBoxOptions.Location = new System.Drawing.Point(6, 59);
+            this.groupBoxOptions.Name = "groupBoxOptions";
+            this.groupBoxOptions.Size = new System.Drawing.Size(732, 61);
+            this.groupBoxOptions.TabIndex = 4;
+            this.groupBoxOptions.TabStop = false;
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(744, 361);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.numericUpDownMaxDownloads);
+            this.Controls.Add(this.groupBoxOptions);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.buttonUpdate);
             this.Controls.Add(this.buttonWorkDir);
-            this.Controls.Add(this.buttonHelpOptions);
-            this.Controls.Add(this.checkBoxClipboardPaste);
             this.Controls.Add(this.listViewDownload);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textBoxWorkDir);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBoxURL);
             this.Controls.Add(this.buttonDownload);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBoxCommand);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBoxOptions);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(760, 400);
             this.Name = "formMain";
@@ -365,6 +378,8 @@
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).EndInit();
+            this.groupBoxOptions.ResumeLayout(false);
+            this.groupBoxOptions.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -402,6 +417,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Timer timerMonitor;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemViewLog;
+        private System.Windows.Forms.GroupBox groupBoxOptions;
     }
 }
 
