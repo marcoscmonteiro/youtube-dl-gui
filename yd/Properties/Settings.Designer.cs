@@ -130,5 +130,17 @@ namespace youtubedlgui.Properties {
                 this["ListColumn3Width"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int MaxDownloads {
+            get {
+                return ((int)(this["MaxDownloads"]));
+            }
+            set {
+                this["MaxDownloads"] = value;
+            }
+        }
     }
 }

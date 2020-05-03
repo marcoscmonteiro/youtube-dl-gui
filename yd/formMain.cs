@@ -13,12 +13,18 @@ namespace youtubedlgui
 {
     public partial class formMain : Form
     {
-
         public formHelpOptions formHelpOptionsInstance;
+        private static ListView lv;
+        private delegate void AddTextDelegate(Process p, String text);
+        private static int CurrentDownloads = 0;
+        private static int CurrentQueued = 0;
 
         public formMain()
         {
             InitializeComponent();
+
+            lv = listViewDownload;
+            timerMonitor.Start();
         }
 
         public void SetDefaultOptions()
@@ -37,16 +43,13 @@ namespace youtubedlgui
             textBoxCommand.Text = youtubedlgui.Properties.Settings.Default.YoutubeDlExe;
             textBoxOptions.Text = youtubedlgui.Properties.Settings.Default.Options;
             checkBoxClipboardPaste.Checked = youtubedlgui.Properties.Settings.Default.ClipboardPaste;
+            numericUpDownMaxDownloads.Value = youtubedlgui.Properties.Settings.Default.MaxDownloads;
             if (youtubedlgui.Properties.Settings.Default.FormWidth > 0) this.Width = youtubedlgui.Properties.Settings.Default.FormWidth;
             if (youtubedlgui.Properties.Settings.Default.FormHeight > 0) this.Height = youtubedlgui.Properties.Settings.Default.FormHeight;
             if (youtubedlgui.Properties.Settings.Default.ListColumn1Width > 0) listViewDownload.Columns[0].Width = youtubedlgui.Properties.Settings.Default.ListColumn1Width;
             if (youtubedlgui.Properties.Settings.Default.ListColumn2Width > 0) listViewDownload.Columns[1].Width = youtubedlgui.Properties.Settings.Default.ListColumn2Width;
             if (youtubedlgui.Properties.Settings.Default.ListColumn3Width > 0) listViewDownload.Columns[2].Width = youtubedlgui.Properties.Settings.Default.ListColumn3Width;
         }
-
-        private static ListView lv;
-
-        private delegate void AddTextDelegate(Process p, String text);
 
         private static void AddText(Process p, String text)
         {
@@ -86,21 +89,44 @@ namespace youtubedlgui
             ps.StartInfo.CreateNoWindow = true;
             ps.OutputDataReceived += ProcessOutputHandler;
             ps.ErrorDataReceived += ProcessOutputHandler;
-
-            ps.Start();
+            ps.EnableRaisingEvents = true;
+            ps.Exited += ProcessExitedHandler;
 
             ListViewItem lvi = new ListViewItem(textBoxURL.Text);
-            lvi.SubItems.Add("");
+            lvi.SubItems.Add("Queued");
             lvi.SubItems.Add("");
             lvi.Tag = ps;
-            lvi.Name = ps.Id.ToString();
-
+            lvi.Name = "q"; // Queued by default
             listViewDownload.Items.Add(lvi);
+            CurrentQueued += 1;
 
-            lv = listViewDownload;
+            StartQueuedProcess();
 
-            ps.BeginOutputReadLine();
-            ps.BeginErrorReadLine();
+        }
+
+        private void StartQueuedProcess()
+        {
+            foreach (ListViewItem lvi in listViewDownload.Items.Find("q", false)) 
+            {
+                if (CurrentDownloads < numericUpDownMaxDownloads.Value)
+                {
+                    Process ps = (Process)lvi.Tag;
+                    ps.Start();
+                    lvi.Name = ps.Id.ToString();
+                    ps.BeginOutputReadLine();
+                    ps.BeginErrorReadLine();
+                    CurrentDownloads += 1;
+                    CurrentQueued -= 1;
+                }
+                else break;
+            }
+
+        }
+
+
+        private void ProcessExitedHandler(object sender, EventArgs e)
+        {
+            CurrentDownloads -= 1;
         }
 
         private void buttonDownload_Click(object sender, EventArgs e)
@@ -115,7 +141,6 @@ namespace youtubedlgui
                 textBoxURL.SelectAll();
                 textBoxURL.Paste();
             }
-          
         }
 
         private void listViewDownload_MouseClick(object sender, MouseEventArgs e)
@@ -155,7 +180,6 @@ namespace youtubedlgui
             }
 
         }
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             youtubedlgui.Properties.Settings.Default.WorkDir = textBoxWorkDir.Text;
@@ -167,7 +191,7 @@ namespace youtubedlgui
             youtubedlgui.Properties.Settings.Default.ListColumn1Width = listViewDownload.Columns[0].Width;
             youtubedlgui.Properties.Settings.Default.ListColumn2Width = listViewDownload.Columns[1].Width;
             youtubedlgui.Properties.Settings.Default.ListColumn3Width = listViewDownload.Columns[2].Width;
-
+            youtubedlgui.Properties.Settings.Default.MaxDownloads = Decimal.ToInt32(numericUpDownMaxDownloads.Value);
             youtubedlgui.Properties.Settings.Default.Save();
         }
 
@@ -239,6 +263,13 @@ namespace youtubedlgui
             formUpdate fu = new formUpdate();
             fu.command = AppContext.BaseDirectory + "\\" + textBoxCommand.Text;
             fu.ShowDialog();
+        }
+
+        private void timerMonitor_Tick(object sender, EventArgs e)
+        {
+            toolStripStatusLabelDownloads.Text = "Downloads: " + CurrentDownloads.ToString();
+            toolStripStatusLabelQueued.Text = "Queued: " + CurrentQueued.ToString();
+            if (CurrentQueued>0) StartQueuedProcess();
         }
     }
 }

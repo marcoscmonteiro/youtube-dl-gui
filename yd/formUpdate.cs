@@ -65,9 +65,8 @@ namespace youtubedlgui
             ps.OutputDataReceived += ProcessOutputHandler;
             ps.ErrorDataReceived += ProcessOutputHandler;
             ps.EnableRaisingEvents = true;
-
             ps.Exited += Ps_Exited;
-            tx = textBoxUpdate;
+            
             EndUpdate = false;
 
             ps.Start();
@@ -103,6 +102,7 @@ namespace youtubedlgui
         {
             if (!AlreadyActivated)
             {
+                tx = textBoxUpdate;
                 buttonClose.Enabled = false;
                 Update(command);
                 AlreadyActivated = true;

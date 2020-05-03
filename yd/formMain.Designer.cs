@@ -53,7 +53,15 @@
             this.buttonWorkDir = new System.Windows.Forms.Button();
             this.folderBrowserDialogWorkDir = new System.Windows.Forms.FolderBrowserDialog();
             this.buttonUpdate = new System.Windows.Forms.Button();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabelDownloads = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelQueued = new System.Windows.Forms.ToolStripStatusLabel();
+            this.numericUpDownMaxDownloads = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.timerMonitor = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStripListView.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxOptions
@@ -77,12 +85,10 @@
             // 
             // textBoxCommand
             // 
-            this.textBoxCommand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCommand.Enabled = false;
             this.textBoxCommand.Location = new System.Drawing.Point(67, 12);
             this.textBoxCommand.Name = "textBoxCommand";
-            this.textBoxCommand.Size = new System.Drawing.Size(591, 20);
+            this.textBoxCommand.Size = new System.Drawing.Size(84, 20);
             this.textBoxCommand.TabIndex = 0;
             this.textBoxCommand.Text = "youtube-dl.exe";
             // 
@@ -155,7 +161,7 @@
             this.listViewDownload.HideSelection = false;
             this.listViewDownload.Location = new System.Drawing.Point(6, 115);
             this.listViewDownload.Name = "listViewDownload";
-            this.listViewDownload.Size = new System.Drawing.Size(730, 240);
+            this.listViewDownload.Size = new System.Drawing.Size(730, 221);
             this.listViewDownload.TabIndex = 8;
             this.listViewDownload.UseCompatibleStateImageBehavior = false;
             this.listViewDownload.View = System.Windows.Forms.View.Details;
@@ -256,7 +262,7 @@
             // 
             // buttonUpdate
             // 
-            this.buttonUpdate.Location = new System.Drawing.Point(664, 12);
+            this.buttonUpdate.Location = new System.Drawing.Point(157, 12);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(72, 20);
             this.buttonUpdate.TabIndex = 10;
@@ -264,11 +270,66 @@
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelDownloads,
+            this.toolStripStatusLabelQueued});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 339);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(744, 22);
+            this.statusStrip1.TabIndex = 11;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabelDownloads
+            // 
+            this.toolStripStatusLabelDownloads.Name = "toolStripStatusLabelDownloads";
+            this.toolStripStatusLabelDownloads.Size = new System.Drawing.Size(0, 17);
+            // 
+            // toolStripStatusLabelQueued
+            // 
+            this.toolStripStatusLabelQueued.Name = "toolStripStatusLabelQueued";
+            this.toolStripStatusLabelQueued.Size = new System.Drawing.Size(0, 17);
+            // 
+            // numericUpDownMaxDownloads
+            // 
+            this.numericUpDownMaxDownloads.Location = new System.Drawing.Point(330, 12);
+            this.numericUpDownMaxDownloads.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxDownloads.Name = "numericUpDownMaxDownloads";
+            this.numericUpDownMaxDownloads.Size = new System.Drawing.Size(39, 20);
+            this.numericUpDownMaxDownloads.TabIndex = 12;
+            this.numericUpDownMaxDownloads.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(235, 15);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(89, 13);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Max. Downloads:";
+            // 
+            // timerMonitor
+            // 
+            this.timerMonitor.Interval = 500;
+            this.timerMonitor.Tick += new System.EventHandler(this.timerMonitor_Tick);
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(744, 361);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.numericUpDownMaxDownloads);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.buttonUpdate);
             this.Controls.Add(this.buttonWorkDir);
             this.Controls.Add(this.buttonHelpOptions);
@@ -291,6 +352,9 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.formMain_Load);
             this.contextMenuStripListView.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -321,6 +385,12 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialogWorkDir;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDeletePartial;
         private System.Windows.Forms.Button buttonUpdate;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelDownloads;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelQueued;
+        private System.Windows.Forms.NumericUpDown numericUpDownMaxDownloads;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Timer timerMonitor;
     }
 }
 
