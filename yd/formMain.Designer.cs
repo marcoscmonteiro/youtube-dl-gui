@@ -59,6 +59,7 @@
             this.numericUpDownMaxDownloads = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.timerMonitor = new System.Windows.Forms.Timer(this.components);
+            this.toolStripMenuItemViewLog = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripListView.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).BeginInit();
@@ -189,9 +190,10 @@
             this.toolStripMenuItemView,
             this.toolStripMenuItemStop,
             this.toolStripMenuItemRetry,
-            this.ToolStripMenuItemDeletePartial});
+            this.ToolStripMenuItemDeletePartial,
+            this.toolStripMenuItemViewLog});
             this.contextMenuStripListView.Name = "contextMenuStripListView";
-            this.contextMenuStripListView.Size = new System.Drawing.Size(201, 92);
+            this.contextMenuStripListView.Size = new System.Drawing.Size(201, 136);
             // 
             // toolStripMenuItemView
             // 
@@ -319,8 +321,15 @@
             // 
             // timerMonitor
             // 
-            this.timerMonitor.Interval = 500;
+            this.timerMonitor.Interval = 200;
             this.timerMonitor.Tick += new System.EventHandler(this.timerMonitor_Tick);
+            // 
+            // toolStripMenuItemViewLog
+            // 
+            this.toolStripMenuItemViewLog.Name = "toolStripMenuItemViewLog";
+            this.toolStripMenuItemViewLog.Size = new System.Drawing.Size(200, 22);
+            this.toolStripMenuItemViewLog.Text = "View Log";
+            this.toolStripMenuItemViewLog.Click += new System.EventHandler(this.toolStripMenuItemViewLog_Click);
             // 
             // formMain
             // 
@@ -391,6 +400,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDownMaxDownloads;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Timer timerMonitor;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemViewLog;
     }
 }
 

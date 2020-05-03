@@ -21,10 +21,7 @@ namespace youtubedlgui
 
         public formMain()
         {
-            InitializeComponent();
-
-            lv = listViewDownload;
-            timerMonitor.Start();
+            InitializeComponent();            
         }
 
         public void SetDefaultOptions()
@@ -35,6 +32,8 @@ namespace youtubedlgui
 
         private void formMain_Load(object sender, EventArgs e)
         {
+            lv = listViewDownload;
+
             youtubedlgui.Properties.Settings.Default.Reload();
             if (youtubedlgui.Properties.Settings.Default.WorkDir == "") {
                 youtubedlgui.Properties.Settings.Default.WorkDir = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
@@ -55,9 +54,16 @@ namespace youtubedlgui
         {
             if (!lv.InvokeRequired)
             {
-                lv.Items.Find(p.Id.ToString(), false)[0].SubItems[1].Text = text;
-                if (text.StartsWith("[download] Destination: ")) { lv.Items.Find(p.Id.ToString(), false)[0].SubItems[2].Text = text.Substring(24); }
-                lv.Refresh();
+                ListViewItem lvitem = lv.Items.Find(p.Id.ToString(), false)[0];
+                if (!(lvitem == null))
+                {
+                    lvitem.SubItems[1].Text = text;
+                    if (lvitem.SubItems[1].Tag == null) lvitem.SubItems[1].Tag = new StringBuilder(text); else ((StringBuilder)(lvitem.SubItems[1].Tag)).Append(Environment.NewLine + text);
+
+                    if (text.StartsWith("[download] Destination: ")) lvitem.SubItems[2].Text = text.Substring(24);
+                    if (text.StartsWith("[ffmpeg] Merging formats into ")) lvitem.SubItems[2].Text = text.Substring(31).Trim('"');
+                    //lv.Refresh();
+                }
             } else
             {
                 lv.Invoke(new AddTextDelegate(AddText), p, text);
@@ -102,10 +108,13 @@ namespace youtubedlgui
 
             StartQueuedProcess();
 
+            timerMonitor.Start();
         }
 
         private void StartQueuedProcess()
         {
+            if (CurrentDownloads >= numericUpDownMaxDownloads.Value) return;
+
             foreach (ListViewItem lvi in listViewDownload.Items.Find("q", false)) 
             {
                 if (CurrentDownloads < numericUpDownMaxDownloads.Value)
@@ -149,8 +158,8 @@ namespace youtubedlgui
 
                 if (listViewDownload.SelectedItems.Count > 0)
                 {
-                    String strVideo = textBoxWorkDir.Text + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text;
-                    String strVideoPart = textBoxWorkDir.Text + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text + ".part";
+                    String strVideo = ((Process)(listViewDownload.SelectedItems[0].Tag)).StartInfo.WorkingDirectory + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text;
+                    String strVideoPart = ((Process)(listViewDownload.SelectedItems[0].Tag)).StartInfo.WorkingDirectory + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text + ".part";
                     toolStripMenuItemView.Enabled = System.IO.File.Exists(strVideo);
                     Process ps = (Process)(listViewDownload.SelectedItems[0].Tag);
                     toolStripMenuItemStop.Enabled = (!(ps == null) && !ps.HasExited);
@@ -173,9 +182,9 @@ namespace youtubedlgui
 
         private void toolStripMenuItemView_Click(object sender, EventArgs e)
         {
-            if (listViewDownload.SelectedItems.Count > 0)
+            if (!(listViewDownload.SelectedItems[0]==null))
             {
-                String strVideo = textBoxWorkDir.Text + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text;
+                String strVideo = ((Process)(listViewDownload.SelectedItems[0].Tag)).StartInfo.WorkingDirectory + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text;
                 if (System.IO.File.Exists(strVideo)) { Process.Start(strVideo); }
             }
 
@@ -254,8 +263,8 @@ namespace youtubedlgui
 
         private void ToolStripMenuItemDeletePartial_Click(object sender, EventArgs e)
         {
-            String strVideoPartial = textBoxWorkDir.Text + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text + ".part";
-            if (System.IO.File.Exists(strVideoPartial)) { System.IO.File.Delete(strVideoPartial); }
+            String strVideoPart = ((Process)(listViewDownload.SelectedItems[0].Tag)).StartInfo.WorkingDirectory + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text + ".part";
+            if (System.IO.File.Exists(strVideoPart)) { System.IO.File.Delete(strVideoPart); }
         }
 
         private void buttonUpdate_Click(object sender, EventArgs e)
@@ -270,6 +279,16 @@ namespace youtubedlgui
             toolStripStatusLabelDownloads.Text = "Downloads: " + CurrentDownloads.ToString();
             toolStripStatusLabelQueued.Text = "Queued: " + CurrentQueued.ToString();
             if (CurrentQueued>0) StartQueuedProcess();
+            if (CurrentQueued == 0 && CurrentDownloads == 0) timerMonitor.Stop();
+        }
+
+        private void toolStripMenuItemViewLog_Click(object sender, EventArgs e)
+        {
+            if (!(listViewDownload.SelectedItems[0]==null) && !(listViewDownload.SelectedItems[0].SubItems[1].Tag==null))
+            {
+                formViewLog fvl = new formViewLog((StringBuilder)(listViewDownload.SelectedItems[0].SubItems[1].Tag));
+            }
+            
         }
     }
 }
