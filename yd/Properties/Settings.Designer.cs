@@ -49,7 +49,7 @@ namespace youtubedlgui.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("--no-playlist --no-cache-dir")]
+        [global::System.Configuration.DefaultSettingValueAttribute("--no-playlist --no-cache-dir --encoding UTF8")]
         public string Options {
             get {
                 return ((string)(this["Options"]));

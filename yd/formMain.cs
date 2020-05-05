@@ -74,7 +74,7 @@ namespace youtubedlgui
 
         private static void ProcessOutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
-            // Collect the sort command output.
+            // Collect the sort command output.            
             if (!String.IsNullOrEmpty(outLine.Data))
             {
                 AddText((Process)(sendingProcess), outLine.Data);
@@ -91,6 +91,8 @@ namespace youtubedlgui
             ps.StartInfo.Arguments = textBoxOptions.Text + " \"" + URL + "\"";
             ps.StartInfo.RedirectStandardOutput = true;
             ps.StartInfo.RedirectStandardError = true;
+            ps.StartInfo.StandardOutputEncoding = Encoding.UTF8;
+            ps.StartInfo.StandardErrorEncoding = Encoding.UTF8;
             ps.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             ps.StartInfo.CreateNoWindow = true;
             ps.OutputDataReceived += ProcessOutputHandler;

@@ -9,7 +9,7 @@
       <Value Profile="(Default)">youtube-dl.exe</Value>
     </Setting>
     <Setting Name="Options" Type="System.String" Scope="User">
-      <Value Profile="(Default)">--no-playlist --no-cache-dir</Value>
+      <Value Profile="(Default)">--no-playlist --no-cache-dir --encoding UTF8</Value>
     </Setting>
     <Setting Name="ClipboardPaste" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
