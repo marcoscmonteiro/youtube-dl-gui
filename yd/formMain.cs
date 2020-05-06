@@ -54,14 +54,15 @@ namespace youtubedlgui
         {
             if (!lv.InvokeRequired)
             {
-                ListViewItem lvitem = lv.Items.Find(p.Id.ToString(), false)[0];
-                if (!(lvitem == null))
+                ListViewItem lvi = lv.Items.Find(p.Id.ToString(), false)[0];
+                if (!(lvi == null))
                 {
-                    lvitem.SubItems[1].Text = text;
-                    if (lvitem.SubItems[1].Tag == null) lvitem.SubItems[1].Tag = new StringBuilder(text); else ((StringBuilder)(lvitem.SubItems[1].Tag)).Append(Environment.NewLine + text);
+                    lvi.SubItems[1].Text = text;
+                    if (lvi.ImageKey!="GreenArrow") lvi.ImageKey = "GreenArrow";
+                    if (lvi.SubItems[1].Tag == null) lvi.SubItems[1].Tag = new StringBuilder(text); else ((StringBuilder)(lvi.SubItems[1].Tag)).Append(Environment.NewLine + text);
 
-                    if (text.StartsWith("[download] Destination: ")) lvitem.SubItems[2].Text = text.Substring(24);
-                    if (text.StartsWith("[ffmpeg] Merging formats into ")) lvitem.SubItems[2].Text = text.Substring(31).Trim('"');
+                    if (text.StartsWith("[download] Destination: ")) lvi.SubItems[2].Text = text.Substring(24);
+                    if (text.StartsWith("[ffmpeg] Merging formats into ")) lvi.SubItems[2].Text = text.Substring(31).Trim('"');
                     //lv.Refresh();
                 }
             } else
@@ -105,6 +106,7 @@ namespace youtubedlgui
             lvi.SubItems.Add("");
             lvi.Tag = ps;
             lvi.Name = "q"; // Queued by default
+            lvi.ImageKey = "GreyBall";
             listViewDownload.Items.Add(lvi);
             CurrentQueued += 1;
 
@@ -123,7 +125,8 @@ namespace youtubedlgui
                 {
                     Process ps = (Process)lvi.Tag;
                     ps.Start();
-                    lvi.Name = ps.Id.ToString();
+                    lvi.Name = ps.Id.ToString();                    
+                    lvi.SubItems[1].Text = "Preparing...";
                     ps.BeginOutputReadLine();
                     ps.BeginErrorReadLine();
                     CurrentDownloads += 1;
@@ -276,12 +279,25 @@ namespace youtubedlgui
             fu.ShowDialog();
         }
 
+        private void IconRefresh()
+        {
+            foreach(ListViewItem lvi in listViewDownload.Items)
+            {
+                if (lvi.Name!="q" && ((Process)(lvi.Tag)).HasExited) 
+                {
+                    String strVideo = ((Process)(lvi.Tag)).StartInfo.WorkingDirectory + "\\" + lvi.SubItems[2].Text;
+                    if (System.IO.File.Exists(strVideo)) lvi.ImageKey = "GreenBall"; else lvi.ImageKey = "RedX";
+                }
+            }
+        }
+
         private void timerMonitor_Tick(object sender, EventArgs e)
         {
             toolStripStatusLabelDownloads.Text = "Downloads: " + CurrentDownloads.ToString();
             toolStripStatusLabelQueued.Text = "Queued: " + CurrentQueued.ToString();
             if (CurrentQueued>0) StartQueuedProcess();
             if (CurrentQueued == 0 && CurrentDownloads == 0) timerMonitor.Stop();
+            IconRefresh();
         }
 
         private void toolStripMenuItemViewLog_Click(object sender, EventArgs e)

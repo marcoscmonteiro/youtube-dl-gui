@@ -62,6 +62,7 @@
             this.timerMonitor = new System.Windows.Forms.Timer(this.components);
             this.groupBoxOptions = new System.Windows.Forms.GroupBox();
             this.groupBoxInteface = new System.Windows.Forms.GroupBox();
+            this.imageListStatus = new System.Windows.Forms.ImageList(this.components);
             this.contextMenuStripListView.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).BeginInit();
@@ -168,6 +169,7 @@
             this.listViewDownload.Location = new System.Drawing.Point(6, 126);
             this.listViewDownload.Name = "listViewDownload";
             this.listViewDownload.Size = new System.Drawing.Size(730, 210);
+            this.listViewDownload.SmallImageList = this.imageListStatus;
             this.listViewDownload.TabIndex = 6;
             this.listViewDownload.UseCompatibleStateImageBehavior = false;
             this.listViewDownload.View = System.Windows.Forms.View.Details;
@@ -363,6 +365,16 @@
             this.groupBoxInteface.TabIndex = 5;
             this.groupBoxInteface.TabStop = false;
             // 
+            // imageListStatus
+            // 
+            this.imageListStatus.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListStatus.ImageStream")));
+            this.imageListStatus.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListStatus.Images.SetKeyName(0, "GreyBall");
+            this.imageListStatus.Images.SetKeyName(1, "GreenArrow");
+            this.imageListStatus.Images.SetKeyName(2, "GreenBall");
+            this.imageListStatus.Images.SetKeyName(3, "RedX");
+            this.imageListStatus.Images.SetKeyName(4, "RedBall");
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -432,6 +444,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemViewLog;
         private System.Windows.Forms.GroupBox groupBoxOptions;
         private System.Windows.Forms.GroupBox groupBoxInteface;
+        private System.Windows.Forms.ImageList imageListStatus;
     }
 }
 
