@@ -152,8 +152,11 @@ namespace youtubedlgui
         {
             if (checkBoxClipboardPaste.Checked)
             {
-                textBoxURL.SelectAll();
-                textBoxURL.Paste();
+                if (Clipboard.ContainsText() && (Clipboard.GetText().StartsWith("https://") || Clipboard.GetText().StartsWith("http://")))
+                {
+                    textBoxURL.SelectAll();
+                    textBoxURL.Paste();
+                }
             }
         }
 
@@ -281,6 +284,9 @@ namespace youtubedlgui
 
         private void IconRefresh()
         {
+            int Errors = 0;
+            int Succeed = 0;
+
             foreach(ListViewItem lvi in listViewDownload.Items)
             {
                 if (lvi.Name!="q" && ((Process)(lvi.Tag)).HasExited) 
@@ -288,7 +294,11 @@ namespace youtubedlgui
                     String strVideo = ((Process)(lvi.Tag)).StartInfo.WorkingDirectory + "\\" + lvi.SubItems[2].Text;
                     if (System.IO.File.Exists(strVideo)) lvi.ImageKey = "GreenBall"; else lvi.ImageKey = "RedX";
                 }
+                if (lvi.ImageKey == "RedX") Errors += 1;
+                if (lvi.ImageKey == "GreenBall") Succeed += 1;
             }
+            toolStripStatusLabelError.Text = "Errors: " + Errors.ToString();
+            toolStripStatusLabelSucceed.Text = "Succeed: " + Succeed.ToString();
         }
 
         private void timerMonitor_Tick(object sender, EventArgs e)
