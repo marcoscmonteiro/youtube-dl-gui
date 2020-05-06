@@ -132,7 +132,6 @@
     <None Include="Icons\GreyBall.gif" />
     <None Include="Icons\GreenBall.gif" />
     <None Include="Icons\RedX.gif" />
-    <Content Include="video-download-icon-png-14.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

@@ -12,22 +12,18 @@ namespace youtubedlgui
 {
     public partial class formHelpOptions : Form
     {
+        public String Options;
+        public String HelpOptions;
 
         public formHelpOptions()
         {
             InitializeComponent();
         }
 
-        public formMain ParentMainForm;
-
         private void formHelpOptions_Load(object sender, EventArgs e)
         {
-
-        }
-
-        public void setText(String text)
-        {
-            textHelpOptions.Text = text;
+            textHelpOptions.Text = HelpOptions;
+            textBoxOptions.Text = Options;
         }
 
         private void formHelpOptions_FormClosing(object sender, FormClosingEventArgs e)
@@ -37,7 +33,7 @@ namespace youtubedlgui
 
         private void formHelpOptions_FormClosed(object sender, FormClosedEventArgs e)
         {
-            ParentMainForm.formHelpOptionsInstance = null;
+            
         }
 
         private void buttonFind_Click(object sender, EventArgs e)
@@ -60,12 +56,24 @@ namespace youtubedlgui
 
         private void buttonDefaultOptions_Click(object sender, EventArgs e)
         {
-            ParentMainForm.SetDefaultOptions();
+            youtubedlgui.Properties.Settings.Default.Reset();
+            textBoxOptions.Text = youtubedlgui.Properties.Settings.Default.Options;
         }
 
         private void textBoxFind_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == '\r') buttonFind_Click(sender, null);
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            Options = textBoxOptions.Text;
+            Close();
+        }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

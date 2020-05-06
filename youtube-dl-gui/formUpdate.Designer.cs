@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formUpdate));
             this.textBoxUpdate = new System.Windows.Forms.TextBox();
             this.buttonClose = new System.Windows.Forms.Button();
             this.timerVerifyUpdate = new System.Windows.Forms.Timer(this.components);
@@ -64,6 +65,7 @@
             this.ClientSize = new System.Drawing.Size(500, 260);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.textBoxUpdate);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "formUpdate";
             this.Text = "Youtube-dl Update";
             this.Activated += new System.EventHandler(this.formUpdate_Activated);

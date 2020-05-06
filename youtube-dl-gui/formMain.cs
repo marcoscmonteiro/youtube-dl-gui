@@ -24,12 +24,6 @@ namespace youtubedlgui
             InitializeComponent();            
         }
 
-        public void SetDefaultOptions()
-        {
-            youtubedlgui.Properties.Settings.Default.Reset();
-            textBoxOptions.Text = youtubedlgui.Properties.Settings.Default.Options;
-        }
-
         private void formMain_Load(object sender, EventArgs e)
         {
             lv = listViewDownload;
@@ -254,15 +248,12 @@ namespace youtubedlgui
 
             ps.WaitForExit();
 
-            if (formHelpOptionsInstance == null)
-            {
-                formHelpOptionsInstance = new formHelpOptions();
-                formHelpOptionsInstance.ParentMainForm = this;
-            }
-            formHelpOptionsInstance.Show();
-            formHelpOptionsInstance.setText(HelpText);
-            formHelpOptionsInstance.BringToFront();
-
+            formHelpOptionsInstance = new formHelpOptions();
+            formHelpOptionsInstance.HelpOptions = HelpText;
+            formHelpOptionsInstance.Options = textBoxOptions.Text;
+            formHelpOptionsInstance.ShowDialog();
+            textBoxOptions.Text = formHelpOptionsInstance.Options;
+            formHelpOptionsInstance = null;
         }
 
         private void buttonWorkDir_Click(object sender, EventArgs e)
