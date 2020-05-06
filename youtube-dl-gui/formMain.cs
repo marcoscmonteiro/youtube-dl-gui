@@ -156,6 +156,8 @@ namespace youtubedlgui
                 {
                     textBoxURL.SelectAll();
                     textBoxURL.Paste();
+                    textBoxURL.Focus();
+                    textBoxURL.SelectAll();                    
                 }
             }
         }
@@ -297,14 +299,14 @@ namespace youtubedlgui
                 if (lvi.ImageKey == "RedX") Errors += 1;
                 if (lvi.ImageKey == "GreenBall") Succeed += 1;
             }
-            toolStripStatusLabelError.Text = "Errors: " + Errors.ToString();
-            toolStripStatusLabelSucceed.Text = "Succeed: " + Succeed.ToString();
+            toolStripStatusLabelErrorN.Text = Errors.ToString();
+            toolStripStatusLabelSucceedN.Text = Succeed.ToString();
         }
 
         private void timerMonitor_Tick(object sender, EventArgs e)
         {
-            toolStripStatusLabelDownloads.Text = "Downloads: " + CurrentDownloads.ToString();
-            toolStripStatusLabelQueued.Text = "Queued: " + CurrentQueued.ToString();
+            toolStripStatusLabelDownloadsN.Text = CurrentDownloads.ToString();
+            toolStripStatusLabelQueuedN.Text = CurrentQueued.ToString();
             if (CurrentQueued>0) StartQueuedProcess();
             if (CurrentQueued == 0 && CurrentDownloads == 0) timerMonitor.Stop();
             IconRefresh();
