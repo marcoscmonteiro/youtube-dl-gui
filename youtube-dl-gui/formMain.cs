@@ -76,14 +76,18 @@ namespace youtubedlgui
             }
         }
 
-        private void VideoDownload(String URL)
+        private void VideoDownload(String URL, String Workdir, String Command)
         {
+
+            if (!(URL.StartsWith("http://")) && !(URL.StartsWith("https://"))) { MessageBox.Show(this, "Invalid URL. Must begin with http:// or https://.", "Error"); return; }
+            if (!System.IO.Directory.Exists(Workdir)) { MessageBox.Show(this, "Work directory does not exists.", "Error"); return; }
+
             Process ps = new Process();
 
             ps.StartInfo.UseShellExecute = false;
-            ps.StartInfo.FileName = AppContext.BaseDirectory + "\\" + textBoxCommand.Text;
-            ps.StartInfo.WorkingDirectory = textBoxWorkDir.Text;
-            ps.StartInfo.Arguments = textBoxOptions.Text + " \"" + URL + "\"";
+            ps.StartInfo.FileName = AppContext.BaseDirectory + "\\" + Command;
+            ps.StartInfo.WorkingDirectory = Workdir.TrimEnd('\\');
+            ps.StartInfo.Arguments = textBoxOptions.Text.Trim() + " \"" + URL + "\"";
             ps.StartInfo.RedirectStandardOutput = true;
             ps.StartInfo.RedirectStandardError = true;
             ps.StartInfo.StandardOutputEncoding = Encoding.UTF8;
@@ -138,8 +142,8 @@ namespace youtubedlgui
         }
 
         private void buttonDownload_Click(object sender, EventArgs e)
-        {
-            VideoDownload(textBoxURL.Text);
+        {            
+            VideoDownload(textBoxURL.Text, textBoxWorkDir.Text, textBoxCommand.Text);
         }
 
         private void formMain_Activated(object sender, EventArgs e)
@@ -223,7 +227,7 @@ namespace youtubedlgui
                     if (listViewDownload.SelectedItems.Count > 0)
                     {
                         String URL = listViewDownload.SelectedItems[0].SubItems[0].Text;
-                        VideoDownload(URL);
+                        VideoDownload(URL, textBoxURL.Text, textBoxCommand.Text);
                     }
                 }
             }
