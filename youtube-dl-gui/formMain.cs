@@ -79,8 +79,19 @@ namespace youtubedlgui
         private void VideoDownload(String URL, String Workdir, String Command)
         {
 
-            if (!(URL.StartsWith("http://")) && !(URL.StartsWith("https://"))) { MessageBox.Show(this, "Invalid URL. Must begin with http:// or https://.", "Error"); return; }
-            if (!System.IO.Directory.Exists(Workdir)) { MessageBox.Show(this, "Work directory does not exists.", "Error"); return; }
+            if (!(URL.StartsWith("http://")) && !(URL.StartsWith("https://"))) 
+            { 
+                MessageBox.Show(this, "Invalid URL. URL must begin with http:// or https://.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                textBoxURL.Focus();
+                return; 
+            }
+
+            if (!System.IO.Directory.Exists(Workdir)) 
+            { 
+                MessageBox.Show(this, "Work directory does not exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                textBoxWorkDir.Focus();
+                return; 
+            }
 
             Process ps = new Process();
 
