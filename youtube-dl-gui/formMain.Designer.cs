@@ -56,20 +56,20 @@
             this.folderBrowserDialogWorkDir = new System.Windows.Forms.FolderBrowserDialog();
             this.buttonUpdate = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabelDownloads = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelDownloadsN = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelQueued = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelQueuedN = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelSucceed = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelSucceedN = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelError = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelErrorN = new System.Windows.Forms.ToolStripStatusLabel();
             this.numericUpDownMaxDownloads = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.timerMonitor = new System.Windows.Forms.Timer(this.components);
             this.groupBoxOptions = new System.Windows.Forms.GroupBox();
             this.groupBoxInteface = new System.Windows.Forms.GroupBox();
-            this.toolStripStatusLabelDownloads = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelQueued = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelSucceed = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelError = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTipHelp = new System.Windows.Forms.ToolTip(this.components);
-            this.toolStripStatusLabelDownloadsN = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelQueuedN = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelSucceedN = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelErrorN = new System.Windows.Forms.ToolStripStatusLabel();
             this.contextMenuStripListView.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).BeginInit();
@@ -320,6 +320,89 @@
             this.statusStrip1.TabIndex = 6;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // toolStripStatusLabelDownloads
+            // 
+            this.toolStripStatusLabelDownloads.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabelDownloads.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.toolStripStatusLabelDownloads.Image = global::youtubedlgui.Properties.Resources.GreenArrow;
+            this.toolStripStatusLabelDownloads.Margin = new System.Windows.Forms.Padding(5, 3, 0, 2);
+            this.toolStripStatusLabelDownloads.Name = "toolStripStatusLabelDownloads";
+            this.toolStripStatusLabelDownloads.Size = new System.Drawing.Size(89, 20);
+            this.toolStripStatusLabelDownloads.Text = "Downloads:";
+            this.toolStripStatusLabelDownloads.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // toolStripStatusLabelDownloadsN
+            // 
+            this.toolStripStatusLabelDownloadsN.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabelDownloadsN.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.toolStripStatusLabelDownloadsN.Margin = new System.Windows.Forms.Padding(-2, 3, 5, 2);
+            this.toolStripStatusLabelDownloadsN.Name = "toolStripStatusLabelDownloadsN";
+            this.toolStripStatusLabelDownloadsN.Size = new System.Drawing.Size(16, 20);
+            this.toolStripStatusLabelDownloadsN.Text = "-";
+            this.toolStripStatusLabelDownloadsN.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // toolStripStatusLabelQueued
+            // 
+            this.toolStripStatusLabelQueued.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabelQueued.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.toolStripStatusLabelQueued.Image = global::youtubedlgui.Properties.Resources.GreyBall;
+            this.toolStripStatusLabelQueued.Name = "toolStripStatusLabelQueued";
+            this.toolStripStatusLabelQueued.Size = new System.Drawing.Size(72, 20);
+            this.toolStripStatusLabelQueued.Text = "Queued:";
+            // 
+            // toolStripStatusLabelQueuedN
+            // 
+            this.toolStripStatusLabelQueuedN.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabelQueuedN.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.toolStripStatusLabelQueuedN.Margin = new System.Windows.Forms.Padding(-2, 3, 5, 2);
+            this.toolStripStatusLabelQueuedN.Name = "toolStripStatusLabelQueuedN";
+            this.toolStripStatusLabelQueuedN.Size = new System.Drawing.Size(16, 20);
+            this.toolStripStatusLabelQueuedN.Text = "-";
+            // 
+            // toolStripStatusLabelSucceed
+            // 
+            this.toolStripStatusLabelSucceed.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabelSucceed.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.toolStripStatusLabelSucceed.Image = global::youtubedlgui.Properties.Resources.GreenBall;
+            this.toolStripStatusLabelSucceed.Name = "toolStripStatusLabelSucceed";
+            this.toolStripStatusLabelSucceed.Size = new System.Drawing.Size(74, 20);
+            this.toolStripStatusLabelSucceed.Text = "Succeed:";
+            // 
+            // toolStripStatusLabelSucceedN
+            // 
+            this.toolStripStatusLabelSucceedN.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabelSucceedN.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.toolStripStatusLabelSucceedN.Margin = new System.Windows.Forms.Padding(-2, 3, 5, 2);
+            this.toolStripStatusLabelSucceedN.Name = "toolStripStatusLabelSucceedN";
+            this.toolStripStatusLabelSucceedN.Size = new System.Drawing.Size(16, 20);
+            this.toolStripStatusLabelSucceedN.Text = "-";
+            // 
+            // toolStripStatusLabelError
+            // 
+            this.toolStripStatusLabelError.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabelError.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.toolStripStatusLabelError.Image = global::youtubedlgui.Properties.Resources.RedX;
+            this.toolStripStatusLabelError.Name = "toolStripStatusLabelError";
+            this.toolStripStatusLabelError.Size = new System.Drawing.Size(55, 20);
+            this.toolStripStatusLabelError.Text = "Error:";
+            // 
+            // toolStripStatusLabelErrorN
+            // 
+            this.toolStripStatusLabelErrorN.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabelErrorN.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.toolStripStatusLabelErrorN.Margin = new System.Windows.Forms.Padding(-2, 3, 5, 2);
+            this.toolStripStatusLabelErrorN.Name = "toolStripStatusLabelErrorN";
+            this.toolStripStatusLabelErrorN.Size = new System.Drawing.Size(16, 20);
+            this.toolStripStatusLabelErrorN.Text = "-";
+            // 
             // numericUpDownMaxDownloads
             // 
             this.numericUpDownMaxDownloads.Location = new System.Drawing.Point(10, 35);
@@ -379,89 +462,6 @@
             this.groupBoxInteface.TabIndex = 5;
             this.groupBoxInteface.TabStop = false;
             // 
-            // toolStripStatusLabelDownloads
-            // 
-            this.toolStripStatusLabelDownloads.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripStatusLabelDownloads.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolStripStatusLabelDownloads.Image = global::youtubedlgui.Properties.Resources.GreenArrow;
-            this.toolStripStatusLabelDownloads.Margin = new System.Windows.Forms.Padding(5, 3, 0, 2);
-            this.toolStripStatusLabelDownloads.Name = "toolStripStatusLabelDownloads";
-            this.toolStripStatusLabelDownloads.Size = new System.Drawing.Size(89, 20);
-            this.toolStripStatusLabelDownloads.Text = "Downloads:";
-            this.toolStripStatusLabelDownloads.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // toolStripStatusLabelQueued
-            // 
-            this.toolStripStatusLabelQueued.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripStatusLabelQueued.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.toolStripStatusLabelQueued.Image = global::youtubedlgui.Properties.Resources.GreyBall;
-            this.toolStripStatusLabelQueued.Name = "toolStripStatusLabelQueued";
-            this.toolStripStatusLabelQueued.Size = new System.Drawing.Size(72, 20);
-            this.toolStripStatusLabelQueued.Text = "Queued:";
-            // 
-            // toolStripStatusLabelSucceed
-            // 
-            this.toolStripStatusLabelSucceed.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripStatusLabelSucceed.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.toolStripStatusLabelSucceed.Image = global::youtubedlgui.Properties.Resources.GreenBall;
-            this.toolStripStatusLabelSucceed.Name = "toolStripStatusLabelSucceed";
-            this.toolStripStatusLabelSucceed.Size = new System.Drawing.Size(74, 20);
-            this.toolStripStatusLabelSucceed.Text = "Succeed:";
-            // 
-            // toolStripStatusLabelError
-            // 
-            this.toolStripStatusLabelError.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripStatusLabelError.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.toolStripStatusLabelError.Image = global::youtubedlgui.Properties.Resources.RedX;
-            this.toolStripStatusLabelError.Name = "toolStripStatusLabelError";
-            this.toolStripStatusLabelError.Size = new System.Drawing.Size(55, 20);
-            this.toolStripStatusLabelError.Text = "Error:";
-            // 
-            // toolStripStatusLabelDownloadsN
-            // 
-            this.toolStripStatusLabelDownloadsN.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripStatusLabelDownloadsN.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolStripStatusLabelDownloadsN.Margin = new System.Windows.Forms.Padding(-2, 3, 5, 2);
-            this.toolStripStatusLabelDownloadsN.Name = "toolStripStatusLabelDownloadsN";
-            this.toolStripStatusLabelDownloadsN.Size = new System.Drawing.Size(16, 20);
-            this.toolStripStatusLabelDownloadsN.Text = "-";
-            this.toolStripStatusLabelDownloadsN.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // toolStripStatusLabelQueuedN
-            // 
-            this.toolStripStatusLabelQueuedN.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripStatusLabelQueuedN.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.toolStripStatusLabelQueuedN.Margin = new System.Windows.Forms.Padding(-2, 3, 5, 2);
-            this.toolStripStatusLabelQueuedN.Name = "toolStripStatusLabelQueuedN";
-            this.toolStripStatusLabelQueuedN.Size = new System.Drawing.Size(16, 20);
-            this.toolStripStatusLabelQueuedN.Text = "-";
-            // 
-            // toolStripStatusLabelSucceedN
-            // 
-            this.toolStripStatusLabelSucceedN.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripStatusLabelSucceedN.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.toolStripStatusLabelSucceedN.Margin = new System.Windows.Forms.Padding(-2, 3, 5, 2);
-            this.toolStripStatusLabelSucceedN.Name = "toolStripStatusLabelSucceedN";
-            this.toolStripStatusLabelSucceedN.Size = new System.Drawing.Size(16, 20);
-            this.toolStripStatusLabelSucceedN.Text = "-";
-            // 
-            // toolStripStatusLabelErrorN
-            // 
-            this.toolStripStatusLabelErrorN.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripStatusLabelErrorN.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.toolStripStatusLabelErrorN.Margin = new System.Windows.Forms.Padding(-2, 3, 5, 2);
-            this.toolStripStatusLabelErrorN.Name = "toolStripStatusLabelErrorN";
-            this.toolStripStatusLabelErrorN.Size = new System.Drawing.Size(16, 20);
-            this.toolStripStatusLabelErrorN.Text = "-";
-            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -483,6 +483,7 @@
             this.Text = "Youtube-DL GUI";
             this.Activated += new System.EventHandler(this.formMain_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.formMain_FormClosed);
             this.Load += new System.EventHandler(this.formMain_Load);
             this.contextMenuStripListView.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);

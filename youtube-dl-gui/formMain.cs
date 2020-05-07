@@ -197,20 +197,6 @@ namespace youtubedlgui
             }
 
         }
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            youtubedlgui.Properties.Settings.Default.WorkDir = textBoxWorkDir.Text;
-            youtubedlgui.Properties.Settings.Default.YoutubeDlExe = textBoxCommand.Text;
-            youtubedlgui.Properties.Settings.Default.Options = textBoxOptions.Text;
-            youtubedlgui.Properties.Settings.Default.ClipboardPaste = checkBoxClipboardPaste.Checked;
-            youtubedlgui.Properties.Settings.Default.FormWidth = this.Width;
-            youtubedlgui.Properties.Settings.Default.FormHeight = this.Height;
-            youtubedlgui.Properties.Settings.Default.ListColumn1Width = listViewDownload.Columns[0].Width;
-            youtubedlgui.Properties.Settings.Default.ListColumn2Width = listViewDownload.Columns[1].Width;
-            youtubedlgui.Properties.Settings.Default.ListColumn3Width = listViewDownload.Columns[2].Width;
-            youtubedlgui.Properties.Settings.Default.MaxDownloads = Decimal.ToInt32(numericUpDownMaxDownloads.Value);
-            youtubedlgui.Properties.Settings.Default.Save();
-        }
 
         private void listViewDownload_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -319,6 +305,34 @@ namespace youtubedlgui
         private void textBoxURL_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == '\r') buttonDownload_Click(sender, null);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (CurrentDownloads>0 || CurrentQueued>0)
+            {
+                e.Cancel = (MessageBox.Show(this, 
+                    "There are Downloads running and/or Videos queued. Form closing will stop and cancel all pending operations. Really want to close?", 
+                    "Confirm form closing", 
+                    MessageBoxButtons.YesNo, 
+                    MessageBoxIcon.Question, 
+                    MessageBoxDefaultButton.Button2) != DialogResult.Yes);
+            }
+        }
+
+        private void formMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            youtubedlgui.Properties.Settings.Default.WorkDir = textBoxWorkDir.Text;
+            youtubedlgui.Properties.Settings.Default.YoutubeDlExe = textBoxCommand.Text;
+            youtubedlgui.Properties.Settings.Default.Options = textBoxOptions.Text;
+            youtubedlgui.Properties.Settings.Default.ClipboardPaste = checkBoxClipboardPaste.Checked;
+            youtubedlgui.Properties.Settings.Default.FormWidth = this.Width;
+            youtubedlgui.Properties.Settings.Default.FormHeight = this.Height;
+            youtubedlgui.Properties.Settings.Default.ListColumn1Width = listViewDownload.Columns[0].Width;
+            youtubedlgui.Properties.Settings.Default.ListColumn2Width = listViewDownload.Columns[1].Width;
+            youtubedlgui.Properties.Settings.Default.ListColumn3Width = listViewDownload.Columns[2].Width;
+            youtubedlgui.Properties.Settings.Default.MaxDownloads = Decimal.ToInt32(numericUpDownMaxDownloads.Value);
+            youtubedlgui.Properties.Settings.Default.Save();
         }
     }
 }
