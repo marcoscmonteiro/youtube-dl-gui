@@ -30,7 +30,7 @@ namespace youtubedlgui
         {
             if (!tx.InvokeRequired)
             {
-                tx.Text += text;
+                tx.Text += Environment.NewLine + text;
                 tx.Refresh();
             }
             else
@@ -53,6 +53,7 @@ namespace youtubedlgui
 
         private void Update(String command)
         {
+            tx.Text = "Initializing youtube-dl update...";
             Process ps = new Process();
 
             ps.StartInfo.UseShellExecute = false;
