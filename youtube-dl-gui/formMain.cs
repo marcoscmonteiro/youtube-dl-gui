@@ -236,7 +236,6 @@ namespace youtubedlgui
 
             ps.StartInfo.UseShellExecute = false;
             ps.StartInfo.FileName = AppContext.BaseDirectory + "\\" + textBoxCommand.Text;
-            ps.StartInfo.WorkingDirectory = textBoxWorkDir.Text;
             ps.StartInfo.Arguments = "--help";
             ps.StartInfo.RedirectStandardOutput = true;
             ps.StartInfo.RedirectStandardError = true;
