@@ -50,6 +50,17 @@
   <PropertyGroup>
     <ApplicationIcon>VideoDownload.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AzurePipeline|AnyCPU'">
+    <OutputPath>bin\AzurePipeline\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -147,6 +158,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetPath)" "%25USERPROFILE%25\marcoscmonteiro@gmail.com\FreePrograms"</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName)==Release copy /Y "$(TargetPath)" "%25USERPROFILE%25\marcoscmonteiro@gmail.com\FreePrograms"</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -7,10 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "youtube-dl-gui", "youtube-d
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		AzurePipeline|Any CPU = AzurePipeline|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E92B5F0-4F12-4258-BB35-E0475A4120B8}.AzurePipeline|Any CPU.ActiveCfg = AzurePipeline|Any CPU
+		{0E92B5F0-4F12-4258-BB35-E0475A4120B8}.AzurePipeline|Any CPU.Build.0 = AzurePipeline|Any CPU
 		{0E92B5F0-4F12-4258-BB35-E0475A4120B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E92B5F0-4F12-4258-BB35-E0475A4120B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E92B5F0-4F12-4258-BB35-E0475A4120B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
