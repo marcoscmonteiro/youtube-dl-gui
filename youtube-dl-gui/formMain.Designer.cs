@@ -70,6 +70,8 @@
             this.groupBoxOptions = new System.Windows.Forms.GroupBox();
             this.groupBoxInteface = new System.Windows.Forms.GroupBox();
             this.toolTipHelp = new System.Windows.Forms.ToolTip(this.components);
+            this.comboBoxMaxQuality = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.contextMenuStripListView.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).BeginInit();
@@ -120,7 +122,7 @@
             this.buttonDownload.Location = new System.Drawing.Point(651, 5);
             this.buttonDownload.Name = "buttonDownload";
             this.buttonDownload.Size = new System.Drawing.Size(85, 23);
-            this.buttonDownload.TabIndex = 1;
+            this.buttonDownload.TabIndex = 2;
             this.buttonDownload.Text = "&Download";
             this.buttonDownload.UseVisualStyleBackColor = true;
             this.buttonDownload.Click += new System.EventHandler(this.buttonDownload_Click);
@@ -131,7 +133,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxURL.Location = new System.Drawing.Point(69, 7);
             this.textBoxURL.Name = "textBoxURL";
-            this.textBoxURL.Size = new System.Drawing.Size(578, 20);
+            this.textBoxURL.Size = new System.Drawing.Size(390, 20);
             this.textBoxURL.TabIndex = 0;
             this.toolTipHelp.SetToolTip(this.textBoxURL, "Press Enter to begin Download");
             this.textBoxURL.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxURL_KeyPress);
@@ -161,7 +163,7 @@
             this.textBoxWorkDir.Location = new System.Drawing.Point(69, 33);
             this.textBoxWorkDir.Name = "textBoxWorkDir";
             this.textBoxWorkDir.Size = new System.Drawing.Size(644, 20);
-            this.textBoxWorkDir.TabIndex = 2;
+            this.textBoxWorkDir.TabIndex = 3;
             this.textBoxWorkDir.Text = "c:\\users\\marco\\Downloads";
             // 
             // listViewDownload
@@ -178,7 +180,7 @@
             this.listViewDownload.Name = "listViewDownload";
             this.listViewDownload.Size = new System.Drawing.Size(730, 207);
             this.listViewDownload.SmallImageList = this.imageListStatus;
-            this.listViewDownload.TabIndex = 6;
+            this.listViewDownload.TabIndex = 7;
             this.listViewDownload.UseCompatibleStateImageBehavior = false;
             this.listViewDownload.View = System.Windows.Forms.View.Details;
             this.listViewDownload.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewDownload_MouseClick);
@@ -284,7 +286,7 @@
             this.buttonWorkDir.Location = new System.Drawing.Point(714, 33);
             this.buttonWorkDir.Name = "buttonWorkDir";
             this.buttonWorkDir.Size = new System.Drawing.Size(24, 20);
-            this.buttonWorkDir.TabIndex = 3;
+            this.buttonWorkDir.TabIndex = 4;
             this.buttonWorkDir.Text = "...";
             this.buttonWorkDir.UseVisualStyleBackColor = true;
             this.buttonWorkDir.Click += new System.EventHandler(this.buttonWorkDir_Click);
@@ -447,7 +449,7 @@
             this.groupBoxOptions.Location = new System.Drawing.Point(6, 59);
             this.groupBoxOptions.Name = "groupBoxOptions";
             this.groupBoxOptions.Size = new System.Drawing.Size(558, 61);
-            this.groupBoxOptions.TabIndex = 4;
+            this.groupBoxOptions.TabIndex = 5;
             this.groupBoxOptions.TabStop = false;
             // 
             // groupBoxInteface
@@ -459,14 +461,44 @@
             this.groupBoxInteface.Location = new System.Drawing.Point(569, 59);
             this.groupBoxInteface.Name = "groupBoxInteface";
             this.groupBoxInteface.Size = new System.Drawing.Size(168, 61);
-            this.groupBoxInteface.TabIndex = 5;
+            this.groupBoxInteface.TabIndex = 6;
             this.groupBoxInteface.TabStop = false;
+            // 
+            // comboBoxMaxQuality
+            // 
+            this.comboBoxMaxQuality.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxMaxQuality.FormattingEnabled = true;
+            this.comboBoxMaxQuality.Items.AddRange(new object[] {
+            "Best",
+            "2160p (4K)",
+            "1080p (Full HD)",
+            "720p (HD)",
+            "480p (SD)",
+            "360p",
+            "240p",
+            "Worst"});
+            this.comboBoxMaxQuality.Location = new System.Drawing.Point(534, 7);
+            this.comboBoxMaxQuality.Name = "comboBoxMaxQuality";
+            this.comboBoxMaxQuality.Size = new System.Drawing.Size(111, 21);
+            this.comboBoxMaxQuality.TabIndex = 1;
+            this.toolTipHelp.SetToolTip(this.comboBoxMaxQuality, "Maximum Download Quality Allowed");
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(465, 10);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(68, 13);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Max. Quality:";
             // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(744, 361);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.comboBoxMaxQuality);
             this.Controls.Add(this.groupBoxInteface);
             this.Controls.Add(this.groupBoxOptions);
             this.Controls.Add(this.statusStrip1);
@@ -540,6 +572,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelQueuedN;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSucceedN;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelErrorN;
+        private System.Windows.Forms.ComboBox comboBoxMaxQuality;
+        private System.Windows.Forms.Label label6;
     }
 }
 

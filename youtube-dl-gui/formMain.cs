@@ -37,6 +37,7 @@ namespace youtubedlgui
             textBoxOptions.Text = youtubedlgui.Properties.Settings.Default.Options;
             checkBoxClipboardPaste.Checked = youtubedlgui.Properties.Settings.Default.ClipboardPaste;
             numericUpDownMaxDownloads.Value = youtubedlgui.Properties.Settings.Default.MaxDownloads;
+            comboBoxMaxQuality.SelectedIndex = youtubedlgui.Properties.Settings.Default.MaxQuality;
             if (youtubedlgui.Properties.Settings.Default.FormWidth > 0) this.Width = youtubedlgui.Properties.Settings.Default.FormWidth;
             if (youtubedlgui.Properties.Settings.Default.FormHeight > 0) this.Height = youtubedlgui.Properties.Settings.Default.FormHeight;
             if (youtubedlgui.Properties.Settings.Default.ListColumn1Width > 0) listViewDownload.Columns[0].Width = youtubedlgui.Properties.Settings.Default.ListColumn1Width;
@@ -95,10 +96,24 @@ namespace youtubedlgui
 
             Process ps = new Process();
 
+            String Quality = "";
+            if (comboBoxMaxQuality.SelectedIndex>0)
+            {
+                Quality = " -f ";
+                if (comboBoxMaxQuality.SelectedIndex == comboBoxMaxQuality.Items.Count - 1)
+                    Quality += "\"worstvideo+worstaudio/worst\" ";
+                else
+                {
+                    String QualityH = comboBoxMaxQuality.SelectedItem.ToString().Split('p')[0];
+                    Quality += String.Format("\"bestvideo[height<=?{0}]+bestaudio/best[height<=?{0}]\"", QualityH); 
+                }
+
+            }
+
             ps.StartInfo.UseShellExecute = false;
             ps.StartInfo.FileName = AppContext.BaseDirectory + "\\" + Command;
             ps.StartInfo.WorkingDirectory = Workdir.TrimEnd('\\');
-            ps.StartInfo.Arguments = textBoxOptions.Text.Trim() + " \"" + URL + "\"";
+            ps.StartInfo.Arguments = textBoxOptions.Text.Trim() + Quality + " \"" + URL + "\"";
             ps.StartInfo.RedirectStandardOutput = true;
             ps.StartInfo.RedirectStandardError = true;
             ps.StartInfo.StandardOutputEncoding = Encoding.UTF8;
@@ -230,13 +245,13 @@ namespace youtubedlgui
             }
         }
 
-        private void buttonHelpOptions_Click(object sender, EventArgs e)
+        public String ExecuteCommandReturnOutput(String Command, String Arguments)
         {
             Process ps = new Process();
 
             ps.StartInfo.UseShellExecute = false;
-            ps.StartInfo.FileName = AppContext.BaseDirectory + "\\" + textBoxCommand.Text;
-            ps.StartInfo.Arguments = "--help";
+            ps.StartInfo.FileName = Command;
+            ps.StartInfo.Arguments = Arguments;
             ps.StartInfo.RedirectStandardOutput = true;
             ps.StartInfo.RedirectStandardError = true;
             ps.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -244,9 +259,17 @@ namespace youtubedlgui
 
             ps.Start();
 
-            String HelpText = ps.StandardOutput.ReadToEnd();
+            String Output = ps.StandardOutput.ReadToEnd();
 
             ps.WaitForExit();
+            ps.Close();
+
+            return Output;
+        }
+
+        private void buttonHelpOptions_Click(object sender, EventArgs e)
+        {
+            String HelpText = ExecuteCommandReturnOutput(AppContext.BaseDirectory + "\\" + textBoxCommand.Text, "--help");
 
             formHelpOptionsInstance = new formHelpOptions();
             formHelpOptionsInstance.HelpOptions = HelpText;
@@ -342,6 +365,7 @@ namespace youtubedlgui
             youtubedlgui.Properties.Settings.Default.ListColumn2Width = listViewDownload.Columns[1].Width;
             youtubedlgui.Properties.Settings.Default.ListColumn3Width = listViewDownload.Columns[2].Width;
             youtubedlgui.Properties.Settings.Default.MaxDownloads = Decimal.ToInt32(numericUpDownMaxDownloads.Value);
+            youtubedlgui.Properties.Settings.Default.MaxQuality = comboBoxMaxQuality.SelectedIndex;
             youtubedlgui.Properties.Settings.Default.Save();
         }
     }
