@@ -119,7 +119,7 @@
             // buttonDownload
             // 
             this.buttonDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDownload.Location = new System.Drawing.Point(651, 5);
+            this.buttonDownload.Location = new System.Drawing.Point(651, 4);
             this.buttonDownload.Name = "buttonDownload";
             this.buttonDownload.Size = new System.Drawing.Size(85, 23);
             this.buttonDownload.TabIndex = 2;
@@ -466,6 +466,7 @@
             // 
             // comboBoxMaxQuality
             // 
+            this.comboBoxMaxQuality.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxMaxQuality.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxMaxQuality.FormattingEnabled = true;
             this.comboBoxMaxQuality.Items.AddRange(new object[] {
@@ -485,6 +486,7 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(465, 10);
             this.label6.Name = "label6";
