@@ -429,5 +429,11 @@ namespace youtubedlgui
 
             youtubedlgui.Properties.Settings.Default.Save();
         }
+
+        private void comboBoxAudioOnly_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            labelMaxVideoQuality.Visible = (comboBoxAudioOnly.SelectedIndex == 0);
+            comboBoxMaxQuality.Visible = (comboBoxAudioOnly.SelectedIndex == 0);
+        }
     }
 }
