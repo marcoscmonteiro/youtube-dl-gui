@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formMain));
             this.textBoxOptions = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelExtraOptions = new System.Windows.Forms.Label();
             this.textBoxCommand = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.buttonDownload = new System.Windows.Forms.Button();
@@ -72,6 +72,10 @@
             this.toolTipHelp = new System.Windows.Forms.ToolTip(this.components);
             this.comboBoxMaxQuality = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.comboBoxAudioOnly = new System.Windows.Forms.ComboBox();
+            this.checkBoxPlayList = new System.Windows.Forms.CheckBox();
+            this.checkBoxNoCacheDir = new System.Windows.Forms.CheckBox();
             this.contextMenuStripListView.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).BeginInit();
@@ -83,27 +87,26 @@
             // 
             this.textBoxOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxOptions.Location = new System.Drawing.Point(65, 36);
+            this.textBoxOptions.Location = new System.Drawing.Point(78, 61);
             this.textBoxOptions.Name = "textBoxOptions";
-            this.textBoxOptions.Size = new System.Drawing.Size(462, 20);
+            this.textBoxOptions.Size = new System.Drawing.Size(496, 20);
             this.textBoxOptions.TabIndex = 2;
-            this.textBoxOptions.Text = "--no-playlist --no-cache-dir";
             // 
-            // label1
+            // labelExtraOptions
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1, 39);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(46, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Options:";
+            this.labelExtraOptions.AutoSize = true;
+            this.labelExtraOptions.Location = new System.Drawing.Point(1, 64);
+            this.labelExtraOptions.Name = "labelExtraOptions";
+            this.labelExtraOptions.Size = new System.Drawing.Size(71, 13);
+            this.labelExtraOptions.TabIndex = 1;
+            this.labelExtraOptions.Text = "Extra options:";
             // 
             // textBoxCommand
             // 
             this.textBoxCommand.Enabled = false;
-            this.textBoxCommand.Location = new System.Drawing.Point(65, 10);
+            this.textBoxCommand.Location = new System.Drawing.Point(78, 10);
             this.textBoxCommand.Name = "textBoxCommand";
-            this.textBoxCommand.Size = new System.Drawing.Size(84, 20);
+            this.textBoxCommand.Size = new System.Drawing.Size(78, 20);
             this.textBoxCommand.TabIndex = 0;
             this.textBoxCommand.Text = "youtube-dl.exe";
             // 
@@ -119,7 +122,7 @@
             // buttonDownload
             // 
             this.buttonDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDownload.Location = new System.Drawing.Point(651, 4);
+            this.buttonDownload.Location = new System.Drawing.Point(700, 5);
             this.buttonDownload.Name = "buttonDownload";
             this.buttonDownload.Size = new System.Drawing.Size(85, 23);
             this.buttonDownload.TabIndex = 2;
@@ -133,7 +136,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxURL.Location = new System.Drawing.Point(69, 7);
             this.textBoxURL.Name = "textBoxURL";
-            this.textBoxURL.Size = new System.Drawing.Size(390, 20);
+            this.textBoxURL.Size = new System.Drawing.Size(625, 20);
             this.textBoxURL.TabIndex = 0;
             this.toolTipHelp.SetToolTip(this.textBoxURL, "Press Enter to begin Download");
             this.textBoxURL.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxURL_KeyPress);
@@ -162,7 +165,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxWorkDir.Location = new System.Drawing.Point(69, 33);
             this.textBoxWorkDir.Name = "textBoxWorkDir";
-            this.textBoxWorkDir.Size = new System.Drawing.Size(644, 20);
+            this.textBoxWorkDir.Size = new System.Drawing.Size(691, 20);
             this.textBoxWorkDir.TabIndex = 3;
             this.textBoxWorkDir.Text = "c:\\users\\marco\\Downloads";
             // 
@@ -176,9 +179,9 @@
             this.Status,
             this.File});
             this.listViewDownload.HideSelection = false;
-            this.listViewDownload.Location = new System.Drawing.Point(6, 126);
+            this.listViewDownload.Location = new System.Drawing.Point(6, 152);
             this.listViewDownload.Name = "listViewDownload";
-            this.listViewDownload.Size = new System.Drawing.Size(730, 207);
+            this.listViewDownload.Size = new System.Drawing.Size(777, 181);
             this.listViewDownload.SmallImageList = this.imageListStatus;
             this.listViewDownload.TabIndex = 7;
             this.listViewDownload.UseCompatibleStateImageBehavior = false;
@@ -226,7 +229,7 @@
             // 
             this.toolStripMenuItemView.Name = "toolStripMenuItemView";
             this.toolStripMenuItemView.Size = new System.Drawing.Size(200, 22);
-            this.toolStripMenuItemView.Text = "Play Video";
+            this.toolStripMenuItemView.Text = "Play";
             this.toolStripMenuItemView.Click += new System.EventHandler(this.toolStripMenuItemView_Click);
             // 
             // toolStripMenuItemStop
@@ -272,7 +275,7 @@
             // buttonHelpOptions
             // 
             this.buttonHelpOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonHelpOptions.Location = new System.Drawing.Point(528, 36);
+            this.buttonHelpOptions.Location = new System.Drawing.Point(575, 61);
             this.buttonHelpOptions.Name = "buttonHelpOptions";
             this.buttonHelpOptions.Size = new System.Drawing.Size(24, 20);
             this.buttonHelpOptions.TabIndex = 5;
@@ -283,7 +286,7 @@
             // buttonWorkDir
             // 
             this.buttonWorkDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonWorkDir.Location = new System.Drawing.Point(714, 33);
+            this.buttonWorkDir.Location = new System.Drawing.Point(761, 33);
             this.buttonWorkDir.Name = "buttonWorkDir";
             this.buttonWorkDir.Size = new System.Drawing.Size(24, 20);
             this.buttonWorkDir.TabIndex = 4;
@@ -297,7 +300,7 @@
             // 
             // buttonUpdate
             // 
-            this.buttonUpdate.Location = new System.Drawing.Point(155, 9);
+            this.buttonUpdate.Location = new System.Drawing.Point(162, 9);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(72, 22);
             this.buttonUpdate.TabIndex = 1;
@@ -318,7 +321,7 @@
             this.toolStripStatusLabelErrorN});
             this.statusStrip1.Location = new System.Drawing.Point(0, 336);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(744, 25);
+            this.statusStrip1.Size = new System.Drawing.Size(791, 25);
             this.statusStrip1.TabIndex = 6;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -440,15 +443,21 @@
             // 
             this.groupBoxOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxOptions.Controls.Add(this.checkBoxNoCacheDir);
+            this.groupBoxOptions.Controls.Add(this.checkBoxPlayList);
+            this.groupBoxOptions.Controls.Add(this.comboBoxAudioOnly);
+            this.groupBoxOptions.Controls.Add(this.label7);
             this.groupBoxOptions.Controls.Add(this.textBoxCommand);
+            this.groupBoxOptions.Controls.Add(this.label6);
+            this.groupBoxOptions.Controls.Add(this.comboBoxMaxQuality);
             this.groupBoxOptions.Controls.Add(this.textBoxOptions);
-            this.groupBoxOptions.Controls.Add(this.label1);
+            this.groupBoxOptions.Controls.Add(this.labelExtraOptions);
             this.groupBoxOptions.Controls.Add(this.label2);
             this.groupBoxOptions.Controls.Add(this.buttonUpdate);
             this.groupBoxOptions.Controls.Add(this.buttonHelpOptions);
             this.groupBoxOptions.Location = new System.Drawing.Point(6, 59);
             this.groupBoxOptions.Name = "groupBoxOptions";
-            this.groupBoxOptions.Size = new System.Drawing.Size(558, 61);
+            this.groupBoxOptions.Size = new System.Drawing.Size(605, 87);
             this.groupBoxOptions.TabIndex = 5;
             this.groupBoxOptions.TabStop = false;
             // 
@@ -458,15 +467,14 @@
             this.groupBoxInteface.Controls.Add(this.checkBoxClipboardPaste);
             this.groupBoxInteface.Controls.Add(this.numericUpDownMaxDownloads);
             this.groupBoxInteface.Controls.Add(this.label5);
-            this.groupBoxInteface.Location = new System.Drawing.Point(569, 59);
+            this.groupBoxInteface.Location = new System.Drawing.Point(616, 59);
             this.groupBoxInteface.Name = "groupBoxInteface";
-            this.groupBoxInteface.Size = new System.Drawing.Size(168, 61);
+            this.groupBoxInteface.Size = new System.Drawing.Size(168, 87);
             this.groupBoxInteface.TabIndex = 6;
             this.groupBoxInteface.TabStop = false;
             // 
             // comboBoxMaxQuality
             // 
-            this.comboBoxMaxQuality.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxMaxQuality.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxMaxQuality.FormattingEnabled = true;
             this.comboBoxMaxQuality.Items.AddRange(new object[] {
@@ -478,29 +486,76 @@
             "360p",
             "240p",
             "Worst"});
-            this.comboBoxMaxQuality.Location = new System.Drawing.Point(534, 7);
+            this.comboBoxMaxQuality.Location = new System.Drawing.Point(314, 9);
             this.comboBoxMaxQuality.Name = "comboBoxMaxQuality";
-            this.comboBoxMaxQuality.Size = new System.Drawing.Size(111, 21);
+            this.comboBoxMaxQuality.Size = new System.Drawing.Size(99, 21);
             this.comboBoxMaxQuality.TabIndex = 1;
             this.toolTipHelp.SetToolTip(this.comboBoxMaxQuality, "Maximum Download Quality Allowed");
             // 
             // label6
             // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(465, 10);
+            this.label6.Location = new System.Drawing.Point(240, 12);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(68, 13);
             this.label6.TabIndex = 11;
             this.label6.Text = "Max. Quality:";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(425, 12);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(59, 13);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "Audio only:";
+            // 
+            // comboBoxAudioOnly
+            // 
+            this.comboBoxAudioOnly.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxAudioOnly.FormattingEnabled = true;
+            this.comboBoxAudioOnly.Items.AddRange(new object[] {
+            "-",
+            "Best",
+            "aac",
+            "flac",
+            "mp3",
+            "m4a",
+            "opus",
+            "vorbis",
+            "wav"});
+            this.comboBoxAudioOnly.Location = new System.Drawing.Point(490, 9);
+            this.comboBoxAudioOnly.Name = "comboBoxAudioOnly";
+            this.comboBoxAudioOnly.Size = new System.Drawing.Size(66, 21);
+            this.comboBoxAudioOnly.TabIndex = 13;
+            // 
+            // checkBoxPlayList
+            // 
+            this.checkBoxPlayList.AutoSize = true;
+            this.checkBoxPlayList.Location = new System.Drawing.Point(78, 36);
+            this.checkBoxPlayList.Name = "checkBoxPlayList";
+            this.checkBoxPlayList.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxPlayList.TabIndex = 14;
+            this.checkBoxPlayList.Text = "Play List";
+            this.checkBoxPlayList.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxNoCacheDir
+            // 
+            this.checkBoxNoCacheDir.AutoSize = true;
+            this.checkBoxNoCacheDir.Checked = true;
+            this.checkBoxNoCacheDir.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxNoCacheDir.Location = new System.Drawing.Point(152, 37);
+            this.checkBoxNoCacheDir.Name = "checkBoxNoCacheDir";
+            this.checkBoxNoCacheDir.Size = new System.Drawing.Size(93, 17);
+            this.checkBoxNoCacheDir.TabIndex = 15;
+            this.checkBoxNoCacheDir.Text = "No Cache Dir.";
+            this.checkBoxNoCacheDir.UseVisualStyleBackColor = true;
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(744, 361);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.comboBoxMaxQuality);
+            this.ClientSize = new System.Drawing.Size(791, 361);
             this.Controls.Add(this.groupBoxInteface);
             this.Controls.Add(this.groupBoxOptions);
             this.Controls.Add(this.statusStrip1);
@@ -535,7 +590,7 @@
         #endregion
 
         private System.Windows.Forms.TextBox textBoxOptions;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelExtraOptions;
         private System.Windows.Forms.TextBox textBoxCommand;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonDownload;
@@ -576,6 +631,10 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelErrorN;
         private System.Windows.Forms.ComboBox comboBoxMaxQuality;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox checkBoxNoCacheDir;
+        private System.Windows.Forms.CheckBox checkBoxPlayList;
+        private System.Windows.Forms.ComboBox comboBoxAudioOnly;
     }
 }
 

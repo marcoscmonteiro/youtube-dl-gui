@@ -9,7 +9,7 @@
       <Value Profile="(Default)">youtube-dl.exe</Value>
     </Setting>
     <Setting Name="Options" Type="System.String" Scope="User">
-      <Value Profile="(Default)">--no-playlist --no-cache-dir --encoding UTF8</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ClipboardPaste" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -33,6 +33,15 @@
       <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="MaxQuality" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="playlist" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="nocachedir" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AudioOnly" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>

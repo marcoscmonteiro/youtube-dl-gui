@@ -5,9 +5,11 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace youtubedlgui
 {
@@ -38,11 +40,26 @@ namespace youtubedlgui
             checkBoxClipboardPaste.Checked = youtubedlgui.Properties.Settings.Default.ClipboardPaste;
             numericUpDownMaxDownloads.Value = youtubedlgui.Properties.Settings.Default.MaxDownloads;
             comboBoxMaxQuality.SelectedIndex = youtubedlgui.Properties.Settings.Default.MaxQuality;
+            comboBoxAudioOnly.SelectedIndex = youtubedlgui.Properties.Settings.Default.AudioOnly;
+            checkBoxPlayList.Checked = youtubedlgui.Properties.Settings.Default.playlist;
+            checkBoxNoCacheDir.Checked = youtubedlgui.Properties.Settings.Default.nocachedir;
             if (youtubedlgui.Properties.Settings.Default.FormWidth > 0) this.Width = youtubedlgui.Properties.Settings.Default.FormWidth;
             if (youtubedlgui.Properties.Settings.Default.FormHeight > 0) this.Height = youtubedlgui.Properties.Settings.Default.FormHeight;
             if (youtubedlgui.Properties.Settings.Default.ListColumn1Width > 0) listViewDownload.Columns[0].Width = youtubedlgui.Properties.Settings.Default.ListColumn1Width;
             if (youtubedlgui.Properties.Settings.Default.ListColumn2Width > 0) listViewDownload.Columns[1].Width = youtubedlgui.Properties.Settings.Default.ListColumn2Width;
             if (youtubedlgui.Properties.Settings.Default.ListColumn3Width > 0) listViewDownload.Columns[2].Width = youtubedlgui.Properties.Settings.Default.ListColumn3Width;
+        }
+
+        private static void ExtractFileName(String TextToProcess, String lTrimText, ListViewItem lvi)
+        {
+            if (TextToProcess.StartsWith(lTrimText))
+            {
+                String Filename = TextToProcess.Substring(lTrimText.Length);
+                Filename = Filename.TrimStart('\"');
+                Filename = Filename.TrimEnd('\"');
+                lvi.SubItems[2].Text = Filename;
+
+            }
         }
 
         private static void AddText(Process p, String text)
@@ -54,11 +71,11 @@ namespace youtubedlgui
                 {
                     lvi.SubItems[1].Text = text;
                     if (lvi.ImageKey!="GreenArrow") lvi.ImageKey = "GreenArrow";
-                    if (lvi.SubItems[1].Tag == null) lvi.SubItems[1].Tag = new StringBuilder(text); else ((StringBuilder)(lvi.SubItems[1].Tag)).Append(Environment.NewLine + text);
+                    ListViewAddTextToLog(lvi, text);
 
-                    if (text.StartsWith("[download] Destination: ")) lvi.SubItems[2].Text = text.Substring(24);
-                    if (text.StartsWith("[ffmpeg] Merging formats into ")) lvi.SubItems[2].Text = text.Substring(31).Trim('"');
-                    //lv.Refresh();
+                    ExtractFileName(text, "[download] Destination: ", lvi);
+                    ExtractFileName(text, "[ffmpeg] Merging formats into ", lvi);
+                    ExtractFileName(text, "[ffmpeg] Destination: ", lvi);
                 }
             } else
             {
@@ -77,43 +94,27 @@ namespace youtubedlgui
             }
         }
 
-        private void VideoDownload(String URL, String Workdir, String Command)
+        private static void ListViewAddTextToLog(ListViewItem lvi, String text)
+        {
+        if (lvi.SubItems[1].Tag == null) lvi.SubItems[1].Tag = new StringBuilder(text); else ((StringBuilder)(lvi.SubItems[1].Tag)).Append(Environment.NewLine + text);
+        }
+
+        private void VideoDownload(String CommandLineArguments, String Workdir, String Command)
         {
 
-            if (!(URL.StartsWith("http://")) && !(URL.StartsWith("https://"))) 
-            { 
-                MessageBox.Show(this, "Invalid URL. URL must begin with http:// or https://.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                textBoxURL.Focus();
-                return; 
-            }
-
-            if (!System.IO.Directory.Exists(Workdir)) 
-            { 
+            if (!System.IO.Directory.Exists(Workdir))
+            {
                 MessageBox.Show(this, "Work directory does not exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBoxWorkDir.Focus();
-                return; 
+                return;
             }
 
             Process ps = new Process();
 
-            String Quality = "";
-            if (comboBoxMaxQuality.SelectedIndex>0)
-            {
-                Quality = " -f ";
-                if (comboBoxMaxQuality.SelectedIndex == comboBoxMaxQuality.Items.Count - 1)
-                    Quality += "\"worstvideo+worstaudio/worst\" ";
-                else
-                {
-                    String QualityH = comboBoxMaxQuality.SelectedItem.ToString().Split('p')[0];
-                    Quality += String.Format("\"bestvideo[height<=?{0}]+bestaudio/best[height<=?{0}]\"", QualityH); 
-                }
-
-            }
-
             ps.StartInfo.UseShellExecute = false;
-            ps.StartInfo.FileName = AppContext.BaseDirectory + "\\" + Command;
+            ps.StartInfo.FileName = AppContext.BaseDirectory + Command;
             ps.StartInfo.WorkingDirectory = Workdir.TrimEnd('\\');
-            ps.StartInfo.Arguments = textBoxOptions.Text.Trim() + Quality + " \"" + URL + "\"";
+            ps.StartInfo.Arguments = CommandLineArguments;
             ps.StartInfo.RedirectStandardOutput = true;
             ps.StartInfo.RedirectStandardError = true;
             ps.StartInfo.StandardOutputEncoding = Encoding.UTF8;
@@ -131,6 +132,9 @@ namespace youtubedlgui
             lvi.Tag = ps;
             lvi.Name = "q"; // Queued by default
             lvi.ImageKey = "GreyBall";
+            ListViewAddTextToLog(lvi, "Executable: " + ps.StartInfo.FileName);
+            ListViewAddTextToLog(lvi, "Arguments : " + ps.StartInfo.Arguments);
+            ListViewAddTextToLog(lvi, "Work Dir. : " + ps.StartInfo.WorkingDirectory);
             listViewDownload.Items.Add(lvi);
             CurrentQueued += 1;
 
@@ -167,9 +171,62 @@ namespace youtubedlgui
             CurrentDownloads -= 1;
         }
 
+        private String ProcessCommandLineOptions()
+        {
+            String URL = textBoxURL.Text.Trim();
+            String CommandLine = "--encoding UTF8 ";
+
+            if (!(URL.StartsWith("http://")) && !(URL.StartsWith("https://")))
+            {
+                MessageBox.Show(this, "Invalid URL. URL must begin with http:// or https://.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                textBoxURL.Focus();
+                return "";
+            }
+
+            String AudioOnly = "";
+            if (comboBoxAudioOnly.SelectedIndex > 0)
+            {
+                AudioOnly = "-x ";
+                if (comboBoxAudioOnly.SelectedIndex>1) 
+                {
+                    AudioOnly += "--audio-format " + comboBoxAudioOnly.SelectedItem.ToString() + " ";
+                }
+            }
+
+            String Quality = "";
+            if (AudioOnly == "")
+            {
+                if (comboBoxMaxQuality.SelectedIndex > 0)
+                {
+                    Quality = "-f ";
+                    if (comboBoxMaxQuality.SelectedIndex == comboBoxMaxQuality.Items.Count - 1)
+                        Quality += "\"worstvideo+worstaudio/worst\" ";
+                    else
+                    {
+                        String QualityH = comboBoxMaxQuality.SelectedItem.ToString().Split('p')[0];
+                        Quality += String.Format("\"bestvideo[height<=?{0}]+bestaudio/best[height<=?{0}]\"", QualityH) + " ";
+                    }
+
+                }
+            }
+            else Quality = "-f \"worstvideo+bestaudio\" ";
+
+            CommandLine += textBoxOptions.Text.Trim() + " ";
+
+            if (checkBoxNoCacheDir.Checked) CommandLine += "--no-cache-dir ";
+            if (!checkBoxPlayList.Checked) CommandLine += "--no-playlist ";
+          
+            CommandLine += Quality;
+            CommandLine += AudioOnly;
+            CommandLine += "\"" + URL + "\"";
+
+            return CommandLine;
+        }
+
         private void buttonDownload_Click(object sender, EventArgs e)
-        {            
-            VideoDownload(textBoxURL.Text, textBoxWorkDir.Text, textBoxCommand.Text);
+        {
+            String CommandLineArguments = ProcessCommandLineOptions();
+            if (CommandLineArguments != "") VideoDownload(CommandLineArguments, textBoxWorkDir.Text, textBoxCommand.Text);
         }
 
         private void formMain_Activated(object sender, EventArgs e)
@@ -366,6 +423,10 @@ namespace youtubedlgui
             youtubedlgui.Properties.Settings.Default.ListColumn3Width = listViewDownload.Columns[2].Width;
             youtubedlgui.Properties.Settings.Default.MaxDownloads = Decimal.ToInt32(numericUpDownMaxDownloads.Value);
             youtubedlgui.Properties.Settings.Default.MaxQuality = comboBoxMaxQuality.SelectedIndex;
+            youtubedlgui.Properties.Settings.Default.AudioOnly = comboBoxAudioOnly.SelectedIndex;
+            youtubedlgui.Properties.Settings.Default.playlist = checkBoxPlayList.Checked;
+            youtubedlgui.Properties.Settings.Default.nocachedir = checkBoxNoCacheDir.Checked;
+
             youtubedlgui.Properties.Settings.Default.Save();
         }
     }

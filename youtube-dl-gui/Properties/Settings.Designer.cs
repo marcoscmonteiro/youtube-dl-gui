@@ -49,7 +49,7 @@ namespace youtubedlgui.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("--no-playlist --no-cache-dir --encoding UTF8")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string Options {
             get {
                 return ((string)(this["Options"]));
@@ -152,6 +152,42 @@ namespace youtubedlgui.Properties {
             }
             set {
                 this["MaxQuality"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool playlist {
+            get {
+                return ((bool)(this["playlist"]));
+            }
+            set {
+                this["playlist"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool nocachedir {
+            get {
+                return ((bool)(this["nocachedir"]));
+            }
+            set {
+                this["nocachedir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int AudioOnly {
+            get {
+                return ((int)(this["AudioOnly"]));
+            }
+            set {
+                this["AudioOnly"] = value;
             }
         }
     }
