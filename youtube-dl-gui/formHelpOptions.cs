@@ -14,6 +14,8 @@ namespace youtubedlgui
     {
         public String Options;
         public String HelpOptions;
+        
+        private Boolean Changed { get => textBoxOptions.Text != Options; }
 
         public formHelpOptions()
         {
@@ -28,12 +30,13 @@ namespace youtubedlgui
 
         private void formHelpOptions_FormClosing(object sender, FormClosingEventArgs e)
         {
-            
-        }
+            if (Changed) 
+            {
+                DialogResult dr = MessageBox.Show(this, "Save changes?", "Youtube-dl Extra Options was Changed", MessageBoxButtons.YesNoCancel);
 
-        private void formHelpOptions_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            
+                if (dr == DialogResult.Yes) Options = textBoxOptions.Text;
+                if (dr == DialogResult.Cancel || dr == DialogResult.None) e.Cancel = true;            
+            }
         }
 
         private void buttonFind_Click(object sender, EventArgs e)
@@ -49,8 +52,6 @@ namespace youtubedlgui
                     buttonFind_Click(sender, e);
                 }
             }
-
-            
 
         }
 
@@ -80,5 +81,17 @@ namespace youtubedlgui
         {
             System.Diagnostics.Process.Start("https://github.com/ytdl-org/youtube-dl/blob/master/README.md");
         }
+
+        private void textHelpOptions_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.F) textBoxFind.Focus();
+        }
+
+
+        private void textBoxOptions_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            buttonSave.Enabled = true;
+        }
+
     }
 }
