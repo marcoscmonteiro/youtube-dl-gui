@@ -48,7 +48,7 @@
             this.toolStripMenuItemView = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemStop = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemRetry = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemDeletePartial = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemViewLog = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxClipboardPaste = new System.Windows.Forms.CheckBox();
             this.buttonHelpOptions = new System.Windows.Forms.Button();
@@ -74,28 +74,33 @@
             this.label7 = new System.Windows.Forms.Label();
             this.labelMaxVideoQuality = new System.Windows.Forms.Label();
             this.comboBoxMaxQuality = new System.Windows.Forms.ComboBox();
-            this.groupBoxInteface = new System.Windows.Forms.GroupBox();
             this.toolTipHelp = new System.Windows.Forms.ToolTip(this.components);
+            this.buttonPlayVideo = new System.Windows.Forms.Button();
+            this.buttonStopDownload = new System.Windows.Forms.Button();
+            this.buttonRetryDownload = new System.Windows.Forms.Button();
+            this.buttonDeleteVideo = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.buttonViewLog = new System.Windows.Forms.Button();
             this.contextMenuStripListView.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).BeginInit();
             this.groupBoxOptions.SuspendLayout();
-            this.groupBoxInteface.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBoxOptions
             // 
             this.textBoxOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxOptions.Location = new System.Drawing.Point(78, 61);
+            this.textBoxOptions.Location = new System.Drawing.Point(78, 37);
             this.textBoxOptions.Name = "textBoxOptions";
-            this.textBoxOptions.Size = new System.Drawing.Size(489, 20);
+            this.textBoxOptions.Size = new System.Drawing.Size(661, 20);
             this.textBoxOptions.TabIndex = 6;
             // 
             // labelExtraOptions
             // 
             this.labelExtraOptions.AutoSize = true;
-            this.labelExtraOptions.Location = new System.Drawing.Point(1, 64);
+            this.labelExtraOptions.Location = new System.Drawing.Point(1, 40);
             this.labelExtraOptions.Name = "labelExtraOptions";
             this.labelExtraOptions.Size = new System.Drawing.Size(71, 13);
             this.labelExtraOptions.TabIndex = 1;
@@ -122,7 +127,7 @@
             // buttonDownload
             // 
             this.buttonDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDownload.Location = new System.Drawing.Point(693, 5);
+            this.buttonDownload.Location = new System.Drawing.Point(586, 5);
             this.buttonDownload.Name = "buttonDownload";
             this.buttonDownload.Size = new System.Drawing.Size(85, 23);
             this.buttonDownload.TabIndex = 2;
@@ -136,7 +141,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxURL.Location = new System.Drawing.Point(69, 7);
             this.textBoxURL.Name = "textBoxURL";
-            this.textBoxURL.Size = new System.Drawing.Size(618, 20);
+            this.textBoxURL.Size = new System.Drawing.Size(511, 20);
             this.textBoxURL.TabIndex = 0;
             this.toolTipHelp.SetToolTip(this.textBoxURL, "Press Enter to begin Download");
             this.textBoxURL.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxURL_KeyPress);
@@ -179,13 +184,14 @@
             this.Status,
             this.File});
             this.listViewDownload.HideSelection = false;
-            this.listViewDownload.Location = new System.Drawing.Point(6, 152);
+            this.listViewDownload.Location = new System.Drawing.Point(6, 128);
             this.listViewDownload.Name = "listViewDownload";
-            this.listViewDownload.Size = new System.Drawing.Size(770, 190);
+            this.listViewDownload.Size = new System.Drawing.Size(770, 379);
             this.listViewDownload.SmallImageList = this.imageListStatus;
             this.listViewDownload.TabIndex = 7;
             this.listViewDownload.UseCompatibleStateImageBehavior = false;
             this.listViewDownload.View = System.Windows.Forms.View.Details;
+            this.listViewDownload.SelectedIndexChanged += new System.EventHandler(this.listViewDownload_SelectedIndexChanged);
             this.listViewDownload.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewDownload_MouseClick);
             this.listViewDownload.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listViewDownload_MouseDoubleClick);
             // 
@@ -202,7 +208,7 @@
             // File
             // 
             this.File.Text = "File";
-            this.File.Width = 200;
+            this.File.Width = 239;
             // 
             // imageListStatus
             // 
@@ -220,62 +226,63 @@
             this.toolStripMenuItemView,
             this.toolStripMenuItemStop,
             this.toolStripMenuItemRetry,
-            this.ToolStripMenuItemDeletePartial,
+            this.toolStripMenuItemDelete,
             this.toolStripMenuItemViewLog});
             this.contextMenuStripListView.Name = "contextMenuStripListView";
-            this.contextMenuStripListView.Size = new System.Drawing.Size(201, 114);
+            this.contextMenuStripListView.Size = new System.Drawing.Size(123, 114);
             // 
             // toolStripMenuItemView
             // 
             this.toolStripMenuItemView.Name = "toolStripMenuItemView";
-            this.toolStripMenuItemView.Size = new System.Drawing.Size(200, 22);
+            this.toolStripMenuItemView.Size = new System.Drawing.Size(122, 22);
             this.toolStripMenuItemView.Text = "Play";
             this.toolStripMenuItemView.Click += new System.EventHandler(this.toolStripMenuItemView_Click);
             // 
             // toolStripMenuItemStop
             // 
             this.toolStripMenuItemStop.Name = "toolStripMenuItemStop";
-            this.toolStripMenuItemStop.Size = new System.Drawing.Size(200, 22);
-            this.toolStripMenuItemStop.Text = "Stop Download";
+            this.toolStripMenuItemStop.Size = new System.Drawing.Size(122, 22);
+            this.toolStripMenuItemStop.Text = "Stop";
             this.toolStripMenuItemStop.Click += new System.EventHandler(this.toolStripMenuItemStop_Click);
             // 
             // toolStripMenuItemRetry
             // 
             this.toolStripMenuItemRetry.Name = "toolStripMenuItemRetry";
-            this.toolStripMenuItemRetry.Size = new System.Drawing.Size(200, 22);
-            this.toolStripMenuItemRetry.Text = "Retry Download";
+            this.toolStripMenuItemRetry.Size = new System.Drawing.Size(122, 22);
+            this.toolStripMenuItemRetry.Text = "Retry";
             this.toolStripMenuItemRetry.Click += new System.EventHandler(this.toolStripMenuItemRetry_Click);
             // 
-            // ToolStripMenuItemDeletePartial
+            // toolStripMenuItemDelete
             // 
-            this.ToolStripMenuItemDeletePartial.Name = "ToolStripMenuItemDeletePartial";
-            this.ToolStripMenuItemDeletePartial.Size = new System.Drawing.Size(200, 22);
-            this.ToolStripMenuItemDeletePartial.Text = "Delete partial Download";
-            this.ToolStripMenuItemDeletePartial.Click += new System.EventHandler(this.ToolStripMenuItemDeletePartial_Click);
+            this.toolStripMenuItemDelete.Name = "toolStripMenuItemDelete";
+            this.toolStripMenuItemDelete.Size = new System.Drawing.Size(122, 22);
+            this.toolStripMenuItemDelete.Text = "Delete";
+            this.toolStripMenuItemDelete.Click += new System.EventHandler(this.toolStripMenuItemDelete_Click);
             // 
             // toolStripMenuItemViewLog
             // 
             this.toolStripMenuItemViewLog.Name = "toolStripMenuItemViewLog";
-            this.toolStripMenuItemViewLog.Size = new System.Drawing.Size(200, 22);
+            this.toolStripMenuItemViewLog.Size = new System.Drawing.Size(122, 22);
             this.toolStripMenuItemViewLog.Text = "View Log";
             this.toolStripMenuItemViewLog.Click += new System.EventHandler(this.toolStripMenuItemViewLog_Click);
             // 
             // checkBoxClipboardPaste
             // 
+            this.checkBoxClipboardPaste.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxClipboardPaste.AutoSize = true;
             this.checkBoxClipboardPaste.Checked = true;
             this.checkBoxClipboardPaste.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxClipboardPaste.Location = new System.Drawing.Point(10, 13);
+            this.checkBoxClipboardPaste.Location = new System.Drawing.Point(675, 9);
             this.checkBoxClipboardPaste.Name = "checkBoxClipboardPaste";
-            this.checkBoxClipboardPaste.Size = new System.Drawing.Size(150, 17);
+            this.checkBoxClipboardPaste.Size = new System.Drawing.Size(101, 17);
             this.checkBoxClipboardPaste.TabIndex = 0;
-            this.checkBoxClipboardPaste.Text = "Auto URL Clipboard Paste";
+            this.checkBoxClipboardPaste.Text = "Auto Clip. Paste";
             this.checkBoxClipboardPaste.UseVisualStyleBackColor = true;
             // 
             // buttonHelpOptions
             // 
             this.buttonHelpOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonHelpOptions.Location = new System.Drawing.Point(568, 61);
+            this.buttonHelpOptions.Location = new System.Drawing.Point(740, 37);
             this.buttonHelpOptions.Name = "buttonHelpOptions";
             this.buttonHelpOptions.Size = new System.Drawing.Size(24, 20);
             this.buttonHelpOptions.TabIndex = 7;
@@ -319,7 +326,7 @@
             this.toolStripStatusLabelSucceedN,
             this.toolStripStatusLabelError,
             this.toolStripStatusLabelErrorN});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 345);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 536);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(784, 25);
             this.statusStrip1.TabIndex = 6;
@@ -410,7 +417,8 @@
             // 
             // numericUpDownMaxDownloads
             // 
-            this.numericUpDownMaxDownloads.Location = new System.Drawing.Point(10, 35);
+            this.numericUpDownMaxDownloads.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.numericUpDownMaxDownloads.Location = new System.Drawing.Point(655, 513);
             this.numericUpDownMaxDownloads.Minimum = new decimal(new int[] {
             1,
             0,
@@ -427,8 +435,9 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(55, 39);
+            this.label5.Location = new System.Drawing.Point(693, 515);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(86, 13);
             this.label5.TabIndex = 0;
@@ -457,7 +466,7 @@
             this.groupBoxOptions.Controls.Add(this.buttonHelpOptions);
             this.groupBoxOptions.Location = new System.Drawing.Point(6, 59);
             this.groupBoxOptions.Name = "groupBoxOptions";
-            this.groupBoxOptions.Size = new System.Drawing.Size(598, 87);
+            this.groupBoxOptions.Size = new System.Drawing.Size(770, 63);
             this.groupBoxOptions.TabIndex = 5;
             this.groupBoxOptions.TabStop = false;
             // 
@@ -466,7 +475,7 @@
             this.checkBoxNoCacheDir.AutoSize = true;
             this.checkBoxNoCacheDir.Checked = true;
             this.checkBoxNoCacheDir.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxNoCacheDir.Location = new System.Drawing.Point(152, 37);
+            this.checkBoxNoCacheDir.Location = new System.Drawing.Point(667, 14);
             this.checkBoxNoCacheDir.Name = "checkBoxNoCacheDir";
             this.checkBoxNoCacheDir.Size = new System.Drawing.Size(93, 17);
             this.checkBoxNoCacheDir.TabIndex = 5;
@@ -476,7 +485,7 @@
             // checkBoxPlayList
             // 
             this.checkBoxPlayList.AutoSize = true;
-            this.checkBoxPlayList.Location = new System.Drawing.Point(78, 36);
+            this.checkBoxPlayList.Location = new System.Drawing.Point(596, 13);
             this.checkBoxPlayList.Name = "checkBoxPlayList";
             this.checkBoxPlayList.Size = new System.Drawing.Size(65, 17);
             this.checkBoxPlayList.TabIndex = 4;
@@ -540,24 +549,101 @@
             this.comboBoxMaxQuality.TabIndex = 3;
             this.toolTipHelp.SetToolTip(this.comboBoxMaxQuality, "Maximum Download Quality Allowed");
             // 
-            // groupBoxInteface
+            // buttonPlayVideo
             // 
-            this.groupBoxInteface.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBoxInteface.Controls.Add(this.checkBoxClipboardPaste);
-            this.groupBoxInteface.Controls.Add(this.numericUpDownMaxDownloads);
-            this.groupBoxInteface.Controls.Add(this.label5);
-            this.groupBoxInteface.Location = new System.Drawing.Point(609, 59);
-            this.groupBoxInteface.Name = "groupBoxInteface";
-            this.groupBoxInteface.Size = new System.Drawing.Size(168, 87);
-            this.groupBoxInteface.TabIndex = 6;
-            this.groupBoxInteface.TabStop = false;
+            this.buttonPlayVideo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonPlayVideo.Enabled = false;
+            this.buttonPlayVideo.Location = new System.Drawing.Point(45, 510);
+            this.buttonPlayVideo.Name = "buttonPlayVideo";
+            this.buttonPlayVideo.Size = new System.Drawing.Size(43, 23);
+            this.buttonPlayVideo.TabIndex = 10;
+            this.buttonPlayVideo.Text = "Play";
+            this.buttonPlayVideo.UseVisualStyleBackColor = true;
+            this.buttonPlayVideo.Click += new System.EventHandler(this.toolStripMenuItemView_Click);
+            // 
+            // buttonStopDownload
+            // 
+            this.buttonStopDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonStopDownload.Enabled = false;
+            this.buttonStopDownload.Location = new System.Drawing.Point(214, 510);
+            this.buttonStopDownload.Name = "buttonStopDownload";
+            this.buttonStopDownload.Size = new System.Drawing.Size(48, 23);
+            this.buttonStopDownload.TabIndex = 11;
+            this.buttonStopDownload.Text = "Stop";
+            this.buttonStopDownload.UseVisualStyleBackColor = true;
+            this.buttonStopDownload.Click += new System.EventHandler(this.toolStripMenuItemStop_Click);
+            // 
+            // buttonRetryDownload
+            // 
+            this.buttonRetryDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonRetryDownload.Enabled = false;
+            this.buttonRetryDownload.Location = new System.Drawing.Point(266, 510);
+            this.buttonRetryDownload.Name = "buttonRetryDownload";
+            this.buttonRetryDownload.Size = new System.Drawing.Size(43, 23);
+            this.buttonRetryDownload.TabIndex = 12;
+            this.buttonRetryDownload.Text = "Retry";
+            this.buttonRetryDownload.UseVisualStyleBackColor = true;
+            this.buttonRetryDownload.Click += new System.EventHandler(this.toolStripMenuItemRetry_Click);
+            // 
+            // buttonDeleteVideo
+            // 
+            this.buttonDeleteVideo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonDeleteVideo.Enabled = false;
+            this.buttonDeleteVideo.Location = new System.Drawing.Point(93, 510);
+            this.buttonDeleteVideo.Name = "buttonDeleteVideo";
+            this.buttonDeleteVideo.Size = new System.Drawing.Size(46, 23);
+            this.buttonDeleteVideo.TabIndex = 13;
+            this.buttonDeleteVideo.Text = "Delete";
+            this.buttonDeleteVideo.UseVisualStyleBackColor = true;
+            this.buttonDeleteVideo.Click += new System.EventHandler(this.toolStripMenuItemDelete_Click);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 515);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(37, 13);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "Video:";
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(155, 515);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(58, 13);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "Download:";
+            // 
+            // buttonViewLog
+            // 
+            this.buttonViewLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonViewLog.Enabled = false;
+            this.buttonViewLog.Location = new System.Drawing.Point(313, 510);
+            this.buttonViewLog.Name = "buttonViewLog";
+            this.buttonViewLog.Size = new System.Drawing.Size(43, 23);
+            this.buttonViewLog.TabIndex = 16;
+            this.buttonViewLog.Text = "Log";
+            this.buttonViewLog.UseVisualStyleBackColor = true;
+            this.buttonViewLog.Click += new System.EventHandler(this.toolStripMenuItemViewLog_Click);
             // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 370);
-            this.Controls.Add(this.groupBoxInteface);
+            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.buttonViewLog);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.buttonDeleteVideo);
+            this.Controls.Add(this.buttonRetryDownload);
+            this.Controls.Add(this.buttonStopDownload);
+            this.Controls.Add(this.buttonPlayVideo);
+            this.Controls.Add(this.checkBoxClipboardPaste);
+            this.Controls.Add(this.numericUpDownMaxDownloads);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.groupBoxOptions);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.buttonWorkDir);
@@ -568,7 +654,7 @@
             this.Controls.Add(this.textBoxURL);
             this.Controls.Add(this.buttonDownload);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(800, 400);
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "formMain";
             this.Text = "Youtube-DL GUI";
             this.Activated += new System.EventHandler(this.formMain_Activated);
@@ -581,8 +667,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).EndInit();
             this.groupBoxOptions.ResumeLayout(false);
             this.groupBoxOptions.PerformLayout();
-            this.groupBoxInteface.ResumeLayout(false);
-            this.groupBoxInteface.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -611,7 +695,7 @@
         private System.Windows.Forms.Button buttonHelpOptions;
         private System.Windows.Forms.Button buttonWorkDir;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialogWorkDir;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDeletePartial;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDelete;
         private System.Windows.Forms.Button buttonUpdate;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelDownloads;
@@ -621,7 +705,6 @@
         private System.Windows.Forms.Timer timerMonitor;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemViewLog;
         private System.Windows.Forms.GroupBox groupBoxOptions;
-        private System.Windows.Forms.GroupBox groupBoxInteface;
         private System.Windows.Forms.ImageList imageListStatus;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSucceed;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelError;
@@ -636,6 +719,13 @@
         private System.Windows.Forms.CheckBox checkBoxNoCacheDir;
         private System.Windows.Forms.CheckBox checkBoxPlayList;
         private System.Windows.Forms.ComboBox comboBoxAudioOnly;
+        private System.Windows.Forms.Button buttonPlayVideo;
+        private System.Windows.Forms.Button buttonStopDownload;
+        private System.Windows.Forms.Button buttonRetryDownload;
+        private System.Windows.Forms.Button buttonDeleteVideo;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button buttonViewLog;
     }
 }
 

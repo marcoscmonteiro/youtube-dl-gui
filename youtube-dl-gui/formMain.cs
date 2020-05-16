@@ -243,19 +243,46 @@ namespace youtubedlgui
             }
         }
 
+        private void EnableDisableContextMenuAndButtons(ListViewItem lv = null)
+        {
+            Process ps = null;
+            String FileName = "";
+            String strVideo = "";
+            String strVideoPart = "";
+
+            if (lv == null && listViewDownload.SelectedItems.Count > 0)
+            {
+                lv = listViewDownload.SelectedItems[0];
+            }
+            if (lv!=null)
+            {
+                ps = (Process)(lv.Tag);
+                FileName = lv.SubItems[2].Text;
+            }
+            if (ps!=null)
+            {
+                strVideo = ps.StartInfo.WorkingDirectory + "\\" + FileName;
+                strVideoPart = ps.StartInfo.WorkingDirectory + "\\" + FileName + ".part";
+            }
+            toolStripMenuItemView.Enabled = strVideo!="" && System.IO.File.Exists(strVideo);
+            buttonPlayVideo.Enabled = toolStripMenuItemView.Enabled;
+            toolStripMenuItemStop.Enabled = (!(ps == null) && !ps.HasExited);
+            buttonStopDownload.Enabled = toolStripMenuItemStop.Enabled;
+            toolStripMenuItemRetry.Enabled = ((ps == null) || ps.HasExited);
+            buttonRetryDownload.Enabled = toolStripMenuItemRetry.Enabled;
+            toolStripMenuItemDelete.Enabled = (((ps == null) || ps.HasExited) && (System.IO.File.Exists(strVideoPart) || System.IO.File.Exists(strVideo)));
+            buttonDeleteVideo.Enabled = toolStripMenuItemDelete.Enabled;
+            toolStripMenuItemViewLog.Enabled = (lv!=null && lv.SubItems[1].Tag != null);
+            buttonViewLog.Enabled = toolStripMenuItemViewLog.Enabled;
+        }
+
         private void listViewDownload_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right) {
 
                 if (listViewDownload.SelectedItems.Count > 0)
                 {
-                    String strVideo = ((Process)(listViewDownload.SelectedItems[0].Tag)).StartInfo.WorkingDirectory + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text;
-                    String strVideoPart = ((Process)(listViewDownload.SelectedItems[0].Tag)).StartInfo.WorkingDirectory + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text + ".part";
-                    toolStripMenuItemView.Enabled = System.IO.File.Exists(strVideo);
-                    Process ps = (Process)(listViewDownload.SelectedItems[0].Tag);
-                    toolStripMenuItemStop.Enabled = (!(ps == null) && !ps.HasExited);
-                    toolStripMenuItemRetry.Enabled = ((ps == null) || ps.HasExited);
-                    ToolStripMenuItemDeletePartial.Enabled = (((ps == null) || ps.HasExited) && System.IO.File.Exists(strVideoPart));
+                    EnableDisableContextMenuAndButtons(listViewDownload.SelectedItems[0]);
                 }
 
                 contextMenuStripListView.Show(listViewDownload, e.Location); 
@@ -342,10 +369,33 @@ namespace youtubedlgui
             if (folderBrowserDialogWorkDir.ShowDialog() == DialogResult.OK) textBoxWorkDir.Text = folderBrowserDialogWorkDir.SelectedPath;
         }
 
-        private void ToolStripMenuItemDeletePartial_Click(object sender, EventArgs e)
+        private void toolStripMenuItemDelete_Click(object sender, EventArgs e)
         {
-            String strVideoPart = ((Process)(listViewDownload.SelectedItems[0].Tag)).StartInfo.WorkingDirectory + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text + ".part";
-            if (System.IO.File.Exists(strVideoPart)) { System.IO.File.Delete(strVideoPart); }
+            String strVideo = ((Process)(listViewDownload.SelectedItems[0].Tag)).StartInfo.WorkingDirectory + "\\" + listViewDownload.SelectedItems[0].SubItems[2].Text;
+            String strVideoPart = strVideo + ".part";
+            
+            if (System.IO.File.Exists(strVideoPart)) 
+            {
+                try
+                {
+                    System.IO.File.Delete(strVideoPart);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, String.Format("Error on delete \"{0}\":\r{1}", strVideoPart, ex.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            if (System.IO.File.Exists(strVideo)) 
+            {
+                try
+                {
+                    System.IO.File.Delete(strVideo);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, String.Format("Error on delete \"{0}\":\r{1}", strVideoPart, ex.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void buttonUpdate_Click(object sender, EventArgs e)
@@ -381,6 +431,7 @@ namespace youtubedlgui
             if (CurrentQueued>0) StartQueuedProcess();
             if (CurrentQueued == 0 && CurrentDownloads == 0) timerMonitor.Stop();
             IconRefresh();
+            EnableDisableContextMenuAndButtons();
         }
 
         private void toolStripMenuItemViewLog_Click(object sender, EventArgs e)
@@ -434,6 +485,14 @@ namespace youtubedlgui
         {
             labelMaxVideoQuality.Visible = (comboBoxAudioOnly.SelectedIndex == 0);
             comboBoxMaxQuality.Visible = (comboBoxAudioOnly.SelectedIndex == 0);
+        }
+
+        private void listViewDownload_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listViewDownload.SelectedItems.Count > 0)
+            {
+                EnableDisableContextMenuAndButtons(listViewDownload.SelectedItems[0]);
+            }
         }
     }
 }
