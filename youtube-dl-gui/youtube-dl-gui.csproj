@@ -142,6 +142,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Icons\PlayButton.png" />
+    <None Include="Icons\CloseButton.png" />
+    <None Include="Icons\DeleteButton.png" />
+    <None Include="Icons\VideoFolder.png" />
+    <None Include="Icons\RetryButton.png" />
+    <None Include="Icons\ViewLogButton.png" />
+    <None Include="Icons\DownloadButton.png" />
+    <None Include="Icons\UpdateButton.png" />
     <Content Include="VideoDownload.ico" />
     <None Include="Icons\GreenArrow.gif" />
     <None Include="Icons\GreyBall.gif" />
