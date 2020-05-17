@@ -180,7 +180,7 @@
             this.listViewDownload.Name = "listViewDownload";
             this.listViewDownload.Size = new System.Drawing.Size(770, 256);
             this.listViewDownload.SmallImageList = this.imageListStatus;
-            this.listViewDownload.TabIndex = 6;
+            this.listViewDownload.TabIndex = 14;
             this.listViewDownload.UseCompatibleStateImageBehavior = false;
             this.listViewDownload.View = System.Windows.Forms.View.Details;
             this.listViewDownload.SelectedIndexChanged += new System.EventHandler(this.listViewDownload_SelectedIndexChanged);
@@ -395,7 +395,7 @@
             this.checkBoxNoCacheDir.AutoSize = true;
             this.checkBoxNoCacheDir.Checked = true;
             this.checkBoxNoCacheDir.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxNoCacheDir.Location = new System.Drawing.Point(667, 14);
+            this.checkBoxNoCacheDir.Location = new System.Drawing.Point(667, 13);
             this.checkBoxNoCacheDir.Name = "checkBoxNoCacheDir";
             this.checkBoxNoCacheDir.Size = new System.Drawing.Size(93, 17);
             this.checkBoxNoCacheDir.TabIndex = 5;
@@ -435,7 +435,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(240, 16);
+            this.label7.Location = new System.Drawing.Point(240, 17);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(59, 13);
             this.label7.TabIndex = 12;
@@ -444,7 +444,7 @@
             // labelMaxVideoQuality
             // 
             this.labelMaxVideoQuality.AutoSize = true;
-            this.labelMaxVideoQuality.Location = new System.Drawing.Point(387, 16);
+            this.labelMaxVideoQuality.Location = new System.Drawing.Point(387, 17);
             this.labelMaxVideoQuality.Name = "labelMaxVideoQuality";
             this.labelMaxVideoQuality.Size = new System.Drawing.Size(98, 13);
             this.labelMaxVideoQuality.TabIndex = 11;
@@ -463,7 +463,7 @@
             "360p",
             "240p",
             "Worst"});
-            this.comboBoxMaxQuality.Location = new System.Drawing.Point(491, 11);
+            this.comboBoxMaxQuality.Location = new System.Drawing.Point(491, 12);
             this.comboBoxMaxQuality.Name = "comboBoxMaxQuality";
             this.comboBoxMaxQuality.Size = new System.Drawing.Size(99, 21);
             this.comboBoxMaxQuality.TabIndex = 3;
@@ -503,7 +503,7 @@
             this.buttonOpenFolder.Location = new System.Drawing.Point(178, 388);
             this.buttonOpenFolder.Name = "buttonOpenFolder";
             this.buttonOpenFolder.Size = new System.Drawing.Size(89, 25);
-            this.buttonOpenFolder.TabIndex = 16;
+            this.buttonOpenFolder.TabIndex = 9;
             this.buttonOpenFolder.Text = "Open Folder";
             this.buttonOpenFolder.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonOpenFolder.UseVisualStyleBackColor = true;
@@ -515,7 +515,7 @@
             this.buttonViewLog.Enabled = false;
             this.buttonViewLog.Image = global::youtubedlgui.Properties.Resources.ViewLogButton;
             this.buttonViewLog.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonViewLog.Location = new System.Drawing.Point(462, 389);
+            this.buttonViewLog.Location = new System.Drawing.Point(462, 388);
             this.buttonViewLog.Name = "buttonViewLog";
             this.buttonViewLog.Size = new System.Drawing.Size(51, 25);
             this.buttonViewLog.TabIndex = 12;
@@ -533,7 +533,7 @@
             this.buttonDeleteVideo.Location = new System.Drawing.Point(107, 388);
             this.buttonDeleteVideo.Name = "buttonDeleteVideo";
             this.buttonDeleteVideo.Size = new System.Drawing.Size(65, 25);
-            this.buttonDeleteVideo.TabIndex = 9;
+            this.buttonDeleteVideo.TabIndex = 8;
             this.buttonDeleteVideo.Text = "Delete";
             this.buttonDeleteVideo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonDeleteVideo.UseVisualStyleBackColor = true;
@@ -578,7 +578,7 @@
             this.buttonPlayVideo.Location = new System.Drawing.Point(50, 388);
             this.buttonPlayVideo.Name = "buttonPlayVideo";
             this.buttonPlayVideo.Size = new System.Drawing.Size(51, 25);
-            this.buttonPlayVideo.TabIndex = 8;
+            this.buttonPlayVideo.TabIndex = 7;
             this.buttonPlayVideo.Text = "Play";
             this.buttonPlayVideo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonPlayVideo.UseVisualStyleBackColor = true;
