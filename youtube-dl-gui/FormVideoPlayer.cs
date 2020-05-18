@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -39,12 +40,12 @@ namespace youtubedlgui
                 StartInfo =
             {
                 FileName = AppContext.BaseDirectory + "ffplay",
-                Arguments = "-noborder \"" + File + "\"",
+                Arguments = "\"" + File + "\"",
                 // hides the command window
                 CreateNoWindow = true, 
                 // redirect input, output, and error streams..
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
+                RedirectStandardError = false,
+                RedirectStandardOutput = false,
                 UseShellExecute = false
             }
             };
@@ -55,7 +56,7 @@ namespace youtubedlgui
             //ffplay.Exited += (o, e) => Debug.WriteLine("Exited", "ffplay");
             ffplay.Start();
 
-            //Thread.Sleep(200); // you need to wait/check the process started, then...
+            Thread.Sleep(1000); // you need to wait/check the process started, then...
 
             //while (Process.GetProcessById(ffplay.Id)==null) { }
 

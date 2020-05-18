@@ -226,5 +226,41 @@ namespace youtubedlgui.Properties {
                 this["DownloadListItems"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ffPlay {
+            get {
+                return ((bool)(this["ffPlay"]));
+            }
+            set {
+                this["ffPlay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int FormTop {
+            get {
+                return ((int)(this["FormTop"]));
+            }
+            set {
+                this["FormTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int FormLeft {
+            get {
+                return ((int)(this["FormLeft"]));
+            }
+            set {
+                this["FormLeft"] = value;
+            }
+        }
     }
 }

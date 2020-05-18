@@ -54,11 +54,14 @@ namespace youtubedlgui
             checkBoxNoCacheDir.Checked = youtubedlgui.Properties.Settings.Default.nocachedir;
             if (youtubedlgui.Properties.Settings.Default.FormWidth > 0) this.Width = youtubedlgui.Properties.Settings.Default.FormWidth;
             if (youtubedlgui.Properties.Settings.Default.FormHeight > 0) this.Height = youtubedlgui.Properties.Settings.Default.FormHeight;
+            if (youtubedlgui.Properties.Settings.Default.FormTop > 0) this.Top = youtubedlgui.Properties.Settings.Default.FormTop;
+            if (youtubedlgui.Properties.Settings.Default.FormLeft > 0) this.Left = youtubedlgui.Properties.Settings.Default.FormLeft;
             if (youtubedlgui.Properties.Settings.Default.ListColumn1Width > 0) listViewDownload.Columns[0].Width = youtubedlgui.Properties.Settings.Default.ListColumn1Width;
             if (youtubedlgui.Properties.Settings.Default.ListColumn2Width > 0) listViewDownload.Columns[1].Width = youtubedlgui.Properties.Settings.Default.ListColumn2Width;
             if (youtubedlgui.Properties.Settings.Default.ListColumn3Width > 0) listViewDownload.Columns[2].Width = youtubedlgui.Properties.Settings.Default.ListColumn3Width;
             if (youtubedlgui.Properties.Settings.Default.ListColumn4Width > 0) listViewDownload.Columns[3].Width = youtubedlgui.Properties.Settings.Default.ListColumn4Width;
             if (youtubedlgui.Properties.Settings.Default.ListColumn5Width > 0) listViewDownload.Columns[4].Width = youtubedlgui.Properties.Settings.Default.ListColumn5Width;
+            checkBoxFFPlay.Checked = youtubedlgui.Properties.Settings.Default.ffPlay;
             if (youtubedlgui.Properties.Settings.Default.DownloadListItems != "") DeserializeDownloadList(youtubedlgui.Properties.Settings.Default.DownloadListItems);
             IconRefresh();
         }
@@ -300,7 +303,7 @@ namespace youtubedlgui
                 if (!System.IO.File.Exists(strVideoSelected)) strVideoSelected = "";                
                 if (!System.IO.File.Exists(strVideoPartSelected)) strVideoPartSelected = "";
             }
-            toolStripMenuItemPlayVideo.Enabled = strVideoSelected!="";
+            toolStripMenuItemPlayVideo.Enabled = (strVideoSelected!="" || strVideoPartSelected!="");
             buttonPlayVideo.Enabled = toolStripMenuItemPlayVideo.Enabled;
             toolStripMenuItemStop.Enabled = (!(psSelected == null) && !psSelected.HasExited);
             buttonStopDownload.Enabled = toolStripMenuItemStop.Enabled;
@@ -340,14 +343,33 @@ namespace youtubedlgui
 
         private void toolStripMenuItemView_Click(object sender, EventArgs e)
         {
-            if (strVideoSelected!="") {
-                Process.Start(strVideoSelected); 
-                /*
-                formVideoPlayer vp = new formVideoPlayer();
-                vp.File = strVideoSelected;
-                vp.ShowDialog();
-                */
+            String FileToPlay = strVideoPartSelected;
+            if (strVideoSelected != "") FileToPlay = strVideoSelected;
+
+            if (FileToPlay == "") return;
+
+            if (!checkBoxFFPlay.Checked && strVideoSelected!="") Process.Start(FileToPlay);
+            else
+            {
+                // start ffplay 
+                Process ffplay = new Process
+                {
+                    StartInfo =
+                    {
+                    FileName = AppContext.BaseDirectory + "ffplay.exe",
+                    Arguments = "\"" + FileToPlay + "\"",
+                    // hides the command window
+                    CreateNoWindow = true, 
+                    RedirectStandardError = false,
+                    RedirectStandardOutput = false,
+                    UseShellExecute = false
+                    }
+                };
+
+                ffplay.EnableRaisingEvents = true;
+                ffplay.Start();
             }
+
         }
 
         private void listViewDownload_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -357,6 +379,7 @@ namespace youtubedlgui
 
         private void toolStripMenuItemRetry_Click(object sender, EventArgs e)
         {
+            if (strVideoSelected != "") { MessageBox.Show(this, "Video already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
             if (ListViewItemSelected!=null && ((psSelected == null) || psSelected.HasExited))
                 VideoDownload(ListViewItemSelected.SubItems[0].Text, ListViewItemSelected.SubItems[4].Text, ListViewItemSelected.SubItems[3].Text, textBoxCommand.Text, ListViewItemSelected);
         }
@@ -554,6 +577,8 @@ namespace youtubedlgui
             youtubedlgui.Properties.Settings.Default.ClipboardPaste = checkBoxClipboardPaste.Checked;
             youtubedlgui.Properties.Settings.Default.FormWidth = this.Width;
             youtubedlgui.Properties.Settings.Default.FormHeight = this.Height;
+            youtubedlgui.Properties.Settings.Default.FormTop = this.Top;
+            youtubedlgui.Properties.Settings.Default.FormLeft = this.Left;
             youtubedlgui.Properties.Settings.Default.ListColumn1Width = listViewDownload.Columns[0].Width;
             youtubedlgui.Properties.Settings.Default.ListColumn2Width = listViewDownload.Columns[1].Width;
             youtubedlgui.Properties.Settings.Default.ListColumn3Width = listViewDownload.Columns[2].Width;
@@ -564,6 +589,7 @@ namespace youtubedlgui
             youtubedlgui.Properties.Settings.Default.AudioOnly = comboBoxAudioOnly.SelectedIndex;
             youtubedlgui.Properties.Settings.Default.playlist = checkBoxPlayList.Checked;
             youtubedlgui.Properties.Settings.Default.nocachedir = checkBoxNoCacheDir.Checked;
+            youtubedlgui.Properties.Settings.Default.ffPlay = checkBoxFFPlay.Checked;
             youtubedlgui.Properties.Settings.Default.DownloadListItems = SerializeDownloadList();
 
             youtubedlgui.Properties.Settings.Default.Save();
@@ -609,6 +635,16 @@ namespace youtubedlgui
             if (NextLvi!=null) NextLvi.Selected = true;
 
             IconRefresh();
+        }
+
+        private void toolStripMenuItemCopyURL_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(ListViewItemSelected.Text);
+        }
+
+        private void toolStripMenuItemOpenInBrowser_Click(object sender, EventArgs e)
+        {
+            Process.Start(ListViewItemSelected.Text);
         }
     }
 }

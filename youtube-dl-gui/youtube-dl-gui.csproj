@@ -161,6 +161,8 @@
     <None Include="Icons\ViewLogButton.png" />
     <None Include="Icons\DownloadButton.png" />
     <None Include="Icons\UpdateButton.png" />
+    <None Include="Icons\InternetBrowser.png" />
+    <None Include="Icons\ClipboardPaste.png" />
     <Content Include="VideoDownload.ico" />
     <None Include="Icons\GreenArrow.gif" />
     <None Include="Icons\GreyBall.gif" />

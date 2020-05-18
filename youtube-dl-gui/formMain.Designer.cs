@@ -54,11 +54,12 @@
             this.toolStripMenuItemRetry = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemViewLog = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemRemoveDownload = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCopyURL = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemOpenInBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxClipboardPaste = new System.Windows.Forms.CheckBox();
             this.buttonHelpOptions = new System.Windows.Forms.Button();
             this.buttonWorkDir = new System.Windows.Forms.Button();
             this.folderBrowserDialogWorkDir = new System.Windows.Forms.FolderBrowserDialog();
-            this.buttonUpdate = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelDownloads = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelDownloadsN = new System.Windows.Forms.ToolStripStatusLabel();
@@ -78,9 +79,11 @@
             this.label7 = new System.Windows.Forms.Label();
             this.labelMaxVideoQuality = new System.Windows.Forms.Label();
             this.comboBoxMaxQuality = new System.Windows.Forms.ComboBox();
+            this.buttonUpdate = new System.Windows.Forms.Button();
             this.toolTipHelp = new System.Windows.Forms.ToolTip(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.buttonRemoveDownload = new System.Windows.Forms.Button();
             this.buttonOpenFolder = new System.Windows.Forms.Button();
             this.buttonViewLog = new System.Windows.Forms.Button();
             this.buttonDeleteVideo = new System.Windows.Forms.Button();
@@ -88,7 +91,7 @@
             this.buttonStopDownload = new System.Windows.Forms.Button();
             this.buttonPlayVideo = new System.Windows.Forms.Button();
             this.buttonDownload = new System.Windows.Forms.Button();
-            this.buttonRemoveDownload = new System.Windows.Forms.Button();
+            this.checkBoxFFPlay = new System.Windows.Forms.CheckBox();
             this.contextMenuStripListView.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).BeginInit();
@@ -237,15 +240,17 @@
             this.toolStripMenuItemStop,
             this.toolStripMenuItemRetry,
             this.toolStripMenuItemViewLog,
-            this.toolStripMenuItemRemoveDownload});
+            this.toolStripMenuItemRemoveDownload,
+            this.toolStripMenuItemCopyURL,
+            this.toolStripMenuItemOpenInBrowser});
             this.contextMenuStripListView.Name = "contextMenuStripListView";
-            this.contextMenuStripListView.Size = new System.Drawing.Size(140, 164);
+            this.contextMenuStripListView.Size = new System.Drawing.Size(162, 208);
             // 
             // toolStripMenuItemPlayVideo
             // 
             this.toolStripMenuItemPlayVideo.Image = global::youtubedlgui.Properties.Resources.PlayButton;
             this.toolStripMenuItemPlayVideo.Name = "toolStripMenuItemPlayVideo";
-            this.toolStripMenuItemPlayVideo.Size = new System.Drawing.Size(139, 22);
+            this.toolStripMenuItemPlayVideo.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemPlayVideo.Text = "Play";
             this.toolStripMenuItemPlayVideo.Click += new System.EventHandler(this.toolStripMenuItemView_Click);
             // 
@@ -253,7 +258,7 @@
             // 
             this.toolStripMenuItemDelete.Image = global::youtubedlgui.Properties.Resources.DeleteButton;
             this.toolStripMenuItemDelete.Name = "toolStripMenuItemDelete";
-            this.toolStripMenuItemDelete.Size = new System.Drawing.Size(139, 22);
+            this.toolStripMenuItemDelete.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemDelete.Text = "Delete";
             this.toolStripMenuItemDelete.Click += new System.EventHandler(this.toolStripMenuItemDelete_Click);
             // 
@@ -261,20 +266,20 @@
             // 
             this.toolStripMenuItemOpenFolder.Image = global::youtubedlgui.Properties.Resources.VideoFolder;
             this.toolStripMenuItemOpenFolder.Name = "toolStripMenuItemOpenFolder";
-            this.toolStripMenuItemOpenFolder.Size = new System.Drawing.Size(139, 22);
+            this.toolStripMenuItemOpenFolder.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemOpenFolder.Text = "Open Folder";
             this.toolStripMenuItemOpenFolder.Click += new System.EventHandler(this.toolStripMenuItemOpenFolder_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(136, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(158, 6);
             // 
             // toolStripMenuItemStop
             // 
             this.toolStripMenuItemStop.Image = global::youtubedlgui.Properties.Resources.CloseButton;
             this.toolStripMenuItemStop.Name = "toolStripMenuItemStop";
-            this.toolStripMenuItemStop.Size = new System.Drawing.Size(139, 22);
+            this.toolStripMenuItemStop.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemStop.Text = "Stop";
             this.toolStripMenuItemStop.Click += new System.EventHandler(this.toolStripMenuItemStop_Click);
             // 
@@ -282,7 +287,7 @@
             // 
             this.toolStripMenuItemRetry.Image = global::youtubedlgui.Properties.Resources.RetryButton;
             this.toolStripMenuItemRetry.Name = "toolStripMenuItemRetry";
-            this.toolStripMenuItemRetry.Size = new System.Drawing.Size(139, 22);
+            this.toolStripMenuItemRetry.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemRetry.Text = "Retry";
             this.toolStripMenuItemRetry.Click += new System.EventHandler(this.toolStripMenuItemRetry_Click);
             // 
@@ -290,7 +295,7 @@
             // 
             this.toolStripMenuItemViewLog.Image = global::youtubedlgui.Properties.Resources.ViewLogButton;
             this.toolStripMenuItemViewLog.Name = "toolStripMenuItemViewLog";
-            this.toolStripMenuItemViewLog.Size = new System.Drawing.Size(139, 22);
+            this.toolStripMenuItemViewLog.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemViewLog.Text = "View Log";
             this.toolStripMenuItemViewLog.Click += new System.EventHandler(this.toolStripMenuItemViewLog_Click);
             // 
@@ -298,9 +303,25 @@
             // 
             this.toolStripMenuItemRemoveDownload.Image = global::youtubedlgui.Properties.Resources.DeleteButton;
             this.toolStripMenuItemRemoveDownload.Name = "toolStripMenuItemRemoveDownload";
-            this.toolStripMenuItemRemoveDownload.Size = new System.Drawing.Size(139, 22);
+            this.toolStripMenuItemRemoveDownload.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemRemoveDownload.Text = "Remove";
             this.toolStripMenuItemRemoveDownload.Click += new System.EventHandler(this.toolStripMenuItemRemoveDownload_Click);
+            // 
+            // toolStripMenuItemCopyURL
+            // 
+            this.toolStripMenuItemCopyURL.Image = global::youtubedlgui.Properties.Resources.ClipboardPaste;
+            this.toolStripMenuItemCopyURL.Name = "toolStripMenuItemCopyURL";
+            this.toolStripMenuItemCopyURL.Size = new System.Drawing.Size(161, 22);
+            this.toolStripMenuItemCopyURL.Text = "Copy URL";
+            this.toolStripMenuItemCopyURL.Click += new System.EventHandler(this.toolStripMenuItemCopyURL_Click);
+            // 
+            // toolStripMenuItemOpenInBrowser
+            // 
+            this.toolStripMenuItemOpenInBrowser.Image = global::youtubedlgui.Properties.Resources.InternetBrowser;
+            this.toolStripMenuItemOpenInBrowser.Name = "toolStripMenuItemOpenInBrowser";
+            this.toolStripMenuItemOpenInBrowser.Size = new System.Drawing.Size(161, 22);
+            this.toolStripMenuItemOpenInBrowser.Text = "Open in Browser";
+            this.toolStripMenuItemOpenInBrowser.Click += new System.EventHandler(this.toolStripMenuItemOpenInBrowser_Click);
             // 
             // checkBoxClipboardPaste
             // 
@@ -340,19 +361,6 @@
             // folderBrowserDialogWorkDir
             // 
             this.folderBrowserDialogWorkDir.RootFolder = System.Environment.SpecialFolder.MyComputer;
-            // 
-            // buttonUpdate
-            // 
-            this.buttonUpdate.Image = global::youtubedlgui.Properties.Resources.UpdateButton;
-            this.buttonUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonUpdate.Location = new System.Drawing.Point(162, 10);
-            this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(72, 25);
-            this.buttonUpdate.TabIndex = 1;
-            this.buttonUpdate.Text = "Update";
-            this.buttonUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonUpdate.UseVisualStyleBackColor = true;
-            this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
             // statusStrip1
             // 
@@ -588,6 +596,20 @@
             this.comboBoxMaxQuality.TabIndex = 3;
             this.toolTipHelp.SetToolTip(this.comboBoxMaxQuality, "Maximum Download Quality Allowed");
             // 
+            // buttonUpdate
+            // 
+            this.buttonUpdate.Image = global::youtubedlgui.Properties.Resources.UpdateButton;
+            this.buttonUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonUpdate.Location = new System.Drawing.Point(162, 10);
+            this.buttonUpdate.Name = "buttonUpdate";
+            this.buttonUpdate.Size = new System.Drawing.Size(67, 25);
+            this.buttonUpdate.TabIndex = 1;
+            this.buttonUpdate.Text = "Update";
+            this.buttonUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonUpdate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonUpdate.UseVisualStyleBackColor = true;
+            this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
+            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -602,11 +624,27 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(277, 395);
+            this.label6.Location = new System.Drawing.Point(323, 395);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(58, 13);
             this.label6.TabIndex = 15;
             this.label6.Text = "Download:";
+            // 
+            // buttonRemoveDownload
+            // 
+            this.buttonRemoveDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonRemoveDownload.Enabled = false;
+            this.buttonRemoveDownload.Image = global::youtubedlgui.Properties.Resources.DeleteButton;
+            this.buttonRemoveDownload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonRemoveDownload.Location = new System.Drawing.Point(560, 388);
+            this.buttonRemoveDownload.Name = "buttonRemoveDownload";
+            this.buttonRemoveDownload.Size = new System.Drawing.Size(71, 25);
+            this.buttonRemoveDownload.TabIndex = 16;
+            this.buttonRemoveDownload.Text = "Remove";
+            this.buttonRemoveDownload.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonRemoveDownload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonRemoveDownload.UseVisualStyleBackColor = true;
+            this.buttonRemoveDownload.Click += new System.EventHandler(this.toolStripMenuItemRemoveDownload_Click);
             // 
             // buttonOpenFolder
             // 
@@ -614,12 +652,13 @@
             this.buttonOpenFolder.Enabled = false;
             this.buttonOpenFolder.Image = global::youtubedlgui.Properties.Resources.VideoFolder;
             this.buttonOpenFolder.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonOpenFolder.Location = new System.Drawing.Point(178, 388);
+            this.buttonOpenFolder.Location = new System.Drawing.Point(223, 388);
             this.buttonOpenFolder.Name = "buttonOpenFolder";
             this.buttonOpenFolder.Size = new System.Drawing.Size(89, 25);
             this.buttonOpenFolder.TabIndex = 9;
             this.buttonOpenFolder.Text = "Open Folder";
             this.buttonOpenFolder.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonOpenFolder.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonOpenFolder.UseVisualStyleBackColor = true;
             this.buttonOpenFolder.Click += new System.EventHandler(this.toolStripMenuItemOpenFolder_Click);
             // 
@@ -629,12 +668,13 @@
             this.buttonViewLog.Enabled = false;
             this.buttonViewLog.Image = global::youtubedlgui.Properties.Resources.ViewLogButton;
             this.buttonViewLog.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonViewLog.Location = new System.Drawing.Point(462, 388);
+            this.buttonViewLog.Location = new System.Drawing.Point(506, 388);
             this.buttonViewLog.Name = "buttonViewLog";
-            this.buttonViewLog.Size = new System.Drawing.Size(51, 25);
+            this.buttonViewLog.Size = new System.Drawing.Size(49, 25);
             this.buttonViewLog.TabIndex = 12;
             this.buttonViewLog.Text = "Log";
             this.buttonViewLog.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonViewLog.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonViewLog.UseVisualStyleBackColor = true;
             this.buttonViewLog.Click += new System.EventHandler(this.toolStripMenuItemViewLog_Click);
             // 
@@ -644,12 +684,13 @@
             this.buttonDeleteVideo.Enabled = false;
             this.buttonDeleteVideo.Image = global::youtubedlgui.Properties.Resources.DeleteButton;
             this.buttonDeleteVideo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonDeleteVideo.Location = new System.Drawing.Point(107, 388);
+            this.buttonDeleteVideo.Location = new System.Drawing.Point(154, 388);
             this.buttonDeleteVideo.Name = "buttonDeleteVideo";
-            this.buttonDeleteVideo.Size = new System.Drawing.Size(65, 25);
+            this.buttonDeleteVideo.Size = new System.Drawing.Size(63, 25);
             this.buttonDeleteVideo.TabIndex = 8;
             this.buttonDeleteVideo.Text = "Delete";
             this.buttonDeleteVideo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonDeleteVideo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonDeleteVideo.UseVisualStyleBackColor = true;
             this.buttonDeleteVideo.Click += new System.EventHandler(this.toolStripMenuItemDelete_Click);
             // 
@@ -659,12 +700,13 @@
             this.buttonRetryDownload.Enabled = false;
             this.buttonRetryDownload.Image = global::youtubedlgui.Properties.Resources.RetryButton;
             this.buttonRetryDownload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonRetryDownload.Location = new System.Drawing.Point(399, 388);
+            this.buttonRetryDownload.Location = new System.Drawing.Point(445, 388);
             this.buttonRetryDownload.Name = "buttonRetryDownload";
             this.buttonRetryDownload.Size = new System.Drawing.Size(57, 25);
             this.buttonRetryDownload.TabIndex = 11;
             this.buttonRetryDownload.Text = "Retry";
             this.buttonRetryDownload.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonRetryDownload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonRetryDownload.UseVisualStyleBackColor = true;
             this.buttonRetryDownload.Click += new System.EventHandler(this.toolStripMenuItemRetry_Click);
             // 
@@ -674,12 +716,13 @@
             this.buttonStopDownload.Enabled = false;
             this.buttonStopDownload.Image = global::youtubedlgui.Properties.Resources.CloseButton;
             this.buttonStopDownload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonStopDownload.Location = new System.Drawing.Point(335, 388);
+            this.buttonStopDownload.Location = new System.Drawing.Point(382, 388);
             this.buttonStopDownload.Name = "buttonStopDownload";
             this.buttonStopDownload.Size = new System.Drawing.Size(58, 25);
             this.buttonStopDownload.TabIndex = 10;
             this.buttonStopDownload.Text = "Stop";
             this.buttonStopDownload.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonStopDownload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonStopDownload.UseVisualStyleBackColor = true;
             this.buttonStopDownload.Click += new System.EventHandler(this.toolStripMenuItemStop_Click);
             // 
@@ -689,12 +732,13 @@
             this.buttonPlayVideo.Enabled = false;
             this.buttonPlayVideo.Image = global::youtubedlgui.Properties.Resources.PlayButton;
             this.buttonPlayVideo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonPlayVideo.Location = new System.Drawing.Point(50, 388);
+            this.buttonPlayVideo.Location = new System.Drawing.Point(49, 388);
             this.buttonPlayVideo.Name = "buttonPlayVideo";
             this.buttonPlayVideo.Size = new System.Drawing.Size(51, 25);
             this.buttonPlayVideo.TabIndex = 7;
             this.buttonPlayVideo.Text = "Play";
             this.buttonPlayVideo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonPlayVideo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonPlayVideo.UseVisualStyleBackColor = true;
             this.buttonPlayVideo.Click += new System.EventHandler(this.toolStripMenuItemView_Click);
             // 
@@ -705,33 +749,31 @@
             this.buttonDownload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonDownload.Location = new System.Drawing.Point(586, 5);
             this.buttonDownload.Name = "buttonDownload";
-            this.buttonDownload.Size = new System.Drawing.Size(85, 25);
+            this.buttonDownload.Size = new System.Drawing.Size(82, 25);
             this.buttonDownload.TabIndex = 1;
             this.buttonDownload.Text = "&Download";
             this.buttonDownload.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonDownload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonDownload.UseVisualStyleBackColor = true;
             this.buttonDownload.Click += new System.EventHandler(this.buttonDownload_Click);
             // 
-            // buttonRemoveDownload
+            // checkBoxFFPlay
             // 
-            this.buttonRemoveDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonRemoveDownload.Enabled = false;
-            this.buttonRemoveDownload.Image = global::youtubedlgui.Properties.Resources.DeleteButton;
-            this.buttonRemoveDownload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonRemoveDownload.Location = new System.Drawing.Point(519, 388);
-            this.buttonRemoveDownload.Name = "buttonRemoveDownload";
-            this.buttonRemoveDownload.Size = new System.Drawing.Size(72, 25);
-            this.buttonRemoveDownload.TabIndex = 16;
-            this.buttonRemoveDownload.Text = "Remove";
-            this.buttonRemoveDownload.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonRemoveDownload.UseVisualStyleBackColor = true;
-            this.buttonRemoveDownload.Click += new System.EventHandler(this.toolStripMenuItemRemoveDownload_Click);
+            this.checkBoxFFPlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxFFPlay.AutoSize = true;
+            this.checkBoxFFPlay.Location = new System.Drawing.Point(102, 393);
+            this.checkBoxFFPlay.Name = "checkBoxFFPlay";
+            this.checkBoxFFPlay.Size = new System.Drawing.Size(51, 17);
+            this.checkBoxFFPlay.TabIndex = 17;
+            this.checkBoxFFPlay.Text = "ffplay";
+            this.checkBoxFFPlay.UseVisualStyleBackColor = true;
             // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 441);
+            this.Controls.Add(this.checkBoxFFPlay);
             this.Controls.Add(this.buttonRemoveDownload);
             this.Controls.Add(this.buttonOpenFolder);
             this.Controls.Add(this.buttonViewLog);
@@ -833,6 +875,9 @@
         private System.Windows.Forms.ColumnHeader YdlArguments;
         private System.Windows.Forms.Button buttonRemoveDownload;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemRemoveDownload;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCopyURL;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemOpenInBrowser;
+        private System.Windows.Forms.CheckBox checkBoxFFPlay;
     }
 }
 

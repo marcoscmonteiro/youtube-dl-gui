@@ -63,6 +63,16 @@ namespace youtubedlgui.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ClipboardPaste {
+            get {
+                object obj = ResourceManager.GetObject("ClipboardPaste", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CloseButton {
             get {
                 object obj = ResourceManager.GetObject("CloseButton", resourceCulture);
@@ -116,6 +126,16 @@ namespace youtubedlgui.Properties {
         internal static System.Drawing.Bitmap GreyBall {
             get {
                 object obj = ResourceManager.GetObject("GreyBall", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap InternetBrowser {
+            get {
+                object obj = ResourceManager.GetObject("InternetBrowser", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

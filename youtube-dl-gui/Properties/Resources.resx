@@ -118,40 +118,46 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="RedX" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icons\RedX.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="PlayButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icons\PlayButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RetryButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icons\RetryButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ViewLogButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icons\ViewLogButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="GreyBall" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icons\GreyBall.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DeleteButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icons\DeleteButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="VideoFolder" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icons\VideoFolder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CloseButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icons\CloseButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="GreenBall" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\GreenBall.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GreenArrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\GreenArrow.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DownloadButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icons\DownloadButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="DeleteButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\DeleteButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CloseButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\CloseButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\PlayButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VideoFolder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\VideoFolder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ViewLogButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\ViewLogButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RedX" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\RedX.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InternetBrowser" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\InternetBrowser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GreyBall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\GreyBall.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="UpdateButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\UpdateButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DownloadButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\DownloadButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RetryButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\RetryButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ClipboardPaste" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\ClipboardPaste.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
