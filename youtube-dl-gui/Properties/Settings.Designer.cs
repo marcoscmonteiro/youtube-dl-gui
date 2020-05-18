@@ -190,5 +190,41 @@ namespace youtubedlgui.Properties {
                 this["AudioOnly"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ListColumn4Width {
+            get {
+                return ((int)(this["ListColumn4Width"]));
+            }
+            set {
+                this["ListColumn4Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ListColumn5Width {
+            get {
+                return ((int)(this["ListColumn5Width"]));
+            }
+            set {
+                this["ListColumn5Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DownloadListItems {
+            get {
+                return ((string)(this["DownloadListItems"]));
+            }
+            set {
+                this["DownloadListItems"] = value;
+            }
+        }
     }
 }

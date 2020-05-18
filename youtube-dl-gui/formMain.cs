@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -54,6 +57,10 @@ namespace youtubedlgui
             if (youtubedlgui.Properties.Settings.Default.ListColumn1Width > 0) listViewDownload.Columns[0].Width = youtubedlgui.Properties.Settings.Default.ListColumn1Width;
             if (youtubedlgui.Properties.Settings.Default.ListColumn2Width > 0) listViewDownload.Columns[1].Width = youtubedlgui.Properties.Settings.Default.ListColumn2Width;
             if (youtubedlgui.Properties.Settings.Default.ListColumn3Width > 0) listViewDownload.Columns[2].Width = youtubedlgui.Properties.Settings.Default.ListColumn3Width;
+            if (youtubedlgui.Properties.Settings.Default.ListColumn4Width > 0) listViewDownload.Columns[3].Width = youtubedlgui.Properties.Settings.Default.ListColumn4Width;
+            if (youtubedlgui.Properties.Settings.Default.ListColumn5Width > 0) listViewDownload.Columns[4].Width = youtubedlgui.Properties.Settings.Default.ListColumn5Width;
+            if (youtubedlgui.Properties.Settings.Default.DownloadListItems != "") DeserializeDownloadList(youtubedlgui.Properties.Settings.Default.DownloadListItems);
+            IconRefresh();
         }
 
         private static void ExtractFileName(String TextToProcess, String lTrimText, ListViewItem lvi)
@@ -105,7 +112,7 @@ namespace youtubedlgui
         if (lvi.SubItems[1].Tag == null) lvi.SubItems[1].Tag = new StringBuilder(text); else ((StringBuilder)(lvi.SubItems[1].Tag)).Append(Environment.NewLine + text);
         }
 
-        private void VideoDownload(String CommandLineArguments, String Workdir, String Command)
+        private void VideoDownload(String URL, String CommandLineArguments, String Workdir, String Command, ListViewItem Readylvi = null)
         {
 
             if (!System.IO.Directory.Exists(Workdir.Trim()))
@@ -147,16 +154,25 @@ namespace youtubedlgui
             ps.EnableRaisingEvents = true;
             ps.Exited += ProcessExitedHandler;
 
-            ListViewItem lvi = new ListViewItem(textBoxURL.Text);
+            ListViewItem lvi = Readylvi;
+
+            if (lvi==null) lvi = new ListViewItem(URL); else 
+            { 
+                lvi.SubItems.Clear();
+                lvi.Text = URL;
+            }
+
             lvi.SubItems.Add("Queued");
             lvi.SubItems.Add("");
+            lvi.SubItems.Add(ps.StartInfo.WorkingDirectory);
+            lvi.SubItems.Add(ps.StartInfo.Arguments);
             lvi.Tag = ps;
             lvi.Name = "q"; // Queued by default
             lvi.ImageKey = "GreyBall";
             ListViewAddTextToLog(lvi, "Executable: " + ps.StartInfo.FileName);
             ListViewAddTextToLog(lvi, "Arguments : " + ps.StartInfo.Arguments);
             ListViewAddTextToLog(lvi, "Work Dir. : " + ps.StartInfo.WorkingDirectory);
-            listViewDownload.Items.Add(lvi);
+            if (Readylvi==null) listViewDownload.Items.Add(lvi);
             CurrentQueued += 1;
 
             StartQueuedProcess();
@@ -192,9 +208,9 @@ namespace youtubedlgui
             CurrentDownloads -= 1;
         }
 
-        private String ProcessCommandLineOptions()
+        private String ProcessCommandLineOptions(String URL)
         {
-            String URL = textBoxURL.Text.Trim();
+            URL = URL.Trim();
 
             if (!(URL.StartsWith("http://")) && !(URL.StartsWith("https://")))
             {
@@ -245,8 +261,8 @@ namespace youtubedlgui
 
         private void buttonDownload_Click(object sender, EventArgs e)
         {
-            String CommandLineArguments = ProcessCommandLineOptions();
-            if (CommandLineArguments != "") VideoDownload(CommandLineArguments, textBoxWorkDir.Text, textBoxCommand.Text);
+            String CommandLineArguments = ProcessCommandLineOptions(textBoxURL.Text.Trim());
+            if (CommandLineArguments != "") VideoDownload(textBoxURL.Text.Trim(), CommandLineArguments, textBoxWorkDir.Text, textBoxCommand.Text);
         }
 
         private void formMain_Activated(object sender, EventArgs e)
@@ -279,19 +295,16 @@ namespace youtubedlgui
             {
                 psSelected = (Process)(ListViewItemSelected.Tag);
                 FileNameSelected = ListViewItemSelected.SubItems[2].Text;
-            }
-            if (psSelected!=null)
-            {
-                strVideoSelected = psSelected.StartInfo.WorkingDirectory + "\\" + FileNameSelected;
-                if (!System.IO.File.Exists(strVideoSelected)) strVideoSelected = "";
-                strVideoPartSelected = psSelected.StartInfo.WorkingDirectory + "\\" + FileNameSelected + ".part";
+                strVideoSelected = ListViewItemSelected.SubItems[3].Text.TrimEnd('\\') + "\\" + FileNameSelected;
+                strVideoPartSelected = strVideoSelected + ".part";
+                if (!System.IO.File.Exists(strVideoSelected)) strVideoSelected = "";                
                 if (!System.IO.File.Exists(strVideoPartSelected)) strVideoPartSelected = "";
             }
             toolStripMenuItemPlayVideo.Enabled = strVideoSelected!="";
             buttonPlayVideo.Enabled = toolStripMenuItemPlayVideo.Enabled;
             toolStripMenuItemStop.Enabled = (!(psSelected == null) && !psSelected.HasExited);
             buttonStopDownload.Enabled = toolStripMenuItemStop.Enabled;
-            toolStripMenuItemRetry.Enabled = ((psSelected == null) || psSelected.HasExited);
+            toolStripMenuItemRetry.Enabled = ListViewItemSelected!=null && ((psSelected == null) || psSelected.HasExited);
             buttonRetryDownload.Enabled = toolStripMenuItemRetry.Enabled;
             toolStripMenuItemDelete.Enabled = strVideoPartSelected!="" || strVideoSelected != "";
             buttonDeleteVideo.Enabled = toolStripMenuItemDelete.Enabled;
@@ -299,6 +312,9 @@ namespace youtubedlgui
             buttonViewLog.Enabled = toolStripMenuItemViewLog.Enabled;
             toolStripMenuItemOpenFolder.Enabled = strVideoPartSelected != "" || strVideoSelected != "";
             buttonOpenFolder.Enabled = toolStripMenuItemOpenFolder.Enabled;
+            toolStripMenuItemRemoveDownload.Enabled = (ListViewItemSelected != null);
+            buttonRemoveDownload.Enabled = toolStripMenuItemRemoveDownload.Enabled;
+
         }
 
         private void listViewDownload_MouseClick(object sender, MouseEventArgs e)
@@ -316,12 +332,22 @@ namespace youtubedlgui
 
         private void toolStripMenuItemStop_Click(object sender, EventArgs e)
         {
-            if (psSelected!=null && !psSelected.HasExited) { psSelected.Kill(); }
+            if (psSelected!=null && !psSelected.HasExited) { 
+                psSelected.Kill();
+                EnableDisableContextMenuAndButtons();
+            }
         }
 
         private void toolStripMenuItemView_Click(object sender, EventArgs e)
         {
-            if (strVideoSelected!="") { Process.Start(strVideoSelected); }
+            if (strVideoSelected!="") {
+                Process.Start(strVideoSelected); 
+                /*
+                formVideoPlayer vp = new formVideoPlayer();
+                vp.File = strVideoSelected;
+                vp.ShowDialog();
+                */
+            }
         }
 
         private void listViewDownload_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -331,8 +357,8 @@ namespace youtubedlgui
 
         private void toolStripMenuItemRetry_Click(object sender, EventArgs e)
         {
-                if (ListViewItemSelected!=null && ((psSelected == null) || psSelected.HasExited))
-                    VideoDownload(ListViewItemSelected.SubItems[0].Text, textBoxURL.Text, textBoxCommand.Text);
+            if (ListViewItemSelected!=null && ((psSelected == null) || psSelected.HasExited))
+                VideoDownload(ListViewItemSelected.SubItems[0].Text, ListViewItemSelected.SubItems[4].Text, ListViewItemSelected.SubItems[3].Text, textBoxCommand.Text, ListViewItemSelected);
         }
 
         public String ExecuteCommandReturnOutput(String Command, String Arguments)
@@ -399,6 +425,8 @@ namespace youtubedlgui
                     MessageBox.Show(this, String.Format("Error on delete \"{0}\":\r{1}", strVideoSelected, ex.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            EnableDisableContextMenuAndButtons();
+            IconRefresh();
         }
 
         private void buttonUpdate_Click(object sender, EventArgs e)
@@ -415,7 +443,8 @@ namespace youtubedlgui
 
             foreach(ListViewItem lvi in listViewDownload.Items)
             {
-                if (lvi.Name!="q" && ((Process)(lvi.Tag)).HasExited) 
+                Process ps = ((Process)(lvi.Tag));
+                if (lvi.Name!="q" && ps!=null && ps.HasExited) 
                 {
                     String strVideo = ((Process)(lvi.Tag)).StartInfo.WorkingDirectory + "\\" + lvi.SubItems[2].Text;
                     if (System.IO.File.Exists(strVideo)) lvi.ImageKey = "GreenBall"; else lvi.ImageKey = "RedX";
@@ -462,6 +491,58 @@ namespace youtubedlgui
                     MessageBoxButtons.YesNo, 
                     MessageBoxIcon.Question, 
                     MessageBoxDefaultButton.Button2) != DialogResult.Yes);
+                
+                if (!e.Cancel) 
+                {
+                    timerMonitor.Enabled = false;
+                    foreach (ListViewItem lvi in listViewDownload.Items)
+                    {
+                        Process ps = ((Process)(lvi.Tag));
+                        if (lvi.Name!="q" && ps!=null && !ps.HasExited)
+                        {
+                            ps.Kill();                            
+                        };
+                        lvi.ImageKey = "RedX";
+                    }
+
+                }
+            }
+        }
+
+        private String SerializeDownloadList()
+        {
+            List<ListItemDownload> llid = new List<ListItemDownload>();
+            foreach (ListViewItem lvi in listViewDownload.Items)
+            {
+                ListItemDownload lvd = new ListItemDownload
+                {
+                    URL = lvi.SubItems[0].Text,
+                    Status = lvi.SubItems[1].Text,
+                    FileName = lvi.SubItems[2].Text,
+                    WorkDir = lvi.SubItems[3].Text,
+                    YDArguments = lvi.SubItems[4].Text,   
+                    Name = "L" + lvi.Name,
+                    ImageKey = lvi.ImageKey,
+                    Log = ((StringBuilder)(lvi.SubItems[1].Tag)).ToString()
+                };                
+                llid.Add(lvd);
+            }
+            return (JsonConvert.SerializeObject(llid));
+        }
+
+        private void DeserializeDownloadList(String dl)
+        {
+            List<ListItemDownload> llid = JsonConvert.DeserializeObject<List<ListItemDownload>>(dl);
+            foreach (ListItemDownload lid in llid)
+            {
+                String ImageKey = "RedX";
+                if (System.IO.File.Exists(lid.WorkDir + "\\" + lid.FileName)) ImageKey = "GreenBall";
+                ListViewItem lvi = listViewDownload.Items.Add(Name, lid.URL, ImageKey);
+                lvi.SubItems.Add(lid.Status);
+                lvi.SubItems.Add(lid.FileName);
+                lvi.SubItems.Add(lid.WorkDir);
+                lvi.SubItems.Add(lid.YDArguments);
+                lvi.SubItems[1].Tag = new StringBuilder(lid.Log);
             }
         }
 
@@ -476,11 +557,14 @@ namespace youtubedlgui
             youtubedlgui.Properties.Settings.Default.ListColumn1Width = listViewDownload.Columns[0].Width;
             youtubedlgui.Properties.Settings.Default.ListColumn2Width = listViewDownload.Columns[1].Width;
             youtubedlgui.Properties.Settings.Default.ListColumn3Width = listViewDownload.Columns[2].Width;
+            youtubedlgui.Properties.Settings.Default.ListColumn4Width = listViewDownload.Columns[3].Width;
+            youtubedlgui.Properties.Settings.Default.ListColumn5Width = listViewDownload.Columns[4].Width;
             youtubedlgui.Properties.Settings.Default.MaxDownloads = Decimal.ToInt32(numericUpDownMaxDownloads.Value);
             youtubedlgui.Properties.Settings.Default.MaxQuality = comboBoxMaxQuality.SelectedIndex;
             youtubedlgui.Properties.Settings.Default.AudioOnly = comboBoxAudioOnly.SelectedIndex;
             youtubedlgui.Properties.Settings.Default.playlist = checkBoxPlayList.Checked;
             youtubedlgui.Properties.Settings.Default.nocachedir = checkBoxNoCacheDir.Checked;
+            youtubedlgui.Properties.Settings.Default.DownloadListItems = SerializeDownloadList();
 
             youtubedlgui.Properties.Settings.Default.Save();
         }
@@ -502,6 +586,29 @@ namespace youtubedlgui
             if (strVideoSelected != "") FileToShow = strVideoSelected; else FileToShow = strVideoPartSelected;
 
             if (FileToShow != "") Process.Start("explorer.exe", "/select,\"" + FileToShow + "\"");
+        }
+
+        private void toolStripMenuItemRemoveDownload_Click(object sender, EventArgs e)
+        {
+            psSelected = (Process)(ListViewItemSelected.Tag);
+            if (psSelected != null && !psSelected.HasExited)
+            {
+                MessageBox.Show(this, "Download is running. Can't remove it.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            int lvs = ListViewItemSelected.Index;
+            ListViewItem NextLvi = null;
+
+            if (listViewDownload.Items.Count - 1 == lvs) lvs--;            
+
+            listViewDownload.Items.Remove(ListViewItemSelected);
+
+            if (lvs >= 0) NextLvi = listViewDownload.Items[lvs];
+
+            if (NextLvi!=null) NextLvi.Selected = true;
+
+            IconRefresh();
         }
     }
 }

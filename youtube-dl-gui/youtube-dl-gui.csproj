@@ -66,6 +66,7 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -78,6 +79,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="formVideoPlayer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formVideoPlayer.Designer.cs">
+      <DependentUpon>formVideoPlayer.cs</DependentUpon>
+    </Compile>
     <Compile Include="formViewLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,9 +109,13 @@
     <Compile Include="formUpdate.Designer.cs">
       <DependentUpon>formUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="ListItemDownload.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
+    <EmbeddedResource Include="FormVideoPlayer.resx">
+      <DependentUpon>formVideoPlayer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="formViewLog.resx">
       <DependentUpon>formViewLog.cs</DependentUpon>
     </EmbeddedResource>
