@@ -52,6 +52,7 @@ namespace youtubedlgui
             comboBoxAudioOnly.SelectedIndex = youtubedlgui.Properties.Settings.Default.AudioOnly;
             checkBoxPlayList.Checked = youtubedlgui.Properties.Settings.Default.playlist;
             checkBoxNoCacheDir.Checked = youtubedlgui.Properties.Settings.Default.nocachedir;
+            checkBoxNoPart.Checked = youtubedlgui.Properties.Settings.Default.NoPart;
             if (youtubedlgui.Properties.Settings.Default.FormWidth > 0) this.Width = youtubedlgui.Properties.Settings.Default.FormWidth;
             if (youtubedlgui.Properties.Settings.Default.FormHeight > 0) this.Height = youtubedlgui.Properties.Settings.Default.FormHeight;
             if (youtubedlgui.Properties.Settings.Default.FormTop > 0) this.Top = youtubedlgui.Properties.Settings.Default.FormTop;
@@ -250,11 +251,12 @@ namespace youtubedlgui
             }
             else Quality = "-f \"worstvideo+bestaudio\" ";
 
-            String CommandLine = "--encoding UTF8 " + textBoxOptions.Text.Trim() + " ";
+            String CommandLine = "--encoding UTF8 --ignore-config " + textBoxOptions.Text.Trim() + " ";
 
             if (checkBoxNoCacheDir.Checked) CommandLine += "--no-cache-dir ";
             if (!checkBoxPlayList.Checked) CommandLine += "--no-playlist ";
-          
+            if (!checkBoxNoPart.Checked) CommandLine += "--no-part ";
+
             CommandLine += Quality;
             CommandLine += AudioOnly;
             CommandLine += "\"" + URL + "\"";
@@ -379,7 +381,7 @@ namespace youtubedlgui
 
         private void toolStripMenuItemRetry_Click(object sender, EventArgs e)
         {
-            if (strVideoSelected != "") { MessageBox.Show(this, "Video already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+            //if (strVideoSelected != "") { MessageBox.Show(this, "Video already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
             if (ListViewItemSelected!=null && ((psSelected == null) || psSelected.HasExited))
                 VideoDownload(ListViewItemSelected.SubItems[0].Text, ListViewItemSelected.SubItems[4].Text, ListViewItemSelected.SubItems[3].Text, textBoxCommand.Text, ListViewItemSelected);
         }
@@ -589,6 +591,7 @@ namespace youtubedlgui
             youtubedlgui.Properties.Settings.Default.AudioOnly = comboBoxAudioOnly.SelectedIndex;
             youtubedlgui.Properties.Settings.Default.playlist = checkBoxPlayList.Checked;
             youtubedlgui.Properties.Settings.Default.nocachedir = checkBoxNoCacheDir.Checked;
+            youtubedlgui.Properties.Settings.Default.NoPart = checkBoxNoPart.Checked;
             youtubedlgui.Properties.Settings.Default.ffPlay = checkBoxFFPlay.Checked;
             youtubedlgui.Properties.Settings.Default.DownloadListItems = SerializeDownloadList();
 

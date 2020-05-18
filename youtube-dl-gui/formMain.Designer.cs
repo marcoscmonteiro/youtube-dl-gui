@@ -92,6 +92,7 @@
             this.buttonPlayVideo = new System.Windows.Forms.Button();
             this.buttonDownload = new System.Windows.Forms.Button();
             this.checkBoxFFPlay = new System.Windows.Forms.CheckBox();
+            this.checkBoxNoPart = new System.Windows.Forms.CheckBox();
             this.contextMenuStripListView.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).BeginInit();
@@ -102,15 +103,15 @@
             // 
             this.textBoxOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxOptions.Location = new System.Drawing.Point(78, 37);
+            this.textBoxOptions.Location = new System.Drawing.Point(78, 60);
             this.textBoxOptions.Name = "textBoxOptions";
             this.textBoxOptions.Size = new System.Drawing.Size(661, 20);
-            this.textBoxOptions.TabIndex = 6;
+            this.textBoxOptions.TabIndex = 7;
             // 
             // labelExtraOptions
             // 
             this.labelExtraOptions.AutoSize = true;
-            this.labelExtraOptions.Location = new System.Drawing.Point(1, 40);
+            this.labelExtraOptions.Location = new System.Drawing.Point(1, 63);
             this.labelExtraOptions.Name = "labelExtraOptions";
             this.labelExtraOptions.Size = new System.Drawing.Size(71, 13);
             this.labelExtraOptions.TabIndex = 1;
@@ -186,9 +187,10 @@
             this.YdlArguments});
             this.listViewDownload.FullRowSelect = true;
             this.listViewDownload.HideSelection = false;
-            this.listViewDownload.Location = new System.Drawing.Point(6, 128);
+            this.listViewDownload.Location = new System.Drawing.Point(6, 157);
+            this.listViewDownload.MultiSelect = false;
             this.listViewDownload.Name = "listViewDownload";
-            this.listViewDownload.Size = new System.Drawing.Size(770, 256);
+            this.listViewDownload.Size = new System.Drawing.Size(770, 227);
             this.listViewDownload.SmallImageList = this.imageListStatus;
             this.listViewDownload.TabIndex = 14;
             this.listViewDownload.UseCompatibleStateImageBehavior = false;
@@ -339,7 +341,7 @@
             // buttonHelpOptions
             // 
             this.buttonHelpOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonHelpOptions.Location = new System.Drawing.Point(740, 37);
+            this.buttonHelpOptions.Location = new System.Drawing.Point(740, 60);
             this.buttonHelpOptions.Name = "buttonHelpOptions";
             this.buttonHelpOptions.Size = new System.Drawing.Size(24, 20);
             this.buttonHelpOptions.TabIndex = 7;
@@ -499,6 +501,7 @@
             // 
             this.groupBoxOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxOptions.Controls.Add(this.checkBoxNoPart);
             this.groupBoxOptions.Controls.Add(this.checkBoxNoCacheDir);
             this.groupBoxOptions.Controls.Add(this.checkBoxPlayList);
             this.groupBoxOptions.Controls.Add(this.comboBoxAudioOnly);
@@ -513,7 +516,7 @@
             this.groupBoxOptions.Controls.Add(this.buttonHelpOptions);
             this.groupBoxOptions.Location = new System.Drawing.Point(6, 59);
             this.groupBoxOptions.Name = "groupBoxOptions";
-            this.groupBoxOptions.Size = new System.Drawing.Size(770, 63);
+            this.groupBoxOptions.Size = new System.Drawing.Size(770, 88);
             this.groupBoxOptions.TabIndex = 5;
             this.groupBoxOptions.TabStop = false;
             // 
@@ -522,7 +525,7 @@
             this.checkBoxNoCacheDir.AutoSize = true;
             this.checkBoxNoCacheDir.Checked = true;
             this.checkBoxNoCacheDir.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxNoCacheDir.Location = new System.Drawing.Point(667, 13);
+            this.checkBoxNoCacheDir.Location = new System.Drawing.Point(149, 39);
             this.checkBoxNoCacheDir.Name = "checkBoxNoCacheDir";
             this.checkBoxNoCacheDir.Size = new System.Drawing.Size(93, 17);
             this.checkBoxNoCacheDir.TabIndex = 5;
@@ -532,7 +535,7 @@
             // checkBoxPlayList
             // 
             this.checkBoxPlayList.AutoSize = true;
-            this.checkBoxPlayList.Location = new System.Drawing.Point(596, 13);
+            this.checkBoxPlayList.Location = new System.Drawing.Point(78, 39);
             this.checkBoxPlayList.Name = "checkBoxPlayList";
             this.checkBoxPlayList.Size = new System.Drawing.Size(65, 17);
             this.checkBoxPlayList.TabIndex = 4;
@@ -768,6 +771,18 @@
             this.checkBoxFFPlay.Text = "ffplay";
             this.checkBoxFFPlay.UseVisualStyleBackColor = true;
             // 
+            // checkBoxNoPart
+            // 
+            this.checkBoxNoPart.AutoSize = true;
+            this.checkBoxNoPart.Checked = true;
+            this.checkBoxNoPart.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxNoPart.Location = new System.Drawing.Point(243, 39);
+            this.checkBoxNoPart.Name = "checkBoxNoPart";
+            this.checkBoxNoPart.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxNoPart.TabIndex = 6;
+            this.checkBoxNoPart.Text = "No Part.";
+            this.checkBoxNoPart.UseVisualStyleBackColor = true;
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -878,6 +893,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCopyURL;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemOpenInBrowser;
         private System.Windows.Forms.CheckBox checkBoxFFPlay;
+        private System.Windows.Forms.CheckBox checkBoxNoPart;
     }
 }
 

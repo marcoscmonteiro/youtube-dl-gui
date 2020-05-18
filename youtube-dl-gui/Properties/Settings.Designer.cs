@@ -262,5 +262,17 @@ namespace youtubedlgui.Properties {
                 this["FormLeft"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool NoPart {
+            get {
+                return ((bool)(this["NoPart"]));
+            }
+            set {
+                this["NoPart"] = value;
+            }
+        }
     }
 }
