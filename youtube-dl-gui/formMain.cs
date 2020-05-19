@@ -255,7 +255,7 @@ namespace youtubedlgui
 
             if (checkBoxNoCacheDir.Checked) CommandLine += "--no-cache-dir ";
             if (!checkBoxPlayList.Checked) CommandLine += "--no-playlist ";
-            if (!checkBoxNoPart.Checked) CommandLine += "--no-part ";
+            if (checkBoxNoPart.Checked) CommandLine += "--no-part ";
 
             CommandLine += Quality;
             CommandLine += AudioOnly;
