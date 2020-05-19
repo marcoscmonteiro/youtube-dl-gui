@@ -29,6 +29,7 @@ namespace youtubedlgui
         private String strVideoSelected = "";
         private String strVideoPartSelected = "";
         private static ListViewItem ListViewItemSelected = null;
+        private static String YoutubeDLexe = "youtube-dl.exe";
 
         public formMain()
         {
@@ -43,8 +44,7 @@ namespace youtubedlgui
             if (youtubedlgui.Properties.Settings.Default.WorkDir == "") {
                 youtubedlgui.Properties.Settings.Default.WorkDir = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
             }
-            textBoxWorkDir.Text = youtubedlgui.Properties.Settings.Default.WorkDir;
-            textBoxCommand.Text = youtubedlgui.Properties.Settings.Default.YoutubeDlExe;
+            textBoxWorkDir.Text = youtubedlgui.Properties.Settings.Default.WorkDir;            
             textBoxOptions.Text = youtubedlgui.Properties.Settings.Default.Options;
             checkBoxClipboardPaste.Checked = youtubedlgui.Properties.Settings.Default.ClipboardPaste;
             numericUpDownMaxDownloads.Value = youtubedlgui.Properties.Settings.Default.MaxDownloads;
@@ -267,7 +267,7 @@ namespace youtubedlgui
         private void buttonDownload_Click(object sender, EventArgs e)
         {
             String CommandLineArguments = ProcessCommandLineOptions(textBoxURL.Text.Trim());
-            if (CommandLineArguments != "") VideoDownload(textBoxURL.Text.Trim(), CommandLineArguments, textBoxWorkDir.Text, textBoxCommand.Text);
+            if (CommandLineArguments != "") VideoDownload(textBoxURL.Text.Trim(), CommandLineArguments, textBoxWorkDir.Text, YoutubeDLexe);
         }
 
         private void formMain_Activated(object sender, EventArgs e)
@@ -383,7 +383,7 @@ namespace youtubedlgui
         {
             //if (strVideoSelected != "") { MessageBox.Show(this, "Video already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
             if (ListViewItemSelected!=null && ((psSelected == null) || psSelected.HasExited))
-                VideoDownload(ListViewItemSelected.SubItems[0].Text, ListViewItemSelected.SubItems[4].Text, ListViewItemSelected.SubItems[3].Text, textBoxCommand.Text, ListViewItemSelected);
+                VideoDownload(ListViewItemSelected.SubItems[0].Text, ListViewItemSelected.SubItems[4].Text, ListViewItemSelected.SubItems[3].Text, YoutubeDLexe, ListViewItemSelected);
         }
 
         public String ExecuteCommandReturnOutput(String Command, String Arguments)
@@ -410,7 +410,7 @@ namespace youtubedlgui
 
         private void buttonHelpOptions_Click(object sender, EventArgs e)
         {
-            String HelpText = ExecuteCommandReturnOutput(AppContext.BaseDirectory + "\\" + textBoxCommand.Text, "--help");
+            String HelpText = ExecuteCommandReturnOutput(AppContext.BaseDirectory + "\\" + YoutubeDLexe, "--help");
 
             formHelpOptionsInstance = new formHelpOptions();
             formHelpOptionsInstance.HelpOptions = HelpText;
@@ -457,7 +457,7 @@ namespace youtubedlgui
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
             formUpdate fu = new formUpdate();
-            fu.command = AppContext.BaseDirectory + "\\" + textBoxCommand.Text;
+            fu.command = AppContext.BaseDirectory + "\\" + YoutubeDLexe;
             fu.ShowDialog();
         }
 
@@ -573,8 +573,7 @@ namespace youtubedlgui
 
         private void formMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            youtubedlgui.Properties.Settings.Default.WorkDir = textBoxWorkDir.Text;
-            youtubedlgui.Properties.Settings.Default.YoutubeDlExe = textBoxCommand.Text;
+            youtubedlgui.Properties.Settings.Default.WorkDir = textBoxWorkDir.Text;            
             youtubedlgui.Properties.Settings.Default.Options = textBoxOptions.Text;
             youtubedlgui.Properties.Settings.Default.ClipboardPaste = checkBoxClipboardPaste.Checked;
             youtubedlgui.Properties.Settings.Default.FormWidth = this.Width;

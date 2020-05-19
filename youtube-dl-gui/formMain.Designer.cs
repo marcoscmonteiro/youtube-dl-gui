@@ -32,8 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formMain));
             this.textBoxOptions = new System.Windows.Forms.TextBox();
             this.labelExtraOptions = new System.Windows.Forms.Label();
-            this.textBoxCommand = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.textBoxURL = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -73,6 +71,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.timerMonitor = new System.Windows.Forms.Timer(this.components);
             this.groupBoxOptions = new System.Windows.Forms.GroupBox();
+            this.checkBoxNoPart = new System.Windows.Forms.CheckBox();
             this.checkBoxNoCacheDir = new System.Windows.Forms.CheckBox();
             this.checkBoxPlayList = new System.Windows.Forms.CheckBox();
             this.comboBoxAudioOnly = new System.Windows.Forms.ComboBox();
@@ -92,7 +91,6 @@
             this.buttonPlayVideo = new System.Windows.Forms.Button();
             this.buttonDownload = new System.Windows.Forms.Button();
             this.checkBoxFFPlay = new System.Windows.Forms.CheckBox();
-            this.checkBoxNoPart = new System.Windows.Forms.CheckBox();
             this.contextMenuStripListView.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDownloads)).BeginInit();
@@ -103,7 +101,7 @@
             // 
             this.textBoxOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxOptions.Location = new System.Drawing.Point(78, 60);
+            this.textBoxOptions.Location = new System.Drawing.Point(78, 41);
             this.textBoxOptions.Name = "textBoxOptions";
             this.textBoxOptions.Size = new System.Drawing.Size(661, 20);
             this.textBoxOptions.TabIndex = 7;
@@ -111,29 +109,11 @@
             // labelExtraOptions
             // 
             this.labelExtraOptions.AutoSize = true;
-            this.labelExtraOptions.Location = new System.Drawing.Point(1, 63);
+            this.labelExtraOptions.Location = new System.Drawing.Point(1, 44);
             this.labelExtraOptions.Name = "labelExtraOptions";
             this.labelExtraOptions.Size = new System.Drawing.Size(71, 13);
             this.labelExtraOptions.TabIndex = 1;
             this.labelExtraOptions.Text = "Extra options:";
-            // 
-            // textBoxCommand
-            // 
-            this.textBoxCommand.Enabled = false;
-            this.textBoxCommand.Location = new System.Drawing.Point(78, 13);
-            this.textBoxCommand.Name = "textBoxCommand";
-            this.textBoxCommand.Size = new System.Drawing.Size(78, 20);
-            this.textBoxCommand.TabIndex = 0;
-            this.textBoxCommand.Text = "youtube-dl.exe";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1, 17);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Command:";
             // 
             // textBoxURL
             // 
@@ -187,10 +167,10 @@
             this.YdlArguments});
             this.listViewDownload.FullRowSelect = true;
             this.listViewDownload.HideSelection = false;
-            this.listViewDownload.Location = new System.Drawing.Point(6, 157);
+            this.listViewDownload.Location = new System.Drawing.Point(6, 133);
             this.listViewDownload.MultiSelect = false;
             this.listViewDownload.Name = "listViewDownload";
-            this.listViewDownload.Size = new System.Drawing.Size(770, 227);
+            this.listViewDownload.Size = new System.Drawing.Size(770, 251);
             this.listViewDownload.SmallImageList = this.imageListStatus;
             this.listViewDownload.TabIndex = 14;
             this.listViewDownload.UseCompatibleStateImageBehavior = false;
@@ -341,7 +321,7 @@
             // buttonHelpOptions
             // 
             this.buttonHelpOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonHelpOptions.Location = new System.Drawing.Point(740, 60);
+            this.buttonHelpOptions.Location = new System.Drawing.Point(740, 41);
             this.buttonHelpOptions.Name = "buttonHelpOptions";
             this.buttonHelpOptions.Size = new System.Drawing.Size(24, 20);
             this.buttonHelpOptions.TabIndex = 7;
@@ -506,26 +486,36 @@
             this.groupBoxOptions.Controls.Add(this.checkBoxPlayList);
             this.groupBoxOptions.Controls.Add(this.comboBoxAudioOnly);
             this.groupBoxOptions.Controls.Add(this.label7);
-            this.groupBoxOptions.Controls.Add(this.textBoxCommand);
             this.groupBoxOptions.Controls.Add(this.labelMaxVideoQuality);
             this.groupBoxOptions.Controls.Add(this.comboBoxMaxQuality);
             this.groupBoxOptions.Controls.Add(this.textBoxOptions);
             this.groupBoxOptions.Controls.Add(this.labelExtraOptions);
-            this.groupBoxOptions.Controls.Add(this.label2);
             this.groupBoxOptions.Controls.Add(this.buttonUpdate);
             this.groupBoxOptions.Controls.Add(this.buttonHelpOptions);
             this.groupBoxOptions.Location = new System.Drawing.Point(6, 59);
             this.groupBoxOptions.Name = "groupBoxOptions";
-            this.groupBoxOptions.Size = new System.Drawing.Size(770, 88);
+            this.groupBoxOptions.Size = new System.Drawing.Size(770, 68);
             this.groupBoxOptions.TabIndex = 5;
             this.groupBoxOptions.TabStop = false;
+            // 
+            // checkBoxNoPart
+            // 
+            this.checkBoxNoPart.AutoSize = true;
+            this.checkBoxNoPart.Checked = true;
+            this.checkBoxNoPart.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxNoPart.Location = new System.Drawing.Point(668, 17);
+            this.checkBoxNoPart.Name = "checkBoxNoPart";
+            this.checkBoxNoPart.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxNoPart.TabIndex = 6;
+            this.checkBoxNoPart.Text = "No Part.";
+            this.checkBoxNoPart.UseVisualStyleBackColor = true;
             // 
             // checkBoxNoCacheDir
             // 
             this.checkBoxNoCacheDir.AutoSize = true;
             this.checkBoxNoCacheDir.Checked = true;
             this.checkBoxNoCacheDir.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxNoCacheDir.Location = new System.Drawing.Point(149, 39);
+            this.checkBoxNoCacheDir.Location = new System.Drawing.Point(569, 17);
             this.checkBoxNoCacheDir.Name = "checkBoxNoCacheDir";
             this.checkBoxNoCacheDir.Size = new System.Drawing.Size(93, 17);
             this.checkBoxNoCacheDir.TabIndex = 5;
@@ -535,7 +525,7 @@
             // checkBoxPlayList
             // 
             this.checkBoxPlayList.AutoSize = true;
-            this.checkBoxPlayList.Location = new System.Drawing.Point(78, 39);
+            this.checkBoxPlayList.Location = new System.Drawing.Point(500, 17);
             this.checkBoxPlayList.Name = "checkBoxPlayList";
             this.checkBoxPlayList.Size = new System.Drawing.Size(65, 17);
             this.checkBoxPlayList.TabIndex = 4;
@@ -556,7 +546,7 @@
             "opus",
             "vorbis",
             "wav"});
-            this.comboBoxAudioOnly.Location = new System.Drawing.Point(305, 12);
+            this.comboBoxAudioOnly.Location = new System.Drawing.Point(198, 13);
             this.comboBoxAudioOnly.Name = "comboBoxAudioOnly";
             this.comboBoxAudioOnly.Size = new System.Drawing.Size(66, 21);
             this.comboBoxAudioOnly.TabIndex = 2;
@@ -565,7 +555,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(240, 17);
+            this.label7.Location = new System.Drawing.Point(133, 16);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(59, 13);
             this.label7.TabIndex = 12;
@@ -574,7 +564,7 @@
             // labelMaxVideoQuality
             // 
             this.labelMaxVideoQuality.AutoSize = true;
-            this.labelMaxVideoQuality.Location = new System.Drawing.Point(387, 17);
+            this.labelMaxVideoQuality.Location = new System.Drawing.Point(280, 17);
             this.labelMaxVideoQuality.Name = "labelMaxVideoQuality";
             this.labelMaxVideoQuality.Size = new System.Drawing.Size(98, 13);
             this.labelMaxVideoQuality.TabIndex = 11;
@@ -593,7 +583,7 @@
             "360p",
             "240p",
             "Worst"});
-            this.comboBoxMaxQuality.Location = new System.Drawing.Point(491, 12);
+            this.comboBoxMaxQuality.Location = new System.Drawing.Point(384, 13);
             this.comboBoxMaxQuality.Name = "comboBoxMaxQuality";
             this.comboBoxMaxQuality.Size = new System.Drawing.Size(99, 21);
             this.comboBoxMaxQuality.TabIndex = 3;
@@ -603,11 +593,11 @@
             // 
             this.buttonUpdate.Image = global::youtubedlgui.Properties.Resources.UpdateButton;
             this.buttonUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonUpdate.Location = new System.Drawing.Point(162, 10);
+            this.buttonUpdate.Location = new System.Drawing.Point(4, 11);
             this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(67, 25);
+            this.buttonUpdate.Size = new System.Drawing.Size(120, 25);
             this.buttonUpdate.TabIndex = 1;
-            this.buttonUpdate.Text = "Update";
+            this.buttonUpdate.Text = "Youtube-dl Update";
             this.buttonUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonUpdate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonUpdate.UseVisualStyleBackColor = true;
@@ -771,18 +761,6 @@
             this.checkBoxFFPlay.Text = "ffplay";
             this.checkBoxFFPlay.UseVisualStyleBackColor = true;
             // 
-            // checkBoxNoPart
-            // 
-            this.checkBoxNoPart.AutoSize = true;
-            this.checkBoxNoPart.Checked = true;
-            this.checkBoxNoPart.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxNoPart.Location = new System.Drawing.Point(243, 39);
-            this.checkBoxNoPart.Name = "checkBoxNoPart";
-            this.checkBoxNoPart.Size = new System.Drawing.Size(65, 17);
-            this.checkBoxNoPart.TabIndex = 6;
-            this.checkBoxNoPart.Text = "No Part.";
-            this.checkBoxNoPart.UseVisualStyleBackColor = true;
-            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -833,8 +811,6 @@
 
         private System.Windows.Forms.TextBox textBoxOptions;
         private System.Windows.Forms.Label labelExtraOptions;
-        private System.Windows.Forms.TextBox textBoxCommand;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonDownload;
         private System.Windows.Forms.TextBox textBoxURL;
         private System.Windows.Forms.Label label3;
