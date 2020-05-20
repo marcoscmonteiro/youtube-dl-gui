@@ -104,7 +104,7 @@
             this.textBoxOptions.Location = new System.Drawing.Point(80, 48);
             this.textBoxOptions.Name = "textBoxOptions";
             this.textBoxOptions.Size = new System.Drawing.Size(661, 20);
-            this.textBoxOptions.TabIndex = 7;
+            this.textBoxOptions.TabIndex = 6;
             // 
             // labelExtraOptions
             // 
@@ -504,10 +504,10 @@
             this.checkBoxNoPart.AutoSize = true;
             this.checkBoxNoPart.Checked = true;
             this.checkBoxNoPart.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxNoPart.Location = new System.Drawing.Point(641, 26);
+            this.checkBoxNoPart.Location = new System.Drawing.Point(552, 26);
             this.checkBoxNoPart.Name = "checkBoxNoPart";
             this.checkBoxNoPart.Size = new System.Drawing.Size(65, 17);
-            this.checkBoxNoPart.TabIndex = 6;
+            this.checkBoxNoPart.TabIndex = 4;
             this.checkBoxNoPart.Text = "No Part.";
             this.checkBoxNoPart.UseVisualStyleBackColor = true;
             // 
@@ -516,20 +516,20 @@
             this.checkBoxNoCacheDir.AutoSize = true;
             this.checkBoxNoCacheDir.Checked = true;
             this.checkBoxNoCacheDir.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxNoCacheDir.Location = new System.Drawing.Point(542, 26);
+            this.checkBoxNoCacheDir.Location = new System.Drawing.Point(453, 26);
             this.checkBoxNoCacheDir.Name = "checkBoxNoCacheDir";
             this.checkBoxNoCacheDir.Size = new System.Drawing.Size(93, 17);
-            this.checkBoxNoCacheDir.TabIndex = 5;
+            this.checkBoxNoCacheDir.TabIndex = 3;
             this.checkBoxNoCacheDir.Text = "No Cache Dir.";
             this.checkBoxNoCacheDir.UseVisualStyleBackColor = true;
             // 
             // checkBoxPlayList
             // 
             this.checkBoxPlayList.AutoSize = true;
-            this.checkBoxPlayList.Location = new System.Drawing.Point(473, 26);
+            this.checkBoxPlayList.Location = new System.Drawing.Point(384, 26);
             this.checkBoxPlayList.Name = "checkBoxPlayList";
             this.checkBoxPlayList.Size = new System.Drawing.Size(65, 17);
-            this.checkBoxPlayList.TabIndex = 4;
+            this.checkBoxPlayList.TabIndex = 2;
             this.checkBoxPlayList.Text = "Play List";
             this.checkBoxPlayList.UseVisualStyleBackColor = true;
             // 
@@ -547,16 +547,16 @@
             "opus",
             "vorbis",
             "wav"});
-            this.comboBoxAudioOnly.Location = new System.Drawing.Point(171, 22);
+            this.comboBoxAudioOnly.Location = new System.Drawing.Point(81, 22);
             this.comboBoxAudioOnly.Name = "comboBoxAudioOnly";
             this.comboBoxAudioOnly.Size = new System.Drawing.Size(66, 21);
-            this.comboBoxAudioOnly.TabIndex = 2;
+            this.comboBoxAudioOnly.TabIndex = 0;
             this.comboBoxAudioOnly.SelectedIndexChanged += new System.EventHandler(this.comboBoxAudioOnly_SelectedIndexChanged);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(106, 25);
+            this.label7.Location = new System.Drawing.Point(17, 25);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(59, 13);
             this.label7.TabIndex = 12;
@@ -565,7 +565,7 @@
             // labelMaxVideoQuality
             // 
             this.labelMaxVideoQuality.AutoSize = true;
-            this.labelMaxVideoQuality.Location = new System.Drawing.Point(253, 26);
+            this.labelMaxVideoQuality.Location = new System.Drawing.Point(164, 26);
             this.labelMaxVideoQuality.Name = "labelMaxVideoQuality";
             this.labelMaxVideoQuality.Size = new System.Drawing.Size(98, 13);
             this.labelMaxVideoQuality.TabIndex = 11;
@@ -584,21 +584,22 @@
             "360p",
             "240p",
             "Worst"});
-            this.comboBoxMaxQuality.Location = new System.Drawing.Point(357, 22);
+            this.comboBoxMaxQuality.Location = new System.Drawing.Point(268, 22);
             this.comboBoxMaxQuality.Name = "comboBoxMaxQuality";
             this.comboBoxMaxQuality.Size = new System.Drawing.Size(99, 21);
-            this.comboBoxMaxQuality.TabIndex = 3;
+            this.comboBoxMaxQuality.TabIndex = 1;
             this.toolTipHelp.SetToolTip(this.comboBoxMaxQuality, "Maximum Download Quality Allowed");
             // 
             // buttonUpdate
             // 
+            this.buttonUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonUpdate.Image = global::youtubedlgui.Properties.Resources.UpdateButton;
             this.buttonUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonUpdate.Location = new System.Drawing.Point(6, 19);
+            this.buttonUpdate.Location = new System.Drawing.Point(696, 19);
             this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(90, 25);
-            this.buttonUpdate.TabIndex = 1;
-            this.buttonUpdate.Text = "Update App";
+            this.buttonUpdate.Size = new System.Drawing.Size(70, 25);
+            this.buttonUpdate.TabIndex = 5;
+            this.buttonUpdate.Text = "Update";
             this.buttonUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonUpdate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonUpdate.UseVisualStyleBackColor = true;
