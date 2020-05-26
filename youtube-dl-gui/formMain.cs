@@ -144,7 +144,7 @@ namespace youtubedlgui
             Process ps = new Process();
 
             ps.StartInfo.UseShellExecute = false;
-            ps.StartInfo.FileName = AppContext.BaseDirectory + Command;
+            ps.StartInfo.FileName = AppDomain.CurrentDomain.BaseDirectory + Command;
             ps.StartInfo.WorkingDirectory = Workdir.TrimEnd('\\');
             ps.StartInfo.Arguments = CommandLineArguments;
             ps.StartInfo.RedirectStandardOutput = true;
@@ -358,7 +358,7 @@ namespace youtubedlgui
                 {
                     StartInfo =
                     {
-                    FileName = AppContext.BaseDirectory + "ffplay.exe",
+                    FileName = AppDomain.CurrentDomain.BaseDirectory + "ffplay.exe",
                     Arguments = "\"" + FileToPlay + "\"",
                     // hides the command window
                     CreateNoWindow = true, 
@@ -410,7 +410,7 @@ namespace youtubedlgui
 
         private void buttonHelpOptions_Click(object sender, EventArgs e)
         {
-            String HelpText = ExecuteCommandReturnOutput(AppContext.BaseDirectory + "\\" + YoutubeDLexe, "--help");
+            String HelpText = ExecuteCommandReturnOutput(AppDomain.CurrentDomain.BaseDirectory + "\\" + YoutubeDLexe, "--help");
 
             formHelpOptionsInstance = new formHelpOptions();
             formHelpOptionsInstance.HelpOptions = HelpText;
@@ -457,7 +457,7 @@ namespace youtubedlgui
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
             formUpdate fu = new formUpdate();
-            fu.command = AppContext.BaseDirectory + "\\" + YoutubeDLexe;
+            fu.command = AppDomain.CurrentDomain.BaseDirectory + "\\" + YoutubeDLexe;
             fu.ShowDialog();
         }
 

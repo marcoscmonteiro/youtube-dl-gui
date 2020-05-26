@@ -39,7 +39,7 @@ namespace youtubedlgui
             {
                 StartInfo =
             {
-                FileName = AppContext.BaseDirectory + "ffplay",
+                FileName = AppDomain.CurrentDomain.BaseDirectory + "ffplay",
                 Arguments = "\"" + File + "\"",
                 // hides the command window
                 CreateNoWindow = true, 
