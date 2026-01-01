@@ -1,0 +1,10 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="CopyBinariesToOneDrive" AfterTargets="AfterBuild" Condition="'$(Configuration)'=='Release'">
+    <Message Text="Copying output files from $(TargetDir) to C:\\Users\\marco\\OneDrive\\Aplicativos\\youtube-dl-gui" Importance="High" />
+    <MakeDir Directories="C:\\Users\\marco\\OneDrive\\Aplicativos\\youtube-dl-gui" Condition="!Exists('C:\\Users\\marco\\OneDrive\\Aplicativos\\youtube-dl-gui')" />
+    <ItemGroup>
+      <_OutputFiles Include="$(TargetDir)**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_OutputFiles)" DestinationFiles="@(_OutputFiles->'C:\\Users\\marco\\OneDrive\\Aplicativos\\youtube-dl-gui\\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+</Project>
