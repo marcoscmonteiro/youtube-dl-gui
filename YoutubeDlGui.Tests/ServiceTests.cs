@@ -39,29 +39,40 @@ public class ServiceTests
     [Fact]
     public async Task JsonSettingsService_SaveAndLoad_AllOptions_WorksCorrectly()
     {
-        var service = new JsonSettingsService();
-        service.Settings.ExtraOptions = "--test-option --cookies cookies.txt";
-        service.Settings.MaxConcurrentDownloads = 5;
-        service.Settings.DownloadPlaylist = true;
-        service.Settings.NoCacheDir = false;
-        service.Settings.NoPartFile = false;
-        service.Settings.ClipboardAutoPaste = false;
-        service.Settings.IsAdvancedOptionsOpen = true;
-        service.Settings.DefaultQuality = VideoQuality.FHD_1080p;
-        service.Settings.DefaultAudioFormat = AudioFormat.Mp3;
+        string tempDir = Path.Combine(Path.GetTempPath(), "yt_dlp_test_" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            var service = new JsonSettingsService(tempDir);
+            service.Settings.ExtraOptions = "--test-option --cookies cookies.txt";
+            service.Settings.MaxConcurrentDownloads = 5;
+            service.Settings.DownloadPlaylist = true;
+            service.Settings.NoCacheDir = false;
+            service.Settings.NoPartFile = false;
+            service.Settings.ClipboardAutoPaste = false;
+            service.Settings.IsAdvancedOptionsOpen = true;
+            service.Settings.DefaultQuality = VideoQuality.FHD_1080p;
+            service.Settings.DefaultAudioFormat = AudioFormat.Mp3;
 
-        await service.SaveAsync();
-        await service.LoadAsync();
+            await service.SaveAsync();
+            await service.LoadAsync();
 
-        Assert.Equal("--test-option --cookies cookies.txt", service.Settings.ExtraOptions);
-        Assert.Equal(5, service.Settings.MaxConcurrentDownloads);
-        Assert.True(service.Settings.DownloadPlaylist);
-        Assert.False(service.Settings.NoCacheDir);
-        Assert.False(service.Settings.NoPartFile);
-        Assert.False(service.Settings.ClipboardAutoPaste);
-        Assert.True(service.Settings.IsAdvancedOptionsOpen);
-        Assert.Equal(VideoQuality.FHD_1080p, service.Settings.DefaultQuality);
-        Assert.Equal(AudioFormat.Mp3, service.Settings.DefaultAudioFormat);
+            Assert.Equal("--test-option --cookies cookies.txt", service.Settings.ExtraOptions);
+            Assert.Equal(5, service.Settings.MaxConcurrentDownloads);
+            Assert.True(service.Settings.DownloadPlaylist);
+            Assert.False(service.Settings.NoCacheDir);
+            Assert.False(service.Settings.NoPartFile);
+            Assert.False(service.Settings.ClipboardAutoPaste);
+            Assert.True(service.Settings.IsAdvancedOptionsOpen);
+            Assert.Equal(VideoQuality.FHD_1080p, service.Settings.DefaultQuality);
+            Assert.Equal(AudioFormat.Mp3, service.Settings.DefaultAudioFormat);
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                try { Directory.Delete(tempDir, true); } catch { }
+            }
+        }
     }
 
     [Fact]

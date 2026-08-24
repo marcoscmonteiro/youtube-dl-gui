@@ -56,7 +56,15 @@ if (-not (Test-Path -Path $ProjectFile)) {
     exit 1
 }
 
-# 3. Executar dotnet publish
+# 3. Fechar instâncias ativas se existirem para evitar travamento de DLLs
+$RunningProcesses = Get-Process -Name "YoutubeDlGui.App" -ErrorAction SilentlyContinue
+if ($RunningProcesses) {
+    Write-Host "      Fechando instâncias ativas do YoutubeDlGui.App para atualização dos binários..." -ForegroundColor Gray
+    $RunningProcesses | Stop-Process -Force -ErrorAction SilentlyContinue
+    Start-Sleep -Milliseconds 500
+}
+
+# 4. Executar dotnet publish
 Write-Host "[2/4] Compilando e publicando a aplicação ($Configuration)..." -ForegroundColor Yellow
 
 try {
