@@ -355,30 +355,35 @@ public partial class MainViewModel : ObservableObject
 
     private string BuildCommandLineArguments(string url)
     {
+        return BuildCustomCommandLineArguments(url, SelectedQuality, SelectedAudioFormat, DownloadPlaylist, ExtraOptions);
+    }
+
+    public string BuildCustomCommandLineArguments(string url, VideoQuality quality, AudioFormat audioFormat, bool downloadPlaylist, string extraOptions)
+    {
         var sb = new StringBuilder();
         sb.Append("--encoding UTF8 --ignore-config ");
 
-        if (!string.IsNullOrWhiteSpace(ExtraOptions))
+        if (!string.IsNullOrWhiteSpace(extraOptions))
         {
-            sb.Append(ExtraOptions.Trim()).Append(' ');
+            sb.Append(extraOptions.Trim()).Append(' ');
         }
 
         if (NoCacheDir) sb.Append("--no-cache-dir ");
-        if (!DownloadPlaylist) sb.Append("--no-playlist ");
+        if (!downloadPlaylist) sb.Append("--no-playlist ");
         if (NoPartFile) sb.Append("--no-part ");
 
-        if (SelectedAudioFormat != AudioFormat.None)
+        if (audioFormat != AudioFormat.None)
         {
             sb.Append("-x ");
-            if (SelectedAudioFormat != AudioFormat.BestAudio)
+            if (audioFormat != AudioFormat.BestAudio)
             {
-                sb.Append($"--audio-format {SelectedAudioFormat.ToString().ToLowerInvariant()} ");
+                sb.Append($"--audio-format {audioFormat.ToString().ToLowerInvariant()} ");
             }
             sb.Append("-f \"bestaudio/best\" ");
         }
         else
         {
-            switch (SelectedQuality)
+            switch (quality)
             {
                 case VideoQuality.UHD_4K:
                     sb.Append("-f \"bestvideo[height<=?2160]+bestaudio/best[height<=?2160]\" ");
@@ -407,6 +412,94 @@ public partial class MainViewModel : ObservableObject
 
         sb.Append($"\"{url}\"");
         return sb.ToString();
+    }
+
+    public void EnqueueFromExternal(ExternalDownloadRequest req)
+    {
+        if (string.IsNullOrWhiteSpace(req.Url)) return;
+        string url = req.Url.Trim();
+        if (!url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) && 
+            !url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(WorkDir))
+        {
+            WorkDir = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+        }
+
+        VideoQuality quality = SelectedQuality;
+        if (!string.IsNullOrWhiteSpace(req.Quality) && Enum.TryParse<VideoQuality>(req.Quality, true, out var parsedQuality))
+        {
+            quality = parsedQuality;
+        }
+
+        AudioFormat audioFormat = SelectedAudioFormat;
+        if (req.AudioOnly == true && audioFormat == AudioFormat.None)
+        {
+            audioFormat = AudioFormat.Mp3;
+        }
+        if (!string.IsNullOrWhiteSpace(req.AudioFormat) && Enum.TryParse<AudioFormat>(req.AudioFormat, true, out var parsedAudio))
+        {
+            audioFormat = parsedAudio;
+        }
+
+        bool playlist = req.Playlist ?? DownloadPlaylist;
+        string extraOpts = req.ExtraOptions ?? ExtraOptions;
+
+        string cmdArgs = BuildCustomCommandLineArguments(url, quality, audioFormat, playlist, extraOpts);
+
+        string targetDirectory = WorkDir;
+        string? requestedDir = req.DownloadDirectory ?? req.OutputDirectory;
+        if (!string.IsNullOrWhiteSpace(requestedDir))
+        {
+            try
+            {
+                string expandedDir = Environment.ExpandEnvironmentVariables(requestedDir.Trim());
+                if (!Directory.Exists(expandedDir))
+                {
+                    Directory.CreateDirectory(expandedDir);
+                }
+                targetDirectory = expandedDir;
+            }
+            catch
+            {
+                targetDirectory = WorkDir;
+            }
+        }
+
+        var item = new DownloadItem
+        {
+            Url = url,
+            Title = !string.IsNullOrWhiteSpace(req.Title) ? req.Title : url,
+            OutputDirectory = targetDirectory,
+            CommandLineArguments = cmdArgs,
+            Status = DownloadStatus.Queued,
+            CreatedAt = DateTime.Now
+        };
+
+        var vm = new DownloadItemViewModel(item, _queueManager);
+        Downloads.Insert(0, vm);
+
+        _queueManager.Enqueue(item);
+    }
+
+    public object GetStatusSummary()
+    {
+        string defaultDownloadsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+        return new
+        {
+            active = TotalActiveCount,
+            queued = TotalQueuedCount,
+            completed = TotalCompletedCount,
+            failed = TotalFailedCount,
+            total = Downloads.Count,
+            workDir = WorkDir,
+            defaultDownloadsFolder = Directory.Exists(defaultDownloadsFolder) ? defaultDownloadsFolder : WorkDir,
+            defaultQuality = SelectedQuality.ToString(),
+            defaultAudioFormat = SelectedAudioFormat.ToString()
+        };
     }
 
     public void SaveWindowPlacement(double width, double height, double? top, double? left)

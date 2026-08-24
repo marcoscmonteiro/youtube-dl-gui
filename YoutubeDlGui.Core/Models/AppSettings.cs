@@ -17,6 +17,8 @@ public class AppSettings
     public bool NoPartFile { get; set; } = true;
     public bool UseFfplay { get; set; } = false;
     public bool IsAdvancedOptionsOpen { get; set; } = false;
+    public int BridgePort { get; set; } = 48190;
+    public bool EnableBrowserIntegration { get; set; } = true;
 
     public double WindowWidth { get; set; } = 1040;
     public double WindowHeight { get; set; } = 720;

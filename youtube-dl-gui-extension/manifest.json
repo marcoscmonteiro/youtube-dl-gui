@@ -1,0 +1,55 @@
+{
+  "manifest_version": 3,
+  "name": "YoutubeDL-GUI - Downloader",
+  "version": "1.0.0",
+  "description": "Envie vídeos, músicas e playlists diretamente para o aplicativo desktop YoutubeDL-GUI com um clique.",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "YoutubeDL-GUI Downloader",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
+  },
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "contextMenus",
+    "storage",
+    "notifications"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:48190/*",
+    "http://localhost:48190/*"
+  ],
+  "commands": {
+    "download_active_tab": {
+      "suggested_key": {
+        "default": "Alt+Shift+D"
+      },
+      "description": "Baixar vídeo/página atual no YoutubeDL-GUI"
+    }
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": false
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "youtubedl-gui@marcoscmonteiro.github.io",
+      "strict_min_version": "109.0"
+    }
+  }
+}

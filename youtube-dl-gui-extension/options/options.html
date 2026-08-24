@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configurações - YoutubeDL-GUI Extension</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <img src="../icons/icon-48.png" alt="YoutubeDL-GUI Logo" class="brand-icon">
+        <div>
+          <h1>Configurações da Extensão</h1>
+          <p class="subtitle">Ajuste os parâmetros de comunicação com o aplicativo desktop</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="settings-form">
+      <!-- Conexão Desktop -->
+      <section class="section-card">
+        <h2 class="section-title">Comunicação com o Aplicativo Desktop</h2>
+        <p class="section-desc">O YoutubeDL-GUI escuta requisições na porta local do Windows via HTTP loopback.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="server-port" class="form-label">Porta do Servidor Local</label>
+            <input type="number" id="server-port" class="form-input" min="1024" max="65535" value="48190">
+            <span class="form-hint">Padrão: 48190</span>
+          </div>
+          <div class="form-action-inline">
+            <button id="btn-test-connection" class="btn-secondary" type="button">Testar Conexão</button>
+          </div>
+        </div>
+
+        <div id="test-result" class="test-result hidden"></div>
+      </section>
+
+      <!-- Preferências de Download -->
+      <section class="section-card">
+        <h2 class="section-title">Preferências Padrão de Download</h2>
+        <p class="section-desc">Defina as opções pré-selecionadas ao enviar novas URLs para o aplicativo.</p>
+
+        <div class="form-group">
+          <label for="default-quality" class="form-label">Qualidade de Vídeo Padrão</label>
+          <select id="default-quality" class="form-select">
+            <option value="Best">⭐ Melhor Disponível (Best)</option>
+            <option value="UHD_4K">4K Ultra HD (2160p)</option>
+            <option value="QHD_1440p">2K Quad HD (1440p)</option>
+            <option value="FHD_1080p">Full HD (1080p)</option>
+            <option value="HD_720p">HD (720p)</option>
+            <option value="SD_480p">SD (480p)</option>
+            <option value="Worst">Menor Arquivo (Worst)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="default-audio-format" class="form-label">Formato de Áudio Padrão (quando extrair áudio)</label>
+          <select id="default-audio-format" class="form-select">
+            <option value="Mp3">MP3</option>
+            <option value="M4a">M4A</option>
+            <option value="Opus">OPUS</option>
+            <option value="Flac">FLAC</option>
+            <option value="Wav">WAV</option>
+            <option value="BestAudio">Melhor Áudio Original</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="label-with-action">
+            <label for="download-directory" class="form-label">Pasta de Destino do Download</label>
+            <button id="btn-use-browser-downloads" class="btn-link" type="button">Usar Pasta de Downloads Padrão</button>
+          </div>
+          <input type="text" id="download-directory" class="form-input" placeholder="Ex: C:\Users\SeuUsuario\Downloads (ou deixe em branco para a pasta padrão do app)">
+          <span class="form-hint">Pasta local no Windows onde os arquivos baixados pela extensão serão salvos. Por padrão, utiliza a pasta de downloads do sistema/navegador.</span>
+        </div>
+
+        <div class="checkbox-list">
+          <label class="checkbox-item">
+            <input type="checkbox" id="chk-playlist-default">
+            <span>Marcar "Baixar Playlist Completa" automaticamente se URL for playlist</span>
+          </label>
+
+          <label class="checkbox-item">
+            <input type="checkbox" id="chk-notifications" checked>
+            <span>Exibir notificações nativas do sistema ao enviar downloads</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Footer Actions -->
+      <div class="form-footer">
+        <button id="btn-save" class="btn-primary" type="button">Salvar Configurações</button>
+        <span id="save-status" class="save-status"></span>
+      </div>
+    </main>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
