@@ -261,13 +261,10 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void PasteFromClipboard()
     {
-        if (Clipboard.ContainsText())
+        string? text = ClipboardHelper.TryGetText()?.Trim();
+        if (!string.IsNullOrEmpty(text))
         {
-            string text = Clipboard.GetText().Trim();
-            if (text.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || text.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-            {
-                UrlInput = text;
-            }
+            UrlInput = text;
         }
     }
 
@@ -342,17 +339,17 @@ public partial class MainViewModel : ObservableObject
 
     public void OnWindowActivated()
     {
-        if (ClipboardAutoPaste && Clipboard.ContainsText())
+        if (ClipboardAutoPaste)
         {
-            try
+            string? text = ClipboardHelper.TryGetText()?.Trim();
+            if (!string.IsNullOrEmpty(text) &&
+                (text.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || text.StartsWith("https://", StringComparison.OrdinalIgnoreCase)))
             {
-                string text = Clipboard.GetText().Trim();
-                if ((text.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || text.StartsWith("https://", StringComparison.OrdinalIgnoreCase)) && string.IsNullOrEmpty(UrlInput))
+                if (UrlInput != text)
                 {
                     UrlInput = text;
                 }
             }
-            catch { }
         }
     }
 

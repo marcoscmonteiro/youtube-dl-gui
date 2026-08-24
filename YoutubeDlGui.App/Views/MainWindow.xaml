@@ -87,7 +87,7 @@
                     <TextBlock Text="URL do Vídeo:" FontSize="14" FontWeight="SemiBold" 
                                Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     
-                    <TextBox Grid.Column="1" Style="{DynamicResource ModernTextBox}" 
+                    <TextBox x:Name="TextBoxUrl" Grid.Column="1" Style="{DynamicResource ModernTextBox}" 
                              Text="{Binding UrlInput, UpdateSourceTrigger=PropertyChanged}" 
                              KeyDown="TextBoxUrl_KeyDown"
                              VerticalAlignment="Center"/>

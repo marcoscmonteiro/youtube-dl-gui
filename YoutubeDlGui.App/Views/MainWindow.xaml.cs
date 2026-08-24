@@ -45,7 +45,13 @@ public partial class MainWindow : Window
 
     private void MainWindow_Activated(object? sender, EventArgs e)
     {
+        string prev = _viewModel.UrlInput;
         _viewModel.OnWindowActivated();
+        if (!string.IsNullOrEmpty(_viewModel.UrlInput) && _viewModel.UrlInput != prev)
+        {
+            TextBoxUrl.Focus();
+            TextBoxUrl.SelectAll();
+        }
     }
 
     private void TextBoxUrl_KeyDown(object sender, KeyEventArgs e)
