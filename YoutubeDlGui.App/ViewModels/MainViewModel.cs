@@ -187,12 +187,25 @@ public partial class MainViewModel : ObservableObject
         });
     }
 
+    private DownloadItemViewModel CreateDownloadItemViewModel(DownloadItem item)
+    {
+        return new DownloadItemViewModel(item, _queueManager, vm =>
+        {
+            Downloads.Remove(vm);
+            _ = _settingsService.SaveHistoryAsync(Downloads.Select(d => d.Model));
+            OnPropertyChanged(nameof(TotalActiveCount));
+            OnPropertyChanged(nameof(TotalQueuedCount));
+            OnPropertyChanged(nameof(TotalCompletedCount));
+            OnPropertyChanged(nameof(TotalFailedCount));
+        });
+    }
+
     private async Task LoadSavedHistoryAsync()
     {
         var history = await _settingsService.LoadHistoryAsync();
         foreach (var item in history)
         {
-            var vm = new DownloadItemViewModel(item, _queueManager);
+            var vm = CreateDownloadItemViewModel(item);
             Downloads.Add(vm);
         }
 
@@ -233,7 +246,7 @@ public partial class MainViewModel : ObservableObject
             CreatedAt = DateTime.Now
         };
 
-        var vm = new DownloadItemViewModel(item, _queueManager);
+        var vm = CreateDownloadItemViewModel(item);
         Downloads.Insert(0, vm);
 
         _queueManager.Enqueue(item);
@@ -355,22 +368,50 @@ public partial class MainViewModel : ObservableObject
 
     private string BuildCommandLineArguments(string url)
     {
-        return BuildCustomCommandLineArguments(url, SelectedQuality, SelectedAudioFormat, DownloadPlaylist, ExtraOptions);
+        return BuildCustomCommandLineArguments(url, SelectedQuality, SelectedAudioFormat, DownloadPlaylist, ExtraOptions, null, NoCacheDir, NoPartFile);
     }
 
-    public string BuildCustomCommandLineArguments(string url, VideoQuality quality, AudioFormat audioFormat, bool downloadPlaylist, string extraOptions)
+    public string BuildCustomCommandLineArguments(
+        string url, 
+        VideoQuality quality, 
+        AudioFormat audioFormat, 
+        bool downloadPlaylist, 
+        string extraOptions, 
+        string? cookieFilePath = null,
+        bool noCacheDir = true,
+        bool noPartFile = true,
+        string? playerClients = null)
     {
         var sb = new StringBuilder();
         sb.Append("--encoding UTF8 --ignore-config ");
+
+        // Always use QuickJS runtime if qjs.exe is present
+        string? qjsPath = _engineService.ResolveQuickJsExecutablePath();
+        if (!string.IsNullOrEmpty(qjsPath) && File.Exists(qjsPath))
+        {
+            sb.Append($"--js-runtimes \"quickjs:{qjsPath}\" ");
+        }
+
+        // Add custom player_client extractor-args if specifically requested/selected
+        if (!string.IsNullOrWhiteSpace(playerClients) && 
+            (string.IsNullOrWhiteSpace(extraOptions) || !extraOptions.Contains("player_client", StringComparison.OrdinalIgnoreCase)))
+        {
+            sb.Append($"--extractor-args \"youtube:player_client={playerClients.Trim()}\" ");
+        }
 
         if (!string.IsNullOrWhiteSpace(extraOptions))
         {
             sb.Append(extraOptions.Trim()).Append(' ');
         }
 
-        if (NoCacheDir) sb.Append("--no-cache-dir ");
+        if (!string.IsNullOrWhiteSpace(cookieFilePath) && File.Exists(cookieFilePath))
+        {
+            sb.Append($"--cookies \"{cookieFilePath}\" ");
+        }
+
+        if (noCacheDir) sb.Append("--no-cache-dir ");
         if (!downloadPlaylist) sb.Append("--no-playlist ");
-        if (NoPartFile) sb.Append("--no-part ");
+        if (noPartFile) sb.Append("--no-part ");
 
         if (audioFormat != AudioFormat.None)
         {
@@ -424,33 +465,8 @@ public partial class MainViewModel : ObservableObject
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(WorkDir))
-        {
-            WorkDir = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
-        }
-
-        VideoQuality quality = SelectedQuality;
-        if (!string.IsNullOrWhiteSpace(req.Quality) && Enum.TryParse<VideoQuality>(req.Quality, true, out var parsedQuality))
-        {
-            quality = parsedQuality;
-        }
-
-        AudioFormat audioFormat = SelectedAudioFormat;
-        if (req.AudioOnly == true && audioFormat == AudioFormat.None)
-        {
-            audioFormat = AudioFormat.Mp3;
-        }
-        if (!string.IsNullOrWhiteSpace(req.AudioFormat) && Enum.TryParse<AudioFormat>(req.AudioFormat, true, out var parsedAudio))
-        {
-            audioFormat = parsedAudio;
-        }
-
-        bool playlist = req.Playlist ?? DownloadPlaylist;
-        string extraOpts = req.ExtraOptions ?? ExtraOptions;
-
-        string cmdArgs = BuildCustomCommandLineArguments(url, quality, audioFormat, playlist, extraOpts);
-
-        string targetDirectory = WorkDir;
+        // 1. Output directory: strictly from extension, or fallback to standard Downloads folder (ignores UI WorkDir)
+        string targetDirectory;
         string? requestedDir = req.DownloadDirectory ?? req.OutputDirectory;
         if (!string.IsNullOrWhiteSpace(requestedDir))
         {
@@ -465,9 +481,95 @@ public partial class MainViewModel : ObservableObject
             }
             catch
             {
-                targetDirectory = WorkDir;
+                targetDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
             }
         }
+        else
+        {
+            targetDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+            if (!Directory.Exists(targetDirectory))
+            {
+                targetDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+            }
+        }
+
+        // 2. Video quality: strictly from extension (default VideoQuality.Best) - IGNORE application UI state
+        VideoQuality quality = VideoQuality.Best;
+        if (!string.IsNullOrWhiteSpace(req.Quality) && Enum.TryParse<VideoQuality>(req.Quality, true, out var parsedQuality))
+        {
+            quality = parsedQuality;
+        }
+
+        // 3. Audio format: strictly from extension (default AudioFormat.None = video) - IGNORE application UI state
+        AudioFormat audioFormat = AudioFormat.None;
+        if (req.AudioOnly == true)
+        {
+            audioFormat = AudioFormat.Mp3;
+            if (!string.IsNullOrWhiteSpace(req.AudioFormat) && 
+                !req.AudioFormat.Equals("None", StringComparison.OrdinalIgnoreCase) &&
+                Enum.TryParse<AudioFormat>(req.AudioFormat, true, out var parsedAudio))
+            {
+                audioFormat = parsedAudio;
+            }
+        }
+        else if (!string.IsNullOrWhiteSpace(req.AudioFormat) && 
+                 !req.AudioFormat.Equals("None", StringComparison.OrdinalIgnoreCase) &&
+                 Enum.TryParse<AudioFormat>(req.AudioFormat, true, out var directAudio))
+        {
+            audioFormat = directAudio;
+        }
+
+        // 4. Playlist: strictly from extension (default false) - IGNORE application UI state
+        bool playlist = req.Playlist ?? false;
+
+        // 5. Extra options: strictly from extension (default empty) - IGNORE application UI state
+        string extraOpts = req.ExtraOptions ?? string.Empty;
+
+        // 6. Cookies: strictly from extension
+        string? tempCookiePath = null;
+        if (!string.IsNullOrWhiteSpace(req.CookiesText))
+        {
+            try
+            {
+                string cleanCookies = req.CookiesText.TrimStart('\uFEFF', '\r', '\n', ' ').TrimEnd();
+                if (!cleanCookies.StartsWith("# Netscape HTTP Cookie File", StringComparison.OrdinalIgnoreCase) &&
+                    !cleanCookies.StartsWith("# HTTP Cookie File", StringComparison.OrdinalIgnoreCase))
+                {
+                    cleanCookies = "# Netscape HTTP Cookie File\n" + cleanCookies;
+                }
+
+                tempCookiePath = Path.Combine(Path.GetTempPath(), $"ydl_cookie_{Guid.NewGuid():N}.txt");
+                var utf8WithoutBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+                File.WriteAllText(tempCookiePath, cleanCookies + "\n", utf8WithoutBom);
+            }
+            catch
+            {
+                tempCookiePath = null;
+            }
+        }
+
+        // 7. Extract player_clients from request if provided
+        string? playerClients = req.PlayerClients;
+        if (string.IsNullOrWhiteSpace(playerClients) && !string.IsNullOrWhiteSpace(req.ExtractorArgs))
+        {
+            if (req.ExtractorArgs.StartsWith("youtube:player_client=", StringComparison.OrdinalIgnoreCase))
+            {
+                playerClients = req.ExtractorArgs.Substring("youtube:player_client=".Length);
+            }
+        }
+
+        // 8. Build command line arguments without using UI state
+        string cmdArgs = BuildCustomCommandLineArguments(
+            url: url,
+            quality: quality,
+            audioFormat: audioFormat,
+            downloadPlaylist: playlist,
+            extraOptions: extraOpts,
+            cookieFilePath: tempCookiePath,
+            noCacheDir: true,
+            noPartFile: true,
+            playerClients: playerClients
+        );
 
         var item = new DownloadItem
         {
@@ -476,10 +578,11 @@ public partial class MainViewModel : ObservableObject
             OutputDirectory = targetDirectory,
             CommandLineArguments = cmdArgs,
             Status = DownloadStatus.Queued,
-            CreatedAt = DateTime.Now
+            CreatedAt = DateTime.Now,
+            TemporaryCookieFilePath = tempCookiePath
         };
 
-        var vm = new DownloadItemViewModel(item, _queueManager);
+        var vm = CreateDownloadItemViewModel(item);
         Downloads.Insert(0, vm);
 
         _queueManager.Enqueue(item);

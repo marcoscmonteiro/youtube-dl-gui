@@ -18,7 +18,9 @@ async function loadOptions() {
     defaultAudioFormat: 'Mp3',
     downloadPlaylistDefault: false,
     showNotifications: true,
-    downloadDirectory: ''
+    downloadDirectory: '',
+    sendCookiesDefault: true,
+    selectedPlayerClients: ['android', 'web', 'ios']
   });
 
   const port = data.serverPort || DEFAULT_PORT;
@@ -26,7 +28,13 @@ async function loadOptions() {
   document.getElementById('default-quality').value = data.defaultQuality || 'Best';
   document.getElementById('default-audio-format').value = data.defaultAudioFormat || 'Mp3';
   document.getElementById('chk-playlist-default').checked = data.downloadPlaylistDefault || false;
+  document.getElementById('chk-cookies-default').checked = data.sendCookiesDefault !== false;
   document.getElementById('chk-notifications').checked = data.showNotifications !== false;
+
+  const clients = Array.isArray(data.selectedPlayerClients) ? data.selectedPlayerClients : ['android', 'web', 'ios'];
+  document.querySelectorAll('input[name="opt-yt-client"]').forEach(cb => {
+    cb.checked = clients.includes(cb.value);
+  });
 
   const dirInput = document.getElementById('download-directory');
   if (data.downloadDirectory) {
@@ -65,6 +73,26 @@ function setupEventListeners() {
       dirInput.value = '%USERPROFILE%\\Downloads';
     }
   });
+
+  // Preset Buttons
+  document.getElementById('btn-preset-recommended')?.addEventListener('click', () => {
+    const recommended = ['android', 'web', 'ios'];
+    document.querySelectorAll('input[name="opt-yt-client"]').forEach(cb => {
+      cb.checked = recommended.includes(cb.value);
+    });
+  });
+
+  document.getElementById('btn-preset-all')?.addEventListener('click', () => {
+    document.querySelectorAll('input[name="opt-yt-client"]').forEach(cb => {
+      cb.checked = true;
+    });
+  });
+
+  document.getElementById('btn-preset-none')?.addEventListener('click', () => {
+    document.querySelectorAll('input[name="opt-yt-client"]').forEach(cb => {
+      cb.checked = false;
+    });
+  });
 }
 
 async function saveOptions() {
@@ -72,16 +100,22 @@ async function saveOptions() {
   const defaultQuality = document.getElementById('default-quality').value;
   const defaultAudioFormat = document.getElementById('default-audio-format').value;
   const downloadPlaylistDefault = document.getElementById('chk-playlist-default').checked;
+  const sendCookiesDefault = document.getElementById('chk-cookies-default').checked;
   const showNotifications = document.getElementById('chk-notifications').checked;
   const downloadDirectory = document.getElementById('download-directory').value.trim();
+
+  const selectedPlayerClients = Array.from(document.querySelectorAll('input[name="opt-yt-client"]:checked'))
+    .map(cb => cb.value);
 
   await crossBrowser.storage.local.set({
     serverPort: port,
     defaultQuality,
     defaultAudioFormat,
     downloadPlaylistDefault,
+    sendCookiesDefault,
     showNotifications,
-    downloadDirectory
+    downloadDirectory,
+    selectedPlayerClients
   });
 
   const statusEl = document.getElementById('save-status');

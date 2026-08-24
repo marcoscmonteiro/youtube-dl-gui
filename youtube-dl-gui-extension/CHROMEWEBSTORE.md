@@ -39,6 +39,8 @@ Com esta extensão, você pode enviar links de vídeos e áudios diretamente do 
 | `contextMenus` | Permite criar opções no menu de clique direito ("Baixar link com YoutubeDL-GUI", "Baixar mídia") para maior praticidade. |
 | `storage` | Utilizado exclusivamente para salvar preferências locais do usuário (como porta do servidor local e opções padrão de qualidade). |
 | `notifications` | Exibe avisos no sistema operacional confirmando se o link foi enviado com sucesso ou se o aplicativo desktop está fechado. |
+| `cookies` | Permite extrair os cookies da sessão atual da página em exibição e repassá-los ao yt-dlp para autenticação em vídeos com restrição de idade, membros/assinantes ou bloqueios de bot. |
+| `<all_urls>` | Necessário para permitir a extração de cookies e injeção do download para qualquer site de vídeo suportado pelo yt-dlp (YouTube, Vimeo, Twitch, etc.). |
 | `http://127.0.0.1:48190/*`<br>`http://localhost:48190/*` | Permite a comunicação local HTTP entre a extensão do navegador e o servidor embutido no aplicativo desktop YoutubeDL-GUI na máquina do usuário. Nenhum dado é enviado para servidores externos. |
 
 ---

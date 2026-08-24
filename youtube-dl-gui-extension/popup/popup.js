@@ -25,7 +25,9 @@ async function loadStoredConfig() {
     defaultQuality: 'Best',
     defaultAudioFormat: 'Mp3',
     downloadPlaylistDefault: false,
-    downloadDirectory: ''
+    downloadDirectory: '',
+    sendCookiesDefault: true,
+    selectedPlayerClients: ['android', 'web', 'ios']
   });
 
   serverPort = config.serverPort || DEFAULT_PORT;
@@ -45,10 +47,27 @@ async function loadStoredConfig() {
   if (chkPlaylist) {
     chkPlaylist.checked = config.downloadPlaylistDefault;
   }
+
+  const chkCookies = document.getElementById('chk-cookies');
+  if (chkCookies) {
+    chkCookies.checked = config.sendCookiesDefault !== false;
+  }
+
+  const clients = Array.isArray(config.selectedPlayerClients) ? config.selectedPlayerClients : ['android', 'web', 'ios'];
+  document.querySelectorAll('input[name="yt-client"]').forEach(cb => {
+    cb.checked = clients.includes(cb.value);
+  });
 }
 
 // Setup all click and change listeners
 function setupUIEventListeners() {
+  // Reset client chips to recommended
+  document.getElementById('btn-reset-clients')?.addEventListener('click', () => {
+    const recommended = ['android', 'web', 'ios'];
+    document.querySelectorAll('input[name="yt-client"]').forEach(cb => {
+      cb.checked = recommended.includes(cb.value);
+    });
+  });
   // Format mode toggle (Video / Audio)
   const btnModeVideo = document.getElementById('mode-video');
   const btnModeAudio = document.getElementById('mode-audio');
@@ -188,9 +207,23 @@ async function onDownloadClicked() {
   const quality = document.getElementById('select-quality').value;
   const audioFormat = document.getElementById('select-audio-format').value;
   const playlist = document.getElementById('chk-playlist').checked;
+  const sendCookies = document.getElementById('chk-cookies')?.checked ?? true;
 
   btn.disabled = true;
   btnText.textContent = 'Enviando...';
+
+  let cookiesText = '';
+  if (sendCookies && typeof getNetscapeCookiesForUrl === 'function') {
+    try {
+      cookiesText = await getNetscapeCookiesForUrl(currentTab.url);
+    } catch (e) {
+      console.warn('Falha ao exportar cookies:', e);
+    }
+  }
+
+  const selectedClients = Array.from(document.querySelectorAll('input[name="yt-client"]:checked'))
+    .map(cb => cb.value);
+  const playerClients = selectedClients.length > 0 ? selectedClients.join(',') : undefined;
 
   const payload = {
     url: currentTab.url.trim(),
@@ -199,7 +232,9 @@ async function onDownloadClicked() {
     audioFormat: isAudioMode ? audioFormat : 'None',
     audioOnly: isAudioMode,
     playlist: playlist,
-    downloadDirectory: downloadDirectory || undefined
+    downloadDirectory: downloadDirectory || undefined,
+    cookiesText: cookiesText || undefined,
+    playerClients: playerClients
   };
 
   try {

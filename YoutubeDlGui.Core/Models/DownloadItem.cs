@@ -20,6 +20,7 @@ public class DownloadItem
     public string Log { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? CompletedAt { get; set; }
+    public string? TemporaryCookieFilePath { get; set; }
 
     [JsonIgnore]
     public string FullPath => !string.IsNullOrEmpty(OutputDirectory) && !string.IsNullOrEmpty(FileName)

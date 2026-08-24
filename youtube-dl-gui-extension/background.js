@@ -3,6 +3,12 @@
  * Compatible with Manifest V3 (Chrome, Edge, Firefox, Brave, Opera)
  */
 
+try {
+  importScripts('cookieHelper.js');
+} catch (e) {
+  // Firefox or alternate environment
+}
+
 const crossBrowser = typeof browser !== 'undefined' ? browser : chrome;
 const DEFAULT_PORT = 48190;
 
@@ -75,18 +81,37 @@ async function handleDownloadRequest(url, title = '') {
       defaultQuality: 'Best',
       defaultAudioFormat: 'None',
       showNotifications: true,
-      downloadDirectory: ''
+      downloadDirectory: '',
+      sendCookiesDefault: true,
+      selectedPlayerClients: ['android', 'web', 'ios']
     });
 
     const port = config.serverPort || DEFAULT_PORT;
     const endpoint = `http://127.0.0.1:${port}/api/download`;
 
+    let cookiesText = '';
+    if (config.sendCookiesDefault !== false && typeof getNetscapeCookiesForUrl === 'function') {
+      try {
+        cookiesText = await getNetscapeCookiesForUrl(url);
+      } catch (err) {
+        console.warn('Falha ao exportar cookies no background:', err);
+      }
+    }
+
+    const clients = Array.isArray(config.selectedPlayerClients) ? config.selectedPlayerClients : [];
+    const playerClients = clients.length > 0 ? clients.join(',') : undefined;
+
+    const isAudio = Boolean(config.defaultAudioFormat && config.defaultAudioFormat !== 'None');
     const payload = {
       url: url.trim(),
       title: title || url,
-      quality: config.defaultQuality,
-      audioFormat: config.defaultAudioFormat,
-      downloadDirectory: config.downloadDirectory || undefined
+      quality: isAudio ? 'Best' : (config.defaultQuality || 'Best'),
+      audioFormat: isAudio ? config.defaultAudioFormat : 'None',
+      audioOnly: isAudio,
+      playlist: false,
+      downloadDirectory: config.downloadDirectory || undefined,
+      cookiesText: cookiesText || undefined,
+      playerClients: playerClients
     };
 
     const response = await fetch(endpoint, {

@@ -13,6 +13,7 @@ namespace YoutubeDlGui.App.ViewModels;
 public partial class DownloadItemViewModel : ObservableObject
 {
     private readonly IDownloadQueueManager _queueManager;
+    private readonly Action<DownloadItemViewModel>? _onRemove;
 
     public DownloadItem Model { get; }
 
@@ -51,13 +52,15 @@ public partial class DownloadItemViewModel : ObservableObject
 
     public bool CanCancel => Status == DownloadStatus.Downloading || Status == DownloadStatus.Queued || Status == DownloadStatus.Processing;
     public bool CanRetry => Status == DownloadStatus.Failed || Status == DownloadStatus.Cancelled || Status == DownloadStatus.Completed;
-    public bool CanPlay => (Model.FileExists || Model.PartFileExists);
+    public bool CanPlay => HasDownloadedFile;
+    public bool HasDownloadedFile => Model.FileExists || Model.PartFileExists;
     public bool CanOpenFolder => !string.IsNullOrEmpty(Model.OutputDirectory) && Directory.Exists(Model.OutputDirectory);
 
-    public DownloadItemViewModel(DownloadItem model, IDownloadQueueManager queueManager)
+    public DownloadItemViewModel(DownloadItem model, IDownloadQueueManager queueManager, Action<DownloadItemViewModel>? onRemove = null)
     {
         Model = model;
         _queueManager = queueManager;
+        _onRemove = onRemove;
 
         _url = model.Url;
         _title = string.IsNullOrEmpty(model.Title) ? model.Url : model.Title;
@@ -89,6 +92,7 @@ public partial class DownloadItemViewModel : ObservableObject
         OnPropertyChanged(nameof(CanCancel));
         OnPropertyChanged(nameof(CanRetry));
         OnPropertyChanged(nameof(CanPlay));
+        OnPropertyChanged(nameof(HasDownloadedFile));
         OnPropertyChanged(nameof(CanOpenFolder));
     }
 
@@ -110,6 +114,7 @@ public partial class DownloadItemViewModel : ObservableObject
     private void Remove()
     {
         _queueManager.Remove(Model);
+        _onRemove?.Invoke(this);
     }
 
     [RelayCommand]
@@ -184,11 +189,13 @@ public partial class DownloadItemViewModel : ObservableObject
     [RelayCommand]
     private void DeleteFile()
     {
+        string targetFile = Model.FileExists ? Model.FullPath : (Model.PartFileExists ? Model.PartFullPath : FileName);
         var result = MessageBox.Show(
-            $"Deseja realmente apagar o arquivo do disco?\n{FileName}",
-            "Confirmar Exclusão",
+            $"Deseja realmente excluir o arquivo do disco?\n{targetFile}",
+            "Confirmar Exclusão de Arquivo",
             MessageBoxButton.YesNo,
-            MessageBoxImage.Warning);
+            MessageBoxImage.Warning,
+            MessageBoxResult.No);
 
         if (result == MessageBoxResult.Yes)
         {
@@ -200,7 +207,7 @@ public partial class DownloadItemViewModel : ObservableObject
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao apagar arquivo: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro ao excluir arquivo: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

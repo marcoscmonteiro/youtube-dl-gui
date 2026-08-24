@@ -11,6 +11,8 @@ namespace YoutubeDlGui.Services;
 public class YtDlpEngineService : IDownloadEngineService
 {
     private const string GitHubLatestReleaseUrl = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe";
+    private const string QuickJsLatestReleaseUrl = "https://github.com/quickjs-ng/quickjs/releases/latest/download/qjs-windows-x86_64.exe";
+
     private static readonly HttpClient HttpClient = new(new HttpClientHandler
     {
         AllowAutoRedirect = true,
@@ -78,6 +80,37 @@ public class YtDlpEngineService : IDownloadEngineService
         return inBaseDir;
     }
 
+    public string? ResolveQuickJsExecutablePath()
+    {
+        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        string qjsInBaseDir = Path.Combine(baseDir, "qjs.exe");
+        if (File.Exists(qjsInBaseDir)) return qjsInBaseDir;
+
+        string enginePath = ResolveEngineExecutablePath(string.Empty);
+        if (!string.IsNullOrEmpty(enginePath) && File.Exists(enginePath))
+        {
+            string? engineDir = Path.GetDirectoryName(enginePath);
+            if (!string.IsNullOrEmpty(engineDir))
+            {
+                string qjsInEngineDir = Path.Combine(engineDir, "qjs.exe");
+                if (File.Exists(qjsInEngineDir)) return qjsInEngineDir;
+            }
+        }
+
+        // Try PATH environment variable
+        string? pathEnv = Environment.GetEnvironmentVariable("PATH");
+        if (pathEnv != null)
+        {
+            foreach (string path in pathEnv.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries))
+            {
+                string fullPath = Path.Combine(path.Trim(), "qjs.exe");
+                if (File.Exists(fullPath)) return fullPath;
+            }
+        }
+
+        return null;
+    }
+
     public bool IsEngineInstalled(string customNameOrPath = "")
     {
         string path = ResolveEngineExecutablePath(customNameOrPath);
@@ -101,7 +134,7 @@ public class YtDlpEngineService : IDownloadEngineService
         string finalExePath = Path.Combine(targetDir, "yt-dlp.exe");
         string tempDownloadPath = Path.Combine(targetDir, "yt-dlp.exe.download");
 
-        outputProgress?.Report($"Conectando ao GitHub para baixar a versão mais recente...");
+        outputProgress?.Report($"Conectando ao GitHub para baixar a versão mais recente do yt-dlp...");
         outputProgress?.Report($"URL: {GitHubLatestReleaseUrl}");
 
         try
@@ -135,11 +168,11 @@ public class YtDlpEngineService : IDownloadEngineService
                         if (totalBytes.HasValue && totalBytes.Value > 0)
                         {
                             double percent = (double)totalBytesRead / totalBytes.Value * 100.0;
-                            outputProgress?.Report($"[Download] {totalBytesRead / (1024.0 * 1024.0):F1} MB / {totalSizeStr} ({percent:F1}%) - {speedMBps:F1} MB/s");
+                            outputProgress?.Report($"[yt-dlp] {totalBytesRead / (1024.0 * 1024.0):F1} MB / {totalSizeStr} ({percent:F1}%) - {speedMBps:F1} MB/s");
                         }
                         else
                         {
-                            outputProgress?.Report($"[Download] {totalBytesRead / (1024.0 * 1024.0):F1} MB baixados - {speedMBps:F1} MB/s");
+                            outputProgress?.Report($"[yt-dlp] {totalBytesRead / (1024.0 * 1024.0):F1} MB baixados - {speedMBps:F1} MB/s");
                         }
 
                         lastReportTime.Restart();
@@ -167,18 +200,11 @@ public class YtDlpEngineService : IDownloadEngineService
             outputProgress?.Report($"\n[Sucesso] yt-dlp.exe instalado com sucesso em:");
             outputProgress?.Report($"{finalExePath}");
 
-            // Verify installation by getting version
-            string version = await GetHelpAsync(finalExePath, cancellationToken);
-            if (!string.IsNullOrEmpty(version))
-            {
-                outputProgress?.Report($"\nEngine pronta para uso!");
-            }
-
             return true;
         }
         catch (OperationCanceledException)
         {
-            outputProgress?.Report("\n[Cancelado] Download cancelado pelo usuário.");
+            outputProgress?.Report("\n[Cancelado] Download do yt-dlp cancelado pelo usuário.");
             if (File.Exists(tempDownloadPath))
             {
                 try { File.Delete(tempDownloadPath); } catch { }
@@ -188,6 +214,110 @@ public class YtDlpEngineService : IDownloadEngineService
         catch (Exception ex)
         {
             outputProgress?.Report($"\n[Erro] Falha ao baixar yt-dlp do GitHub: {ex.Message}");
+            if (File.Exists(tempDownloadPath))
+            {
+                try { File.Delete(tempDownloadPath); } catch { }
+            }
+            return false;
+        }
+    }
+
+    public async Task<bool> DownloadQuickJsFromGitHubAsync(
+        string? targetDirectory = null, 
+        IProgress<string>? outputProgress = null, 
+        CancellationToken cancellationToken = default)
+    {
+        string targetDir = string.IsNullOrWhiteSpace(targetDirectory)
+            ? AppDomain.CurrentDomain.BaseDirectory
+            : targetDirectory;
+
+        if (!Directory.Exists(targetDir))
+        {
+            Directory.CreateDirectory(targetDir);
+        }
+
+        string finalExePath = Path.Combine(targetDir, "qjs.exe");
+        string tempDownloadPath = Path.Combine(targetDir, "qjs.exe.download");
+
+        outputProgress?.Report($"\nConectando ao GitHub para baixar o interpretador QuickJS (qjs.exe)...");
+        outputProgress?.Report($"URL: {QuickJsLatestReleaseUrl}");
+
+        try
+        {
+            using var response = await HttpClient.GetAsync(QuickJsLatestReleaseUrl, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            response.EnsureSuccessStatusCode();
+
+            long? totalBytes = response.Content.Headers.ContentLength;
+            string totalSizeStr = totalBytes.HasValue ? $"{totalBytes.Value / (1024.0 * 1024.0):F2} MB" : "Tamanho desconhecido";
+            outputProgress?.Report($"Tamanho do QuickJS: {totalSizeStr}");
+
+            await using (var contentStream = await response.Content.ReadAsStreamAsync(cancellationToken))
+            await using (var fileStream = new FileStream(tempDownloadPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true))
+            {
+                var buffer = new byte[81920];
+                long totalBytesRead = 0;
+                int bytesRead;
+                var stopwatch = Stopwatch.StartNew();
+                var lastReportTime = Stopwatch.StartNew();
+
+                while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) > 0)
+                {
+                    await fileStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
+                    totalBytesRead += bytesRead;
+
+                    if (lastReportTime.ElapsedMilliseconds > 500)
+                    {
+                        double elapsedSec = stopwatch.Elapsed.TotalSeconds;
+                        double speedMBps = elapsedSec > 0 ? (totalBytesRead / (1024.0 * 1024.0)) / elapsedSec : 0;
+
+                        if (totalBytes.HasValue && totalBytes.Value > 0)
+                        {
+                            double percent = (double)totalBytesRead / totalBytes.Value * 100.0;
+                            outputProgress?.Report($"[QuickJS] {totalBytesRead / (1024.0 * 1024.0):F1} MB / {totalSizeStr} ({percent:F1}%) - {speedMBps:F1} MB/s");
+                        }
+                        else
+                        {
+                            outputProgress?.Report($"[QuickJS] {totalBytesRead / (1024.0 * 1024.0):F1} MB baixados - {speedMBps:F1} MB/s");
+                        }
+
+                        lastReportTime.Restart();
+                    }
+                }
+            }
+
+            if (File.Exists(finalExePath))
+            {
+                try
+                {
+                    File.Delete(finalExePath);
+                }
+                catch
+                {
+                    string oldBackup = finalExePath + ".old";
+                    if (File.Exists(oldBackup)) File.Delete(oldBackup);
+                    File.Move(finalExePath, oldBackup);
+                }
+            }
+
+            File.Move(tempDownloadPath, finalExePath);
+
+            outputProgress?.Report($"\n[Sucesso] qjs.exe instalado com sucesso em:");
+            outputProgress?.Report($"{finalExePath}");
+
+            return true;
+        }
+        catch (OperationCanceledException)
+        {
+            outputProgress?.Report("\n[Cancelado] Download do QuickJS cancelado pelo usuário.");
+            if (File.Exists(tempDownloadPath))
+            {
+                try { File.Delete(tempDownloadPath); } catch { }
+            }
+            return false;
+        }
+        catch (Exception ex)
+        {
+            outputProgress?.Report($"\n[Erro] Falha ao baixar qjs.exe do GitHub: {ex.Message}");
             if (File.Exists(tempDownloadPath))
             {
                 try { File.Delete(tempDownloadPath); } catch { }
@@ -225,7 +355,10 @@ public class YtDlpEngineService : IDownloadEngineService
                 progress.Report(new DownloadProgressReport { StatusText = line, RawLogLine = line });
             });
 
-            bool downloaded = await DownloadLatestFromGitHubAsync(AppDomain.CurrentDomain.BaseDirectory, downloadProgress, cancellationToken);
+            string targetDir = AppDomain.CurrentDomain.BaseDirectory;
+            bool downloaded = await DownloadLatestFromGitHubAsync(targetDir, downloadProgress, cancellationToken);
+            _ = await DownloadQuickJsFromGitHubAsync(targetDir, downloadProgress, cancellationToken);
+
             if (!downloaded || !File.Exists(exePath))
             {
                 item.Log += "\nNão foi possível baixar yt-dlp.exe automaticamente. Por favor, clique em 'Atualizar Engine' na barra superior.";
@@ -249,33 +382,23 @@ public class YtDlpEngineService : IDownloadEngineService
         };
 
         var logBuilder = new StringBuilder();
-        logBuilder.AppendLine($"Executable: {exePath}");
-        logBuilder.AppendLine($"Arguments : {item.CommandLineArguments}");
-        logBuilder.AppendLine($"Work Dir  : {workDir}");
-        logBuilder.AppendLine($"Started   : {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-        logBuilder.AppendLine(new string('-', 50));
 
-        void HandleOutput(string? data)
+        process.OutputDataReceived += (s, e) =>
         {
-            if (string.IsNullOrEmpty(data)) return;
+            if (string.IsNullOrEmpty(e.Data)) return;
 
+            string line = e.Data;
             lock (logBuilder)
             {
-                logBuilder.AppendLine(data);
+                logBuilder.AppendLine(line);
             }
 
             var report = new DownloadProgressReport
             {
-                RawLogLine = data
+                RawLogLine = line
             };
 
-            var matchDest = DestinationRegex.Match(data);
-            if (matchDest.Success)
-            {
-                report.ExtractedFileName = matchDest.Groups["filename"].Value.Trim().Trim('\"');
-            }
-
-            var matchProg = ProgressRegex.Match(data);
+            var matchProg = ProgressRegex.Match(line);
             if (matchProg.Success)
             {
                 if (double.TryParse(matchProg.Groups["percent"].Value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double p))
@@ -285,18 +408,45 @@ public class YtDlpEngineService : IDownloadEngineService
                 report.TotalSize = matchProg.Groups["size"].Value;
                 report.Speed = matchProg.Groups["speed"].Value;
                 report.Eta = matchProg.Groups["eta"].Value;
-                report.StatusText = $"Downloading {report.Percentage:F1}%";
+                report.StatusText = "Downloading...";
             }
             else
             {
-                report.StatusText = data;
+                var matchDest = DestinationRegex.Match(line);
+                if (matchDest.Success)
+                {
+                    report.ExtractedFileName = Path.GetFileName(matchDest.Groups["filename"].Value.Trim());
+                    report.StatusText = "Processing...";
+                }
+                else if (line.Contains("[ExtractAudio]", StringComparison.OrdinalIgnoreCase))
+                {
+                    report.StatusText = "Converting audio...";
+                }
+                else if (line.Contains("[Merger]", StringComparison.OrdinalIgnoreCase))
+                {
+                    report.StatusText = "Merging formats...";
+                }
             }
 
             progress.Report(report);
-        }
+        };
 
-        process.OutputDataReceived += (s, e) => HandleOutput(e.Data);
-        process.ErrorDataReceived += (s, e) => HandleOutput(e.Data);
+        process.ErrorDataReceived += (s, e) =>
+        {
+            if (string.IsNullOrEmpty(e.Data)) return;
+
+            string line = e.Data;
+            lock (logBuilder)
+            {
+                logBuilder.AppendLine($"[STDERR] {line}");
+            }
+
+            progress.Report(new DownloadProgressReport
+            {
+                RawLogLine = line,
+                StatusText = line.Length > 40 ? line[..40] + "..." : line
+            });
+        };
 
         try
         {
@@ -333,6 +483,20 @@ public class YtDlpEngineService : IDownloadEngineService
             item.Log = logBuilder.ToString();
             return false;
         }
+        finally
+        {
+            if (!string.IsNullOrWhiteSpace(item.TemporaryCookieFilePath))
+            {
+                try
+                {
+                    if (File.Exists(item.TemporaryCookieFilePath))
+                    {
+                        File.Delete(item.TemporaryCookieFilePath);
+                    }
+                }
+                catch { }
+            }
+        }
     }
 
     public async Task<string> GetHelpAsync(string engineExecutable, CancellationToken cancellationToken = default)
@@ -366,75 +530,87 @@ public class YtDlpEngineService : IDownloadEngineService
     public async Task<string> UpdateEngineAsync(string engineExecutable, IProgress<string>? outputProgress = null, CancellationToken cancellationToken = default)
     {
         string exePath = ResolveEngineExecutablePath(engineExecutable);
+        string targetDir = Path.GetDirectoryName(exePath) ?? AppDomain.CurrentDomain.BaseDirectory;
+        var output = new StringBuilder();
         
         if (!File.Exists(exePath))
         {
             outputProgress?.Report($"[Aviso] O executável '{engineExecutable}' não foi encontrado localmente.");
             outputProgress?.Report("Baixando a versão oficial mais recente diretamente do repositório do yt-dlp no GitHub...\n");
 
-            bool success = await DownloadLatestFromGitHubAsync(AppDomain.CurrentDomain.BaseDirectory, outputProgress, cancellationToken);
-            return success ? "Download concluído com sucesso." : "Falha no download do GitHub.";
+            bool success = await DownloadLatestFromGitHubAsync(targetDir, outputProgress, cancellationToken);
+            output.AppendLine(success ? "Download do yt-dlp concluído com sucesso." : "Falha no download do yt-dlp do GitHub.");
         }
-
-        outputProgress?.Report($"Executando verificação de atualização: {exePath} -U\n");
-
-        using var process = new Process();
-        process.StartInfo = new ProcessStartInfo
+        else
         {
-            FileName = exePath,
-            Arguments = "-U",
-            UseShellExecute = false,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            StandardOutputEncoding = Encoding.UTF8,
-            StandardErrorEncoding = Encoding.UTF8,
-            CreateNoWindow = true,
-            WindowStyle = ProcessWindowStyle.Hidden
-        };
+            outputProgress?.Report($"Executando verificação de atualização: {exePath} -U\n");
 
-        var output = new StringBuilder();
-        bool hasError = false;
-
-        process.OutputDataReceived += (s, e) =>
-        {
-            if (!string.IsNullOrEmpty(e.Data))
+            using var process = new Process();
+            process.StartInfo = new ProcessStartInfo
             {
-                output.AppendLine(e.Data);
-                outputProgress?.Report(e.Data);
-            }
-        };
-        process.ErrorDataReceived += (s, e) =>
-        {
-            if (!string.IsNullOrEmpty(e.Data))
+                FileName = exePath,
+                Arguments = "-U",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                StandardOutputEncoding = Encoding.UTF8,
+                StandardErrorEncoding = Encoding.UTF8,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+
+            bool hasError = false;
+
+            process.OutputDataReceived += (s, e) =>
             {
-                output.AppendLine(e.Data);
-                outputProgress?.Report(e.Data);
-                if (e.Data.Contains("ERROR:", StringComparison.OrdinalIgnoreCase) || e.Data.Contains("fail", StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrEmpty(e.Data))
                 {
-                    hasError = true;
+                    output.AppendLine(e.Data);
+                    outputProgress?.Report(e.Data);
+                }
+            };
+            process.ErrorDataReceived += (s, e) =>
+            {
+                if (!string.IsNullOrEmpty(e.Data))
+                {
+                    output.AppendLine(e.Data);
+                    outputProgress?.Report(e.Data);
+                    if (e.Data.Contains("ERROR:", StringComparison.OrdinalIgnoreCase) || e.Data.Contains("fail", StringComparison.OrdinalIgnoreCase))
+                    {
+                        hasError = true;
+                    }
+                }
+            };
+
+            try
+            {
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                await process.WaitForExitAsync(cancellationToken);
+
+                if (process.ExitCode != 0 || hasError)
+                {
+                    outputProgress?.Report("\n[Aviso] A atualização via '-U' não pôde ser concluída.");
+                    outputProgress?.Report("Tentando baixar a versão binária mais recente do GitHub...\n");
+                    await DownloadLatestFromGitHubAsync(targetDir, outputProgress, cancellationToken);
                 }
             }
-        };
-
-        try
-        {
-            process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-            await process.WaitForExitAsync(cancellationToken);
-
-            if (process.ExitCode != 0 || hasError)
+            catch (Exception ex)
             {
-                outputProgress?.Report("\n[Aviso] A atualização via '-U' não pôde ser concluída.");
-                outputProgress?.Report("Tentando baixar a versão binária mais recente do GitHub...\n");
-                await DownloadLatestFromGitHubAsync(AppDomain.CurrentDomain.BaseDirectory, outputProgress, cancellationToken);
+                outputProgress?.Report($"\n[Aviso] Erro ao executar -U ({ex.Message}).");
+                outputProgress?.Report("Baixando a versão oficial mais recente do GitHub...\n");
+                await DownloadLatestFromGitHubAsync(targetDir, outputProgress, cancellationToken);
             }
         }
-        catch (Exception ex)
+
+        // Always download / update QuickJS (qjs.exe) in the same directory
+        outputProgress?.Report("\n--------------------------------------------------");
+        outputProgress?.Report("Verificando / Atualizando o interpretador QuickJS (qjs.exe)...");
+        bool qjsSuccess = await DownloadQuickJsFromGitHubAsync(targetDir, outputProgress, cancellationToken);
+        if (qjsSuccess)
         {
-            outputProgress?.Report($"\n[Aviso] Erro ao executar -U ({ex.Message}).");
-            outputProgress?.Report("Baixando a versão oficial mais recente do GitHub...\n");
-            await DownloadLatestFromGitHubAsync(AppDomain.CurrentDomain.BaseDirectory, outputProgress, cancellationToken);
+            output.AppendLine("QuickJS (qjs.exe) atualizado com sucesso.");
         }
 
         return output.ToString();

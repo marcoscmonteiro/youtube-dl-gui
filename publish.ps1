@@ -71,13 +71,21 @@ catch {
     exit 1
 }
 
-# 4. Copiar yt-dlp.exe caso já tenha sido baixado em ambiente de desenvolvimento
+# 4. Copiar yt-dlp.exe e qjs.exe caso já tenham sido baixados em ambiente de desenvolvimento
 $DebugYtDlp = Join-Path $ScriptDir "YoutubeDlGui.App\bin\Debug\net8.0-windows\yt-dlp.exe"
 $TargetYtDlp = Join-Path $ResolvedTarget "yt-dlp.exe"
 
 if ((Test-Path -Path $DebugYtDlp) -and (-not (Test-Path -Path $TargetYtDlp))) {
     Write-Host "      Copiando yt-dlp.exe existente para a pasta de publicação..." -ForegroundColor Gray
     Copy-Item -Path $DebugYtDlp -Destination $TargetYtDlp -Force
+}
+
+$DebugQjs = Join-Path $ScriptDir "YoutubeDlGui.App\bin\Debug\net8.0-windows\qjs.exe"
+$TargetQjs = Join-Path $ResolvedTarget "qjs.exe"
+
+if ((Test-Path -Path $DebugQjs) -and (-not (Test-Path -Path $TargetQjs))) {
+    Write-Host "      Copiando qjs.exe existente para a pasta de publicação..." -ForegroundColor Gray
+    Copy-Item -Path $DebugQjs -Destination $TargetQjs -Force
 }
 
 # 5. Criar atalho na Área de Trabalho (Desktop)

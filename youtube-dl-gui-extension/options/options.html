@@ -84,9 +84,71 @@
           </label>
 
           <label class="checkbox-item">
+            <input type="checkbox" id="chk-cookies-default" checked>
+            <span>Enviar cookies de sessão por padrão (recomendado para YouTube e vídeos com login)</span>
+          </label>
+
+          <label class="checkbox-item">
             <input type="checkbox" id="chk-notifications" checked>
             <span>Exibir notificações nativas do sistema ao enviar downloads</span>
           </label>
+        </div>
+      </section>
+
+      <!-- Section: YouTube Player Clients (extractor-args) -->
+      <section class="section-card">
+        <h2 class="section-title">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          Clientes do YouTube (player_client / --extractor-args)
+        </h2>
+
+        <p class="form-hint" style="margin-bottom: 12px;">
+          Selecione quais clientes do YouTube o yt-dlp emulará para identificar a origem do download. Isso permite obter resoluções máximas (1080p, 4K) e contornar o experimento SABR do YouTube.
+        </p>
+
+        <div class="checkbox-list client-grid" id="options-client-list">
+          <label class="checkbox-item">
+            <input type="checkbox" name="opt-yt-client" value="android" checked>
+            <span><strong>Android</strong> (App nativo - recomendado contra SABR / desbloqueia 1080p e 4K)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="opt-yt-client" value="web" checked>
+            <span><strong>Web</strong> (Desktop padrão)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="opt-yt-client" value="ios" checked>
+            <span><strong>iOS</strong> (App iPhone / iPad)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="opt-yt-client" value="mweb">
+            <span><strong>Mobile Web</strong> (m.youtube.com)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="opt-yt-client" value="web_creator">
+            <span><strong>Web Creator</strong> (YouTube Studio Web)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="opt-yt-client" value="android_creator">
+            <span><strong>Android Creator</strong> (YouTube Studio App)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="opt-yt-client" value="tv">
+            <span><strong>Smart TV</strong> (Console / TV)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="opt-yt-client" value="tv_embedded">
+            <span><strong>TV Embedded</strong> (Player TV embutido)</span>
+          </label>
+        </div>
+
+        <div class="preset-buttons" style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
+          <button id="btn-preset-recommended" class="btn-link" type="button">★ Recomendado (Android + Web + iOS)</button>
+          <button id="btn-preset-all" class="btn-link" type="button">Selecionar Todos</button>
+          <button id="btn-preset-none" class="btn-link" type="button">Limpar Seleção (Padrão yt-dlp)</button>
         </div>
       </section>
 

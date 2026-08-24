@@ -89,4 +89,13 @@ public class ServiceTests
         Assert.NotNull(resolved);
         Assert.NotEmpty(resolved);
     }
+
+    [Fact]
+    public void YtDlpEngineService_ResolveQuickJsPath_ExecutesWithoutError()
+    {
+        var engine = new YtDlpEngineService();
+        string? resolved = engine.ResolveQuickJsExecutablePath();
+        // May be null or valid path if qjs.exe exists in environment
+        Assert.True(resolved == null || resolved.EndsWith("qjs.exe", StringComparison.OrdinalIgnoreCase));
+    }
 }

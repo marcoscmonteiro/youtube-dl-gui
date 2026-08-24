@@ -12,6 +12,7 @@ New-Item -ItemType Directory -Path $distDir -Force | Out-Null
 $filesToInclude = @(
     "manifest.json",
     "background.js",
+    "cookieHelper.js",
     "icons",
     "popup",
     "options"

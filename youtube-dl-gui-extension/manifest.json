@@ -28,11 +28,13 @@
     "tabs",
     "contextMenus",
     "storage",
-    "notifications"
+    "notifications",
+    "cookies"
   ],
   "host_permissions": [
     "http://127.0.0.1:48190/*",
-    "http://localhost:48190/*"
+    "http://localhost:48190/*",
+    "<all_urls>"
   ],
   "commands": {
     "download_active_tab": {

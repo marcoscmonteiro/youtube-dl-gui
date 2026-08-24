@@ -242,7 +242,13 @@
                                     <!-- Actions Toolbar -->
                                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                                         <Button Content="▶ Reproduzir" Style="{DynamicResource SecondaryButton}" 
-                                                Command="{Binding PlayCommand}" IsEnabled="{Binding CanPlay}" Margin="0,0,6,0" Padding="8,4" FontSize="12"/>
+                                                Command="{Binding PlayCommand}" 
+                                                Visibility="{Binding HasDownloadedFile, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                                Margin="0,0,6,0" Padding="8,4" FontSize="12"/>
+                                        <Button Content="🗑 Excluir arquivo" Style="{DynamicResource SecondaryButton}" 
+                                                Command="{Binding DeleteFileCommand}" 
+                                                Visibility="{Binding HasDownloadedFile, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                                Margin="0,0,6,0" Padding="8,4" FontSize="12"/>
                                         <Button Content="📁 Pasta" Style="{DynamicResource SecondaryButton}" 
                                                 Command="{Binding OpenFolderCommand}" IsEnabled="{Binding CanOpenFolder}" Margin="0,0,6,0" Padding="8,4" FontSize="12"/>
                                         <Button Content="📋 Log" Style="{DynamicResource SecondaryButton}" 
@@ -252,7 +258,7 @@
                                         <Button Content="⏹ Cancelar" Style="{DynamicResource SecondaryButton}" 
                                                 Command="{Binding CancelCommand}" IsEnabled="{Binding CanCancel}" Margin="0,0,6,0" Padding="8,4" FontSize="12"/>
                                         <Button Content="🗑 Excluir" Style="{DynamicResource SecondaryButton}" 
-                                                Command="{Binding DeleteFileCommand}" Padding="8,4" FontSize="12"/>
+                                                Command="{Binding RemoveCommand}" ToolTip="Excluir da lista" Padding="8,4" FontSize="12"/>
                                     </StackPanel>
                                 </Grid>
 

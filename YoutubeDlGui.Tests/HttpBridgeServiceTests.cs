@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using YoutubeDlGui.Core.Models;
 using YoutubeDlGui.Services;
@@ -126,6 +127,107 @@ public class HttpBridgeServiceTests
 
             Assert.NotNull(receivedReq);
             Assert.Equal(@"C:\Users\test\Downloads", receivedReq!.DownloadDirectory);
+        }
+        finally
+        {
+            await bridge.StopAsync();
+        }
+    }
+
+    [Fact]
+    public async Task HttpBridgeService_DownloadWithCookies_PassesCookiesTextCorrectly()
+    {
+        int testPort = 48199;
+        using var bridge = new HttpBridgeService();
+        await bridge.StartAsync(testPort);
+
+        ExternalDownloadRequest? receivedReq = null;
+        bridge.DownloadRequested += (s, req) =>
+        {
+            receivedReq = req;
+        };
+
+        try
+        {
+            using var httpClient = new HttpClient();
+            string mockNetscapeCookies = "# Netscape HTTP Cookie File\n.youtube.com\tTRUE\t/\tTRUE\t1798765432\tSID\tsample_session_cookie_value";
+
+            var payload = new
+            {
+                url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                quality = "Best",
+                cookiesText = mockNetscapeCookies
+            };
+
+            var response = await httpClient.PostAsJsonAsync($"http://127.0.0.1:{testPort}/api/download", payload);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            await Task.Delay(100);
+
+            Assert.NotNull(receivedReq);
+            Assert.Equal(mockNetscapeCookies, receivedReq!.CookiesText);
+        }
+        finally
+        {
+            await bridge.StopAsync();
+        }
+    }
+
+    [Fact]
+    public void CookieFile_WrittenWithoutBom_IsValidForPython()
+    {
+        string sampleCookies = "# Netscape HTTP Cookie File\n# http://curl.haxx.se/rfc/cookie_spec.html\n.youtube.com\tTRUE\t/\tTRUE\t1798765432\tSID\tsample_cookie_value\n";
+        string tempPath = Path.Combine(Path.GetTempPath(), $"ydl_cookie_test_{Guid.NewGuid():N}.txt");
+
+        try
+        {
+            var utf8WithoutBom = new UTF8Encoding(false);
+            File.WriteAllText(tempPath, sampleCookies, utf8WithoutBom);
+
+            byte[] bytes = File.ReadAllBytes(tempPath);
+            Assert.True(bytes.Length >= 3);
+            // Ensure first bytes are '#' (0x23), NOT UTF-8 BOM (0xEF, 0xBB, 0xBF)
+            Assert.Equal((byte)'#', bytes[0]);
+            Assert.Equal((byte)' ', bytes[1]);
+            Assert.Equal((byte)'N', bytes[2]);
+            Assert.NotEqual(0xEF, bytes[0]);
+        }
+        finally
+        {
+            if (File.Exists(tempPath)) File.Delete(tempPath);
+        }
+    }
+
+    [Fact]
+    public async Task HttpBridgeService_DownloadWithPlayerClients_PassesPlayerClientsCorrectly()
+    {
+        int testPort = 48197;
+        using var bridge = new HttpBridgeService();
+        await bridge.StartAsync(testPort);
+
+        ExternalDownloadRequest? receivedReq = null;
+        bridge.DownloadRequested += (s, req) =>
+        {
+            receivedReq = req;
+        };
+
+        try
+        {
+            using var httpClient = new HttpClient();
+            var payload = new
+            {
+                url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                quality = "Best",
+                playerClients = "android,web,ios"
+            };
+
+            var response = await httpClient.PostAsJsonAsync($"http://127.0.0.1:{testPort}/api/download", payload);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            await Task.Delay(100);
+
+            Assert.NotNull(receivedReq);
+            Assert.Equal("android,web,ios", receivedReq!.PlayerClients);
         }
         finally
         {

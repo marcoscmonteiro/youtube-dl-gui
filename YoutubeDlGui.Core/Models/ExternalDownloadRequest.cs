@@ -11,4 +11,7 @@ public class ExternalDownloadRequest
     public string? ExtraOptions { get; set; }
     public string? DownloadDirectory { get; set; }
     public string? OutputDirectory { get; set; }
+    public string? CookiesText { get; set; }
+    public string? PlayerClients { get; set; }
+    public string? ExtractorArgs { get; set; }
 }
