@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:YoutubeDlGui.App.ViewModels"
         mc:Ignorable="d"
-        Title="yt-dlp GUI Modern" Height="720" Width="1040" MinHeight="550" MinWidth="800"
+        Title="yt-dlp GUI Modern" Height="720" Width="1040" MinHeight="550" MinWidth="1000"
         WindowStartupLocation="CenterScreen"
         Icon="../VideoDownload.ico"
         Background="{DynamicResource WindowBackgroundBrush}">
@@ -114,8 +114,10 @@
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <Button DockPanel.Dock="Right" Content="📁 Procurar..." Style="{DynamicResource SecondaryButton}" 
                                 Command="{Binding BrowseFolderCommand}" Margin="6,0,0,0"/>
-                        <TextBox Style="{DynamicResource ModernTextBox}" Text="{Binding WorkDir, UpdateSourceTrigger=PropertyChanged}" 
-                                 Padding="8,5" FontSize="13"/>
+                        <ComboBox Style="{DynamicResource ModernEditableComboBox}" 
+                                  ItemsSource="{Binding DestinationHistory}" 
+                                  Text="{Binding WorkDir, UpdateSourceTrigger=PropertyChanged}" 
+                                  Padding="8,5" FontSize="13"/>
                     </DockPanel>
 
                     <!-- Video Quality -->
@@ -163,8 +165,9 @@
 
                             <TextBlock Text="Argumentos Extras:" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" 
                                        VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <TextBox Grid.Column="1" Style="{DynamicResource ModernTextBox}" 
-                                     Text="{Binding ExtraOptions, UpdateSourceTrigger=PropertyChanged}" Padding="8,4" FontSize="13"/>
+                            <ComboBox Grid.Column="1" Style="{DynamicResource ModernEditableComboBox}" 
+                                      ItemsSource="{Binding ExtraOptionsHistory}" 
+                                      Text="{Binding ExtraOptions, UpdateSourceTrigger=PropertyChanged}" Padding="8,4" FontSize="13"/>
 
                             <TextBlock Grid.Column="2" Text="Downloads simultâneos:" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" 
                                        VerticalAlignment="Center" Margin="16,0,8,0"/>

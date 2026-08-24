@@ -333,6 +333,95 @@
         </Setter>
     </Style>
 
+    <!-- Modern Editable ComboBox Style (History Dropdown with Direct Typing) -->
+    <Style x:Key="ModernEditableComboBox" TargetType="{x:Type ComboBox}">
+        <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="8,5" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="IsEditable" Value="True" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBox}">
+                    <Grid x:Name="MainGrid" SnapsToDevicePixels="True">
+                        <!-- Dropdown Toggle Button with Arrow -->
+                        <ToggleButton x:Name="ToggleButton"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      Template="{StaticResource ComboBoxToggleButtonTemplate}"
+                                      Focusable="False"
+                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                      ClickMode="Press" />
+
+                        <!-- Editable Text Box -->
+                        <TextBox x:Name="PART_EditableTextBox"
+                                 Style="{DynamicResource ModernTextBox}"
+                                 Margin="2,2,26,2"
+                                 Padding="{TemplateBinding Padding}"
+                                 FontSize="{TemplateBinding FontSize}"
+                                 Foreground="{TemplateBinding Foreground}"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 VerticalAlignment="Center"
+                                 Focusable="True"
+                                 IsReadOnly="{TemplateBinding IsReadOnly}"
+                                 CaretBrush="{DynamicResource AccentLightBrush}"/>
+
+                        <!-- Dropdown Popup -->
+                        <Popup x:Name="PART_Popup"
+                               AllowsTransparency="True"
+                               IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                               Placement="Bottom"
+                               PopupAnimation="Slide"
+                               Focusable="False">
+                            <Grid x:Name="DropDown"
+                                  MinWidth="{Binding ActualWidth, ElementName=MainGrid}"
+                                  MaxHeight="260"
+                                  SnapsToDevicePixels="True"
+                                  Margin="0,4,0,4">
+                                <Border x:Name="DropDownBorder"
+                                        Background="{DynamicResource CardBackgroundBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="3">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="10" Direction="270" ShadowDepth="3" Opacity="0.35" Color="#000000"/>
+                                    </Border.Effect>
+                                    <ScrollViewer SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter TargetName="DropDownBorder" Property="MinHeight" Value="30" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ToggleButton" Property="BorderBrush" Value="{DynamicResource AccentLightBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="ToggleButton" Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Default ComboBox Style -->
     <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ModernComboBox}" />
 

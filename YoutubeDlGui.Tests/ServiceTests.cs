@@ -44,6 +44,8 @@ public class ServiceTests
         {
             var service = new JsonSettingsService(tempDir);
             service.Settings.ExtraOptions = "--test-option --cookies cookies.txt";
+            service.Settings.DestinationHistory = new List<string> { @"C:\Videos", @"D:\Downloads" };
+            service.Settings.ExtraOptionsHistory = new List<string> { "--test-option", "--verbose" };
             service.Settings.MaxConcurrentDownloads = 5;
             service.Settings.DownloadPlaylist = true;
             service.Settings.NoCacheDir = false;
@@ -57,6 +59,10 @@ public class ServiceTests
             await service.LoadAsync();
 
             Assert.Equal("--test-option --cookies cookies.txt", service.Settings.ExtraOptions);
+            Assert.Contains(@"C:\Videos", service.Settings.DestinationHistory);
+            Assert.Contains(@"D:\Downloads", service.Settings.DestinationHistory);
+            Assert.Contains("--test-option", service.Settings.ExtraOptionsHistory);
+            Assert.Contains("--verbose", service.Settings.ExtraOptionsHistory);
             Assert.Equal(5, service.Settings.MaxConcurrentDownloads);
             Assert.True(service.Settings.DownloadPlaylist);
             Assert.False(service.Settings.NoCacheDir);

@@ -70,6 +70,9 @@ public partial class MainViewModel : ObservableObject
     public ObservableCollection<DownloadItemViewModel> Downloads { get; } = new();
     public ICollectionView FilteredDownloads { get; }
 
+    public ObservableCollection<string> DestinationHistory { get; } = new();
+    public ObservableCollection<string> ExtraOptionsHistory { get; } = new();
+
     public int TotalActiveCount => _queueManager.ActiveDownloadsCount;
     public int TotalQueuedCount => _queueManager.QueuedDownloadsCount;
     public int TotalCompletedCount => Downloads.Count(d => d.Status == DownloadStatus.Completed);
@@ -119,6 +122,38 @@ public partial class MainViewModel : ObservableObject
             MaxConcurrentDownloads = s.MaxConcurrentDownloads > 0 ? s.MaxConcurrentDownloads : 3;
             IsDarkMode = s.Theme == AppTheme.Dark || (s.Theme == AppTheme.System && ThemeManager.IsSystemInDarkMode());
             IsAdvancedOptionsOpen = s.IsAdvancedOptionsOpen;
+
+            DestinationHistory.Clear();
+            if (s.DestinationHistory != null && s.DestinationHistory.Count > 0)
+            {
+                foreach (var d in s.DestinationHistory)
+                {
+                    if (!string.IsNullOrWhiteSpace(d) && !DestinationHistory.Contains(d))
+                    {
+                        DestinationHistory.Add(d);
+                    }
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(WorkDir) && !DestinationHistory.Contains(WorkDir))
+            {
+                DestinationHistory.Insert(0, WorkDir);
+            }
+
+            ExtraOptionsHistory.Clear();
+            if (s.ExtraOptionsHistory != null && s.ExtraOptionsHistory.Count > 0)
+            {
+                foreach (var opt in s.ExtraOptionsHistory)
+                {
+                    if (!string.IsNullOrWhiteSpace(opt) && !ExtraOptionsHistory.Contains(opt))
+                    {
+                        ExtraOptionsHistory.Add(opt);
+                    }
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(ExtraOptions) && !ExtraOptionsHistory.Contains(ExtraOptions))
+            {
+                ExtraOptionsHistory.Insert(0, ExtraOptions);
+            }
         }
         finally
         {
@@ -265,6 +300,12 @@ public partial class MainViewModel : ObservableObject
         _queueManager.Enqueue(item);
         UrlInput = string.Empty;
 
+        AddToHistory(DestinationHistory, WorkDir);
+        if (!string.IsNullOrWhiteSpace(ExtraOptions))
+        {
+            AddToHistory(ExtraOptionsHistory, ExtraOptions);
+        }
+
         SaveCurrentSettings();
     }
 
@@ -280,6 +321,7 @@ public partial class MainViewModel : ObservableObject
         if (dialog.ShowDialog() == true)
         {
             WorkDir = dialog.FolderName;
+            AddToHistory(DestinationHistory, WorkDir);
             SaveCurrentSettings();
         }
     }
@@ -632,7 +674,9 @@ public partial class MainViewModel : ObservableObject
     {
         var s = _settingsService.Settings;
         s.WorkDir = WorkDir;
+        s.DestinationHistory = DestinationHistory.ToList();
         s.ExtraOptions = ExtraOptions;
+        s.ExtraOptionsHistory = ExtraOptionsHistory.ToList();
         s.DefaultQuality = SelectedQuality;
         s.DefaultAudioFormat = SelectedAudioFormat;
         s.DownloadPlaylist = DownloadPlaylist;
@@ -644,5 +688,26 @@ public partial class MainViewModel : ObservableObject
         s.IsAdvancedOptionsOpen = IsAdvancedOptionsOpen;
 
         _ = _settingsService.SaveAsync();
+    }
+
+    private static void AddToHistory(ObservableCollection<string> collection, string value, int maxItems = 15)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return;
+        string trimmed = value.Trim();
+
+        for (int i = collection.Count - 1; i >= 0; i--)
+        {
+            if (string.Equals(collection[i], trimmed, StringComparison.OrdinalIgnoreCase))
+            {
+                collection.RemoveAt(i);
+            }
+        }
+
+        collection.Insert(0, trimmed);
+
+        while (collection.Count > maxItems)
+        {
+            collection.RemoveAt(collection.Count - 1);
+        }
     }
 }
