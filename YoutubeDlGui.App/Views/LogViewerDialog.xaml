@@ -1,34 +1,91 @@
 <Window x:Class="YoutubeDlGui.App.Views.LogViewerDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Log de Download" Height="500" Width="700"
+        Title="Log em Tempo Real - yt-dlp" Height="580" Width="820"
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource WindowBackgroundBrush}">
-    <Grid Margin="16">
+    <Grid Margin="18">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <TextBlock x:Name="TextTitle" Text="Detalhes e Saída do Processo" FontSize="16" FontWeight="SemiBold"
-                   Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+        <!-- Top Header & Live Metrics -->
+        <Border Grid.Row="0" Background="{DynamicResource CardBackgroundBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="14,10" Margin="0,0,0,12">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <!-- Monospace Log Box -->
-        <Border Grid.Row="1" Background="{DynamicResource CardBackgroundBrush}" 
-                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="6">
+                <!-- Row 1: Status Badge + Title -->
+                <DockPanel Grid.Row="0" LastChildFill="True">
+                    <Border DockPanel.Dock="Left" Background="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" 
+                            CornerRadius="4" Padding="8,3" Margin="0,0,10,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Status, Converter={StaticResource StatusToTextConverter}}" 
+                                   Foreground="White" FontWeight="Bold" FontSize="11"/>
+                    </Border>
+                    <TextBlock Text="{Binding Title}" FontSize="15" FontWeight="SemiBold" 
+                               Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                </DockPanel>
+
+                <!-- Row 2: Live Progress Bar -->
+                <ProgressBar Grid.Row="1" Value="{Binding ProgressPercentage}" Maximum="100" 
+                             Style="{DynamicResource ModernProgressBar}" Margin="0,8,0,6" Height="6"/>
+
+                <!-- Row 3: Metrics details -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" 
+                               TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding DownloadSpeed}" FontSize="12" FontWeight="Medium" Foreground="{DynamicResource AccentLightBrush}" Margin="0,0,12,0"
+                                   Visibility="{Binding DownloadSpeed, Converter={StaticResource NullOrEmptyToVisibilityConverter}}"/>
+                        <TextBlock Text="{Binding TotalSize}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,12,0"
+                                   Visibility="{Binding TotalSize, Converter={StaticResource NullOrEmptyToVisibilityConverter}}"/>
+                        <TextBlock Text="{Binding Eta}" FontSize="12" Foreground="{DynamicResource TextMutedBrush}"
+                                   Visibility="{Binding Eta, Converter={StaticResource NullOrEmptyToVisibilityConverter}}"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Monospace Console Log Box -->
+        <Border Grid.Row="1" Background="{DynamicResource ControlBackgroundBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8">
             <TextBox x:Name="TextBoxLog" IsReadOnly="True" TextWrapping="Wrap"
-                     FontFamily="Consolas, Cascadia Code, Courier New" FontSize="12"
+                     FontFamily="Cascadia Code, Consolas, Courier New" FontSize="12"
                      Background="Transparent" Foreground="{DynamicResource TextPrimaryBrush}"
-                     BorderThickness="0" Padding="10" VerticalScrollBarVisibility="Auto"
+                     BorderThickness="0" Padding="12" VerticalScrollBarVisibility="Auto"
                      CaretBrush="{DynamicResource AccentLightBrush}"/>
         </Border>
 
         <!-- Bottom Actions -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
-            <Button Content="Copiar Log" Style="{DynamicResource SecondaryButton}" Margin="0,0,8,0" Click="CopyLog_Click"/>
-            <Button Content="Fechar" Style="{DynamicResource AccentButton}" Click="Close_Click"/>
-        </StackPanel>
+        <Grid Grid.Row="2" Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Auto-scroll checkbox -->
+            <CheckBox x:Name="CheckBoxAutoScroll" Content="Rolar automaticamente (Auto-scroll)" 
+                      IsChecked="True" Style="{DynamicResource ModernCheckBox}" VerticalAlignment="Center"/>
+
+            <!-- Right Buttons -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Content="Limpar Tela" Style="{DynamicResource SecondaryButton}" Margin="0,0,8,0" Click="ClearLog_Click"/>
+                <Button Content="Copiar Log" Style="{DynamicResource SecondaryButton}" Margin="0,0,8,0" Click="CopyLog_Click"/>
+                <Button Content="Fechar" Style="{DynamicResource AccentButton}" Click="Close_Click"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

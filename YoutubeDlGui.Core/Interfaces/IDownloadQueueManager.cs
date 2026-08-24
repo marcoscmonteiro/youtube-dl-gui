@@ -18,4 +18,5 @@ public interface IDownloadQueueManager
     void CancelAll();
 
     event EventHandler<DownloadItem>? ItemStatusChanged;
+    event EventHandler<(DownloadItem Item, string LogLine)>? LogLineReceived;
 }

@@ -39,6 +39,7 @@ public class DownloadQueueManager : IDownloadQueueManager, IDisposable
     public int QueuedDownloadsCount => Items.Count(i => i.Status == DownloadStatus.Queued);
 
     public event EventHandler<DownloadItem>? ItemStatusChanged;
+    public event EventHandler<(DownloadItem Item, string LogLine)>? LogLineReceived;
 
     public DownloadQueueManager(IDownloadEngineService engineService)
     {
@@ -166,6 +167,11 @@ public class DownloadQueueManager : IDownloadQueueManager, IDisposable
                 if (!string.IsNullOrEmpty(report.StatusText))
                 {
                     item.StatusMessage = report.StatusText;
+                }
+
+                if (!string.IsNullOrEmpty(report.RawLogLine))
+                {
+                    LogLineReceived?.Invoke(this, (item, report.RawLogLine));
                 }
 
                 ItemStatusChanged?.Invoke(this, item);

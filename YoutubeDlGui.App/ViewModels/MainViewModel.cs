@@ -95,6 +95,7 @@ public partial class MainViewModel : ObservableObject
 
         _queueManager.MaxConcurrentDownloads = MaxConcurrentDownloads;
         _queueManager.ItemStatusChanged += OnQueueItemStatusChanged;
+        _queueManager.LogLineReceived += OnQueueLogLineReceived;
 
         _ = LoadSavedHistoryAsync();
     }
@@ -184,6 +185,18 @@ public partial class MainViewModel : ObservableObject
             OnPropertyChanged(nameof(TotalFailedCount));
 
             _ = _settingsService.SaveHistoryAsync(Downloads.Select(d => d.Model));
+        });
+    }
+
+    private void OnQueueLogLineReceived(object? sender, (DownloadItem Item, string LogLine) e)
+    {
+        System.Windows.Application.Current?.Dispatcher.InvokeAsync(() =>
+        {
+            var vm = Downloads.FirstOrDefault(d => d.Model.Id == e.Item.Id);
+            if (vm != null)
+            {
+                vm.AppendLogLine(e.LogLine);
+            }
         });
     }
 

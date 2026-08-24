@@ -32,7 +32,11 @@ public class YtDlpEngineService : IDownloadEngineService
         RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
     private static readonly Regex DestinationRegex = new(
-        @"\[(?:download|ffmpeg|Merger)\]\s+(?:Destination:\s*|Merging formats into\s*""?)(?<filename>[^""]+?)""?$",
+        @"\[(?:download|ffmpeg|Merger|ExtractAudio|VideoConvertor|FixupM3u8)\]\s+(?:Destination:\s*|Merging formats into\s*""?|Converting video from [^;]+;\s*Destination:\s*)(?<filename>[^""]+?)""?$",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+    private static readonly Regex AlreadyDownloadedRegex = new(
+        @"\[download\]\s+(?<filename>[^\r\n]+?)\s+has already been downloaded",
         RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
     public string ResolveEngineExecutablePath(string customNameOrPath)
@@ -381,7 +385,26 @@ public class YtDlpEngineService : IDownloadEngineService
             WindowStyle = ProcessWindowStyle.Hidden
         };
 
+        var startTime = DateTime.Now;
         var logBuilder = new StringBuilder();
+        logBuilder.AppendLine("[yt-dlp GUI] ======================================================================");
+        logBuilder.AppendLine($"[yt-dlp GUI] Início da Execução: {startTime:dd/MM/yyyy HH:mm:ss}");
+        logBuilder.AppendLine($"[yt-dlp GUI] URL: {item.Url}");
+        logBuilder.AppendLine($"[yt-dlp GUI] Executável: {exePath}");
+        logBuilder.AppendLine($"[yt-dlp GUI] Diretório de Saída: {workDir}");
+        logBuilder.AppendLine($"[yt-dlp GUI] Argumentos: {item.CommandLineArguments}");
+        logBuilder.AppendLine("[yt-dlp GUI] ======================================================================");
+
+        lock (logBuilder)
+        {
+            item.Log = logBuilder.ToString();
+        }
+
+        progress.Report(new DownloadProgressReport
+        {
+            RawLogLine = logBuilder.ToString().TrimEnd(),
+            StatusText = "Iniciando download..."
+        });
 
         process.OutputDataReceived += (s, e) =>
         {
@@ -391,6 +414,7 @@ public class YtDlpEngineService : IDownloadEngineService
             lock (logBuilder)
             {
                 logBuilder.AppendLine(line);
+                item.Log = logBuilder.ToString();
             }
 
             var report = new DownloadProgressReport
@@ -418,13 +442,22 @@ public class YtDlpEngineService : IDownloadEngineService
                     report.ExtractedFileName = Path.GetFileName(matchDest.Groups["filename"].Value.Trim());
                     report.StatusText = "Processing...";
                 }
-                else if (line.Contains("[ExtractAudio]", StringComparison.OrdinalIgnoreCase))
+                else
                 {
-                    report.StatusText = "Converting audio...";
-                }
-                else if (line.Contains("[Merger]", StringComparison.OrdinalIgnoreCase))
-                {
-                    report.StatusText = "Merging formats...";
+                    var matchAlready = AlreadyDownloadedRegex.Match(line);
+                    if (matchAlready.Success)
+                    {
+                        report.ExtractedFileName = Path.GetFileName(matchAlready.Groups["filename"].Value.Trim());
+                        report.StatusText = "Already downloaded";
+                    }
+                    else if (line.Contains("[ExtractAudio]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        report.StatusText = "Converting audio...";
+                    }
+                    else if (line.Contains("[Merger]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        report.StatusText = "Merging formats...";
+                    }
                 }
             }
 
@@ -436,14 +469,16 @@ public class YtDlpEngineService : IDownloadEngineService
             if (string.IsNullOrEmpty(e.Data)) return;
 
             string line = e.Data;
+            string errLine = $"[STDERR] {line}";
             lock (logBuilder)
             {
-                logBuilder.AppendLine($"[STDERR] {line}");
+                logBuilder.AppendLine(errLine);
+                item.Log = logBuilder.ToString();
             }
 
             progress.Report(new DownloadProgressReport
             {
-                RawLogLine = line,
+                RawLogLine = errLine,
                 StatusText = line.Length > 40 ? line[..40] + "..." : line
             });
         };
@@ -468,19 +503,46 @@ public class YtDlpEngineService : IDownloadEngineService
 
             await process.WaitForExitAsync(cancellationToken);
 
-            item.Log = logBuilder.ToString();
+            var elapsed = DateTime.Now - startTime;
+            string completionStatus = process.ExitCode == 0 ? "Sucesso (Código 0)" : $"Falha (Código {process.ExitCode})";
+            string footer = $"[yt-dlp GUI] ----------------------------------------------------------------------\n[yt-dlp GUI] Finalizado: {DateTime.Now:dd/MM/yyyy HH:mm:ss} | Status: {completionStatus} | Duração: {elapsed:mm\\:ss}\n[yt-dlp GUI] ======================================================================";
+            
+            lock (logBuilder)
+            {
+                logBuilder.AppendLine(footer);
+                item.Log = logBuilder.ToString();
+            }
+
+            progress.Report(new DownloadProgressReport
+            {
+                RawLogLine = footer,
+                StatusText = process.ExitCode == 0 ? "Concluído" : "Falhou"
+            });
+
             return process.ExitCode == 0;
         }
         catch (OperationCanceledException)
         {
-            logBuilder.AppendLine("Download cancelled by user.");
-            item.Log = logBuilder.ToString();
+            var elapsed = DateTime.Now - startTime;
+            string cancelMsg = $"[yt-dlp GUI] ----------------------------------------------------------------------\n[yt-dlp GUI] Cancelado pelo usuário em: {DateTime.Now:dd/MM/yyyy HH:mm:ss} (Duração: {elapsed:mm\\:ss})\n[yt-dlp GUI] ======================================================================";
+            lock (logBuilder)
+            {
+                logBuilder.AppendLine(cancelMsg);
+                item.Log = logBuilder.ToString();
+            }
+            progress.Report(new DownloadProgressReport { RawLogLine = cancelMsg, StatusText = "Cancelado" });
             return false;
         }
         catch (Exception ex)
         {
-            logBuilder.AppendLine($"Error: {ex.Message}");
-            item.Log = logBuilder.ToString();
+            var elapsed = DateTime.Now - startTime;
+            string errMsg = $"[yt-dlp GUI] ----------------------------------------------------------------------\n[yt-dlp GUI] Erro de execução: {ex.Message} (Duração: {elapsed:mm\\:ss})\n[yt-dlp GUI] ======================================================================";
+            lock (logBuilder)
+            {
+                logBuilder.AppendLine(errMsg);
+                item.Log = logBuilder.ToString();
+            }
+            progress.Report(new DownloadProgressReport { RawLogLine = errMsg, StatusText = "Erro" });
             return false;
         }
         finally

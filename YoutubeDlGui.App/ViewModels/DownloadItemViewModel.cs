@@ -53,7 +53,7 @@ public partial class DownloadItemViewModel : ObservableObject
     public bool CanCancel => Status == DownloadStatus.Downloading || Status == DownloadStatus.Queued || Status == DownloadStatus.Processing;
     public bool CanRetry => Status == DownloadStatus.Failed || Status == DownloadStatus.Cancelled || Status == DownloadStatus.Completed;
     public bool CanPlay => HasDownloadedFile;
-    public bool HasDownloadedFile => Model.FileExists || Model.PartFileExists;
+    public bool HasDownloadedFile => Model.FileExists;
     public bool CanOpenFolder => !string.IsNullOrEmpty(Model.OutputDirectory) && Directory.Exists(Model.OutputDirectory);
 
     public DownloadItemViewModel(DownloadItem model, IDownloadQueueManager queueManager, Action<DownloadItemViewModel>? onRemove = null)
@@ -120,21 +120,35 @@ public partial class DownloadItemViewModel : ObservableObject
     [RelayCommand]
     private void OpenFolder()
     {
-        string path = Model.FileExists ? Model.FullPath : (Model.PartFileExists ? Model.PartFullPath : Model.OutputDirectory);
-        if (File.Exists(path))
+        string? targetFile = Model.ExistingFilePath;
+        if (!string.IsNullOrEmpty(targetFile) && File.Exists(targetFile))
         {
-            Process.Start("explorer.exe", $"/select,\"{path}\"");
+            try
+            {
+                // Open Windows Explorer with the specific downloaded file selected
+                Process.Start("explorer.exe", $"/select,\"{targetFile}\"");
+                return;
+            }
+            catch { }
         }
-        else if (Directory.Exists(Model.OutputDirectory))
+
+        if (!string.IsNullOrEmpty(Model.OutputDirectory) && Directory.Exists(Model.OutputDirectory))
         {
-            Process.Start("explorer.exe", $"\"{Model.OutputDirectory}\"");
+            try
+            {
+                Process.Start("explorer.exe", $"\"{Model.OutputDirectory}\"");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Não foi possível abrir a pasta:\n{ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 
     [RelayCommand]
     private void Play()
     {
-        string fileToPlay = Model.FileExists ? Model.FullPath : (Model.PartFileExists ? Model.PartFullPath : string.Empty);
+        string? fileToPlay = Model.ExistingFilePath;
         if (!string.IsNullOrEmpty(fileToPlay) && File.Exists(fileToPlay))
         {
             try
@@ -178,18 +192,39 @@ public partial class DownloadItemViewModel : ObservableObject
         }
     }
 
+    public event Action<string>? LogLineReceived;
+
+    public void AppendLogLine(string line)
+    {
+        Log = Model.Log;
+        LogLineReceived?.Invoke(line);
+    }
+
+    private LogViewerDialog? _activeLogDialog;
+
     [RelayCommand]
     private void ViewLog()
     {
-        var logWindow = new LogViewerDialog(Log, Title);
-        logWindow.Owner = System.Windows.Application.Current.MainWindow;
-        logWindow.ShowDialog();
+        if (_activeLogDialog != null && _activeLogDialog.IsLoaded)
+        {
+            _activeLogDialog.Activate();
+            if (_activeLogDialog.WindowState == WindowState.Minimized)
+            {
+                _activeLogDialog.WindowState = WindowState.Normal;
+            }
+            return;
+        }
+
+        _activeLogDialog = new LogViewerDialog(this);
+        _activeLogDialog.Owner = System.Windows.Application.Current.MainWindow;
+        _activeLogDialog.Closed += (s, e) => _activeLogDialog = null;
+        _activeLogDialog.Show();
     }
 
     [RelayCommand]
     private void DeleteFile()
     {
-        string targetFile = Model.FileExists ? Model.FullPath : (Model.PartFileExists ? Model.PartFullPath : FileName);
+        string? targetFile = Model.ExistingFilePath ?? (Model.FileExists ? Model.FullPath : (Model.PartFileExists ? Model.PartFullPath : FileName));
         var result = MessageBox.Show(
             $"Deseja realmente excluir o arquivo do disco?\n{targetFile}",
             "Confirmar Exclusão de Arquivo",
@@ -201,8 +236,14 @@ public partial class DownloadItemViewModel : ObservableObject
         {
             try
             {
-                if (Model.PartFileExists) File.Delete(Model.PartFullPath);
-                if (Model.FileExists) File.Delete(Model.FullPath);
+                if (!string.IsNullOrEmpty(targetFile) && File.Exists(targetFile))
+                {
+                    File.Delete(targetFile);
+                }
+                if (Model.PartFileExists)
+                {
+                    File.Delete(Model.PartFullPath);
+                }
                 UpdateFromModel();
             }
             catch (Exception ex)
