@@ -578,7 +578,7 @@ public partial class MainViewModel : ObservableObject
         bool playlist = req.Playlist ?? false;
 
         // 5. Extra options: strictly from extension (default empty) - IGNORE application UI state
-        string extraOpts = req.ExtraOptions ?? string.Empty;
+        string extraOpts = !string.IsNullOrWhiteSpace(req.ExtraOptions) ? req.ExtraOptions : (req.ExtraArgs ?? string.Empty);
 
         // 6. Cookies: strictly from extension
         string? tempCookiePath = null;

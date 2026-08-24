@@ -522,3 +522,35 @@ body {
   border-color: var(--primary-light);
   color: var(--text-primary);
 }
+
+/* Extra Args Group and Text Input */
+.extra-args-group {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
+}
+
+.custom-text-input {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 6px 10px;
+  font-size: 11px;
+  font-family: Consolas, Monaco, "Courier New", monospace;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  margin-top: 4px;
+}
+
+.custom-text-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.custom-text-input::placeholder {
+  color: var(--text-muted);
+  font-family: var(--font-family);
+  font-size: 11px;
+}

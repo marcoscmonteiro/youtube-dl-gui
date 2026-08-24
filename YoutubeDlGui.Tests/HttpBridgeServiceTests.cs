@@ -234,4 +234,41 @@ public class HttpBridgeServiceTests
             await bridge.StopAsync();
         }
     }
+
+    [Fact]
+    public async Task HttpBridgeService_DownloadWithExtraOptions_PassesExtraOptionsCorrectly()
+    {
+        int testPort = 48196;
+        using var bridge = new HttpBridgeService();
+        await bridge.StartAsync(testPort);
+
+        ExternalDownloadRequest? receivedReq = null;
+        bridge.DownloadRequested += (s, req) =>
+        {
+            receivedReq = req;
+        };
+
+        try
+        {
+            using var httpClient = new HttpClient();
+            var payload = new
+            {
+                url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                quality = "Best",
+                extraOptions = "--limit-rate 5M --embed-subs"
+            };
+
+            var response = await httpClient.PostAsJsonAsync($"http://127.0.0.1:{testPort}/api/download", payload);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            await Task.Delay(100);
+
+            Assert.NotNull(receivedReq);
+            Assert.Equal("--limit-rate 5M --embed-subs", receivedReq!.ExtraOptions);
+        }
+        finally
+        {
+            await bridge.StopAsync();
+        }
+    }
 }

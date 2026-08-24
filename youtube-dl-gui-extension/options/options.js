@@ -20,7 +20,8 @@ async function loadOptions() {
     showNotifications: true,
     downloadDirectory: '',
     sendCookiesDefault: true,
-    selectedPlayerClients: []
+    selectedPlayerClients: [],
+    defaultExtraArgs: ''
   });
 
   const port = data.serverPort || DEFAULT_PORT;
@@ -39,6 +40,11 @@ async function loadOptions() {
   const dirInput = document.getElementById('download-directory');
   if (data.downloadDirectory) {
     dirInput.value = data.downloadDirectory;
+  }
+
+  const extraArgsInput = document.getElementById('default-extra-args');
+  if (extraArgsInput && data.defaultExtraArgs) {
+    extraArgsInput.value = data.defaultExtraArgs;
   }
 
   // Attempt to fetch default downloads folder from connected desktop app
@@ -96,6 +102,7 @@ async function saveOptions() {
   const sendCookiesDefault = document.getElementById('chk-cookies-default').checked;
   const showNotifications = document.getElementById('chk-notifications').checked;
   const downloadDirectory = document.getElementById('download-directory').value.trim();
+  const defaultExtraArgs = document.getElementById('default-extra-args')?.value.trim() || '';
 
   const selectedPlayerClients = Array.from(document.querySelectorAll('input[name="opt-yt-client"]:checked'))
     .map(cb => cb.value);
@@ -108,7 +115,8 @@ async function saveOptions() {
     sendCookiesDefault,
     showNotifications,
     downloadDirectory,
-    selectedPlayerClients
+    selectedPlayerClients,
+    defaultExtraArgs
   });
 
   const statusEl = document.getElementById('save-status');

@@ -9,6 +9,7 @@ public class ExternalDownloadRequest
     public bool? AudioOnly { get; set; }
     public bool? Playlist { get; set; }
     public string? ExtraOptions { get; set; }
+    public string? ExtraArgs { get; set; }
     public string? DownloadDirectory { get; set; }
     public string? OutputDirectory { get; set; }
     public string? CookiesText { get; set; }

@@ -27,7 +27,8 @@ async function loadStoredConfig() {
     downloadPlaylistDefault: false,
     downloadDirectory: '',
     sendCookiesDefault: true,
-    selectedPlayerClients: []
+    selectedPlayerClients: [],
+    defaultExtraArgs: ''
   });
 
   serverPort = config.serverPort || DEFAULT_PORT;
@@ -57,10 +58,21 @@ async function loadStoredConfig() {
   document.querySelectorAll('input[name="yt-client"]').forEach(cb => {
     cb.checked = clients.includes(cb.value);
   });
+
+  const inputExtraArgs = document.getElementById('input-extra-args');
+  if (inputExtraArgs && config.defaultExtraArgs) {
+    inputExtraArgs.value = config.defaultExtraArgs;
+  }
 }
 
 // Setup all click and change listeners
 function setupUIEventListeners() {
+  // Clear extra arguments input
+  document.getElementById('btn-clear-extra-args')?.addEventListener('click', () => {
+    const input = document.getElementById('input-extra-args');
+    if (input) input.value = '';
+  });
+
   // Reset client chips to native yt-dlp default (none selected)
   document.getElementById('btn-reset-clients')?.addEventListener('click', () => {
     document.querySelectorAll('input[name="yt-client"]').forEach(cb => {
@@ -223,6 +235,7 @@ async function onDownloadClicked() {
   const selectedClients = Array.from(document.querySelectorAll('input[name="yt-client"]:checked'))
     .map(cb => cb.value);
   const playerClients = selectedClients.length > 0 ? selectedClients.join(',') : undefined;
+  const extraArgs = document.getElementById('input-extra-args')?.value.trim() || undefined;
 
   const payload = {
     url: currentTab.url.trim(),
@@ -233,7 +246,8 @@ async function onDownloadClicked() {
     playlist: playlist,
     downloadDirectory: downloadDirectory || undefined,
     cookiesText: cookiesText || undefined,
-    playerClients: playerClients
+    playerClients: playerClients,
+    extraOptions: extraArgs
   };
 
   try {

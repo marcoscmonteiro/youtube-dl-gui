@@ -83,7 +83,8 @@ async function handleDownloadRequest(url, title = '') {
       showNotifications: true,
       downloadDirectory: '',
       sendCookiesDefault: true,
-      selectedPlayerClients: []
+      selectedPlayerClients: [],
+      defaultExtraArgs: ''
     });
 
     const port = config.serverPort || DEFAULT_PORT;
@@ -111,7 +112,8 @@ async function handleDownloadRequest(url, title = '') {
       playlist: false,
       downloadDirectory: config.downloadDirectory || undefined,
       cookiesText: cookiesText || undefined,
-      playerClients: playerClients
+      playerClients: playerClients,
+      extraOptions: config.defaultExtraArgs || undefined
     };
 
     const response = await fetch(endpoint, {
