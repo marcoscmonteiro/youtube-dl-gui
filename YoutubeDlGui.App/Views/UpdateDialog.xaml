@@ -1,0 +1,38 @@
+<Window x:Class="YoutubeDlGui.App.Views.UpdateDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Atualizar yt-dlp / youtube-dl" Height="440" Width="640"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource WindowBackgroundBrush}">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Row 0: Title Header -->
+        <TextBlock Grid.Row="0" Text="Atualização do Motor de Download" FontSize="16" FontWeight="SemiBold"
+                   Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,10"/>
+
+        <!-- Row 1: Progress Bar -->
+        <ProgressBar Grid.Row="1" x:Name="ProgressBarUpdate" IsIndeterminate="True" 
+                     Style="{DynamicResource ModernProgressBar}" Margin="0,0,0,14"/>
+
+        <!-- Row 2: Console Log Output -->
+        <Border Grid.Row="2" Background="{DynamicResource CardBackgroundBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="6">
+            <TextBox x:Name="TextBoxOutput" IsReadOnly="True" TextWrapping="Wrap"
+                     FontFamily="Consolas, Cascadia Code, Courier New" FontSize="12"
+                     Background="Transparent" Foreground="{DynamicResource TextPrimaryBrush}"
+                     BorderThickness="0" Padding="12" VerticalScrollBarVisibility="Auto"
+                     CaretBrush="{DynamicResource AccentLightBrush}"/>
+        </Border>
+
+        <!-- Row 3: Actions -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
+            <Button x:Name="ButtonClose" Content="Fechar" Style="{DynamicResource AccentButton}" IsEnabled="False" Click="Close_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

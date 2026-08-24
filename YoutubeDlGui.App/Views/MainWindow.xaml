@@ -1,0 +1,331 @@
+<Window x:Class="YoutubeDlGui.App.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodels="clr-namespace:YoutubeDlGui.App.ViewModels"
+        mc:Ignorable="d"
+        Title="yt-dlp GUI Modern" Height="720" Width="1040" MinHeight="550" MinWidth="800"
+        WindowStartupLocation="CenterScreen"
+        Icon="../VideoDownload.ico"
+        Background="{DynamicResource WindowBackgroundBrush}">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Header / Top Bar -->
+            <RowDefinition Height="Auto"/>
+            <!-- Input Card -->
+            <RowDefinition Height="Auto"/>
+            <!-- Content List Header & Search -->
+            <RowDefinition Height="Auto"/>
+            <!-- Downloads List -->
+            <RowDefinition Height="*"/>
+            <!-- Status Bar -->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 1. Header / Top Navigation Bar -->
+        <Border Grid.Row="0" Background="{DynamicResource HeaderBackgroundBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Brand / Logo -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Background="{DynamicResource AccentBrush}" CornerRadius="8" Width="36" Height="36" Margin="0,0,12,0">
+                        <TextBlock Text="▶" Foreground="White" FontSize="18" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="yt-dlp GUI" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <Border Background="{DynamicResource AccentLightBrush}" CornerRadius="4" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="Modern v2.0" FontSize="10" FontWeight="SemiBold" Foreground="White"/>
+                            </Border>
+                        </StackPanel>
+                        <TextBlock Text="Gerenciador e downloader com suporte a tema escuro" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Top Quick Actions & Theme Switcher -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="⚡ Atualizar Engine" Style="{DynamicResource SecondaryButton}" 
+                            Command="{Binding UpdateEngineCommand}" Margin="0,0,8,0"/>
+                    <Button Content="❓ Ajuda CLI" Style="{DynamicResource SecondaryButton}" 
+                            Command="{Binding OpenHelpCommand}" Margin="0,0,8,0"/>
+                    <Button Content="🔄 Restaurar Padrões" Style="{DynamicResource SecondaryButton}" 
+                            Command="{Binding ResetSettingsCommand}" Margin="0,0,16,0"/>
+
+                    <!-- Dark Mode Toggle Switch -->
+                    <Border Background="{DynamicResource CardBackgroundHoverBrush}" CornerRadius="20" Padding="8,4" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🌙 Tema Escuro" FontSize="12" FontWeight="Medium" Foreground="{DynamicResource TextPrimaryBrush}" 
+                                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <CheckBox IsChecked="{Binding IsDarkMode, Mode=TwoWay}" Style="{DynamicResource ModernCheckBox}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- 2. Input Card (URL, Formats, Directory, Buttons) -->
+        <Border Grid.Row="1" Margin="20,16,20,10" Style="{DynamicResource ModernCard}">
+            <StackPanel>
+                <!-- URL Input Row -->
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="URL do Vídeo:" FontSize="14" FontWeight="SemiBold" 
+                               Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    
+                    <TextBox Grid.Column="1" Style="{DynamicResource ModernTextBox}" 
+                             Text="{Binding UrlInput, UpdateSourceTrigger=PropertyChanged}" 
+                             KeyDown="TextBoxUrl_KeyDown"
+                             VerticalAlignment="Center"/>
+
+                    <Button Grid.Column="2" Content="📋 Colar" Style="{DynamicResource SecondaryButton}" 
+                            Command="{Binding PasteFromClipboardCommand}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+
+                    <Button Grid.Column="3" Content="⬇ Iniciar Download" Style="{DynamicResource AccentButton}" 
+                            Command="{Binding StartDownloadCommand}" Margin="8,0,0,0" Padding="20,9" VerticalAlignment="Center"/>
+                </Grid>
+
+                <!-- Options Row: Directory + Quality + Audio -->
+                <Grid Margin="0,0,0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Work Dir -->
+                    <DockPanel Margin="0,0,12,0">
+                        <TextBlock Text="Destino:" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" 
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <Button DockPanel.Dock="Right" Content="📁 Procurar..." Style="{DynamicResource SecondaryButton}" 
+                                Command="{Binding BrowseFolderCommand}" Margin="6,0,0,0"/>
+                        <TextBox Style="{DynamicResource ModernTextBox}" Text="{Binding WorkDir, UpdateSourceTrigger=PropertyChanged}" 
+                                 Padding="8,5" FontSize="13"/>
+                    </DockPanel>
+
+                    <!-- Video Quality -->
+                    <DockPanel Grid.Column="1" Margin="0,0,12,0">
+                        <TextBlock Text="Qualidade:" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" 
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <ComboBox Style="{DynamicResource ModernComboBox}" 
+                                  ItemsSource="{Binding VideoQualityList}" 
+                                  SelectedItem="{Binding SelectedQuality}"/>
+                    </DockPanel>
+
+                    <!-- Audio Format -->
+                    <DockPanel Grid.Column="2" Margin="0,0,12,0">
+                        <TextBlock Text="Áudio:" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" 
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <ComboBox Style="{DynamicResource ModernComboBox}" 
+                                  ItemsSource="{Binding AudioFormatList}" 
+                                  SelectedItem="{Binding SelectedAudioFormat}"/>
+                    </DockPanel>
+
+                    <!-- Expand Advanced Options Button -->
+                    <Button Grid.Column="3" Content="⚙ Opções" Style="{DynamicResource SecondaryButton}" 
+                            Command="{Binding ToggleAdvancedOptionsCommand}"/>
+                </Grid>
+
+                <!-- Advanced Collapsible Options -->
+                <Border Visibility="{Binding IsAdvancedOptionsOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Background="{DynamicResource ControlBackgroundBrush}" CornerRadius="6" Padding="14,10" Margin="0,12,0,0"
+                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <CheckBox Content="Download de Playlist" IsChecked="{Binding DownloadPlaylist, Mode=TwoWay}" Style="{DynamicResource ModernCheckBox}" Margin="0,0,24,0"/>
+                            <CheckBox Content="Sem Diretório de Cache (--no-cache-dir)" IsChecked="{Binding NoCacheDir, Mode=TwoWay}" Style="{DynamicResource ModernCheckBox}" Margin="0,0,24,0"/>
+                            <CheckBox Content="Não usar arquivos parciais (.part)" IsChecked="{Binding NoPartFile, Mode=TwoWay}" Style="{DynamicResource ModernCheckBox}" Margin="0,0,24,0"/>
+                            <CheckBox Content="Auto colar da área de transferência" IsChecked="{Binding ClipboardAutoPaste, Mode=TwoWay}" Style="{DynamicResource ModernCheckBox}" Margin="0,0,24,0"/>
+                        </WrapPanel>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Argumentos Extras:" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" 
+                                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Grid.Column="1" Style="{DynamicResource ModernTextBox}" 
+                                     Text="{Binding ExtraOptions, UpdateSourceTrigger=PropertyChanged}" Padding="8,4" FontSize="13"/>
+
+                            <TextBlock Grid.Column="2" Text="Downloads simultâneos:" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" 
+                                       VerticalAlignment="Center" Margin="16,0,8,0"/>
+                            <TextBox Grid.Column="3" Style="{DynamicResource ModernTextBox}" 
+                                     Text="{Binding MaxConcurrentDownloads, UpdateSourceTrigger=PropertyChanged}" 
+                                     HorizontalContentAlignment="Center" Padding="8,4" FontSize="13"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <!-- 3. Downloads List Toolbar & Filter -->
+        <Grid Grid.Row="2" Margin="20,4,20,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Search / Filter -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Fila de Downloads" FontSize="16" FontWeight="SemiBold" 
+                           Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                <TextBox Width="260" Style="{DynamicResource ModernTextBox}" 
+                         Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" 
+                         Padding="10,5" FontSize="13"/>
+            </StackPanel>
+
+            <!-- Quick List Controls -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Content="🧹 Limpar Concluídos" Style="{DynamicResource SecondaryButton}" 
+                        Command="{Binding ClearCompletedCommand}" Margin="0,0,8,0"/>
+                <Button Content="⏹ Cancelar Todos" Style="{DynamicResource SecondaryButton}" 
+                        Command="{Binding CancelAllCommand}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- 4. Downloads List Items (Modern Cards) -->
+        <ScrollViewer Grid.Row="3" Margin="20,0,20,10" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding FilteredDownloads}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:DownloadItemViewModel}">
+                        <Border Style="{DynamicResource ModernCard}" Margin="0,0,0,8" Padding="14,10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Top Row: Status Badge, Title / URL, Action Buttons -->
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Status Badge -->
+                                    <Border Background="{Binding Status, Converter={StaticResource StatusToBrushConverter}}"
+                                            CornerRadius="4" Padding="8,3" Margin="0,0,12,0" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Status, Converter={StaticResource StatusToTextConverter}}" 
+                                                   FontSize="11" FontWeight="Bold" Foreground="White"/>
+                                    </Border>
+
+                                    <!-- Title & Filename -->
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="SemiBold" 
+                                                   Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding FileName}" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" 
+                                                   TextTrimming="CharacterEllipsis" Margin="0,2,0,0"
+                                                   Visibility="{Binding FileName, Converter={StaticResource NullOrEmptyToVisibilityConverter}}"/>
+                                    </StackPanel>
+
+                                    <!-- Actions Toolbar -->
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Button Content="▶ Reproduzir" Style="{DynamicResource SecondaryButton}" 
+                                                Command="{Binding PlayCommand}" IsEnabled="{Binding CanPlay}" Margin="0,0,6,0" Padding="8,4" FontSize="12"/>
+                                        <Button Content="📁 Pasta" Style="{DynamicResource SecondaryButton}" 
+                                                Command="{Binding OpenFolderCommand}" IsEnabled="{Binding CanOpenFolder}" Margin="0,0,6,0" Padding="8,4" FontSize="12"/>
+                                        <Button Content="📋 Log" Style="{DynamicResource SecondaryButton}" 
+                                                Command="{Binding ViewLogCommand}" Margin="0,0,6,0" Padding="8,4" FontSize="12"/>
+                                        <Button Content="🔄 Repetir" Style="{DynamicResource SecondaryButton}" 
+                                                Command="{Binding RetryCommand}" IsEnabled="{Binding CanRetry}" Margin="0,0,6,0" Padding="8,4" FontSize="12"/>
+                                        <Button Content="⏹ Cancelar" Style="{DynamicResource SecondaryButton}" 
+                                                Command="{Binding CancelCommand}" IsEnabled="{Binding CanCancel}" Margin="0,0,6,0" Padding="8,4" FontSize="12"/>
+                                        <Button Content="🗑 Excluir" Style="{DynamicResource SecondaryButton}" 
+                                                Command="{Binding DeleteFileCommand}" Padding="8,4" FontSize="12"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Middle Row: Animated Progress Bar -->
+                                <ProgressBar Grid.Row="1" Value="{Binding ProgressPercentage}" Maximum="100" 
+                                             Style="{DynamicResource ModernProgressBar}" Margin="0,10,0,6"/>
+
+                                <!-- Bottom Row: Metrics & Status message -->
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" 
+                                               TextTrimming="CharacterEllipsis"/>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <TextBlock Text="{Binding DownloadSpeed}" FontSize="12" FontWeight="Medium" Foreground="{DynamicResource AccentLightBrush}" Margin="0,0,12,0"
+                                                   Visibility="{Binding DownloadSpeed, Converter={StaticResource NullOrEmptyToVisibilityConverter}}"/>
+                                        <TextBlock Text="{Binding TotalSize}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,12,0"
+                                                   Visibility="{Binding TotalSize, Converter={StaticResource NullOrEmptyToVisibilityConverter}}"/>
+                                        <TextBlock Text="{Binding Eta}" FontSize="12" Foreground="{DynamicResource TextMutedBrush}"
+                                                   Visibility="{Binding Eta, Converter={StaticResource NullOrEmptyToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- 5. Modern Bottom Status Bar -->
+        <Border Grid.Row="4" Background="{DynamicResource StatusBarBackgroundBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Padding="20,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <Border Background="{DynamicResource CardBackgroundBrush}" CornerRadius="4" Padding="8,3" Margin="0,0,8,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⚡ Baixando: " FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding TotalActiveCount}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource AccentLightBrush}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{DynamicResource CardBackgroundBrush}" CornerRadius="4" Padding="8,3" Margin="0,0,8,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⏳ Na Fila: " FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding TotalQueuedCount}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{DynamicResource CardBackgroundBrush}" CornerRadius="4" Padding="8,3" Margin="0,0,8,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="✅ Concluídos: " FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding TotalCompletedCount}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource SuccessBrush}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{DynamicResource CardBackgroundBrush}" CornerRadius="4" Padding="8,3">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="❌ Erros: " FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding TotalFailedCount}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource DangerBrush}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <TextBlock Grid.Column="2" Text="yt-dlp GUI Modern • Desenvolvido em .NET 8 WPF" 
+                           FontSize="11" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

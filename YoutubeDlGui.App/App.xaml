@@ -1,0 +1,20 @@
+<Application x:Class="YoutubeDlGui.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:YoutubeDlGui.App.Converters">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Theme.Dark.xaml" />
+                <ResourceDictionary Source="Styles/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Global Converters -->
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters:StatusToBrushConverter x:Key="StatusToBrushConverter" />
+            <converters:StatusToTextConverter x:Key="StatusToTextConverter" />
+            <converters:NullOrEmptyToVisibilityConverter x:Key="NullOrEmptyToVisibilityConverter" />
+            <converters:NullOrEmptyToVisibilityConverter x:Key="InvertedNullOrEmptyToVisibilityConverter" Invert="True" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
