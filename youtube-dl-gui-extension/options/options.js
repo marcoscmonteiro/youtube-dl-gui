@@ -20,7 +20,7 @@ async function loadOptions() {
     showNotifications: true,
     downloadDirectory: '',
     sendCookiesDefault: true,
-    selectedPlayerClients: ['android', 'web', 'ios']
+    selectedPlayerClients: []
   });
 
   const port = data.serverPort || DEFAULT_PORT;
@@ -31,7 +31,7 @@ async function loadOptions() {
   document.getElementById('chk-cookies-default').checked = data.sendCookiesDefault !== false;
   document.getElementById('chk-notifications').checked = data.showNotifications !== false;
 
-  const clients = Array.isArray(data.selectedPlayerClients) ? data.selectedPlayerClients : ['android', 'web', 'ios'];
+  const clients = Array.isArray(data.selectedPlayerClients) ? data.selectedPlayerClients : [];
   document.querySelectorAll('input[name="opt-yt-client"]').forEach(cb => {
     cb.checked = clients.includes(cb.value);
   });
@@ -75,22 +75,15 @@ function setupEventListeners() {
   });
 
   // Preset Buttons
-  document.getElementById('btn-preset-recommended')?.addEventListener('click', () => {
-    const recommended = ['android', 'web', 'ios'];
+  document.getElementById('btn-preset-none')?.addEventListener('click', () => {
     document.querySelectorAll('input[name="opt-yt-client"]').forEach(cb => {
-      cb.checked = recommended.includes(cb.value);
+      cb.checked = false;
     });
   });
 
   document.getElementById('btn-preset-all')?.addEventListener('click', () => {
     document.querySelectorAll('input[name="opt-yt-client"]').forEach(cb => {
       cb.checked = true;
-    });
-  });
-
-  document.getElementById('btn-preset-none')?.addEventListener('click', () => {
-    document.querySelectorAll('input[name="opt-yt-client"]').forEach(cb => {
-      cb.checked = false;
     });
   });
 }

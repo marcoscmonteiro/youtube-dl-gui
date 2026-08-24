@@ -83,7 +83,7 @@ async function handleDownloadRequest(url, title = '') {
       showNotifications: true,
       downloadDirectory: '',
       sendCookiesDefault: true,
-      selectedPlayerClients: ['android', 'web', 'ios']
+      selectedPlayerClients: []
     });
 
     const port = config.serverPort || DEFAULT_PORT;

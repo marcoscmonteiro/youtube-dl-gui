@@ -27,7 +27,7 @@ async function loadStoredConfig() {
     downloadPlaylistDefault: false,
     downloadDirectory: '',
     sendCookiesDefault: true,
-    selectedPlayerClients: ['android', 'web', 'ios']
+    selectedPlayerClients: []
   });
 
   serverPort = config.serverPort || DEFAULT_PORT;
@@ -53,7 +53,7 @@ async function loadStoredConfig() {
     chkCookies.checked = config.sendCookiesDefault !== false;
   }
 
-  const clients = Array.isArray(config.selectedPlayerClients) ? config.selectedPlayerClients : ['android', 'web', 'ios'];
+  const clients = Array.isArray(config.selectedPlayerClients) ? config.selectedPlayerClients : [];
   document.querySelectorAll('input[name="yt-client"]').forEach(cb => {
     cb.checked = clients.includes(cb.value);
   });
@@ -61,11 +61,10 @@ async function loadStoredConfig() {
 
 // Setup all click and change listeners
 function setupUIEventListeners() {
-  // Reset client chips to recommended
+  // Reset client chips to native yt-dlp default (none selected)
   document.getElementById('btn-reset-clients')?.addEventListener('click', () => {
-    const recommended = ['android', 'web', 'ios'];
     document.querySelectorAll('input[name="yt-client"]').forEach(cb => {
-      cb.checked = recommended.includes(cb.value);
+      cb.checked = false;
     });
   });
   // Format mode toggle (Video / Audio)
