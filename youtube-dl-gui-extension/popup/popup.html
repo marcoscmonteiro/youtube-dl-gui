@@ -46,9 +46,8 @@
       <div class="card-header">
         <span class="card-label">URL da Página Ativa</span>
       </div>
-      <h2 id="media-title" class="media-title">Carregando informações da aba...</h2>
       <div class="url-badge-container">
-        <span id="media-url" class="media-url">https://...</span>
+        <span id="media-url" class="media-url" title="URL da página ativa">https://...</span>
         <button id="btn-copy-url" class="btn-copy" title="Copiar URL">
           <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -149,10 +148,17 @@
         </div>
       </div>
 
-      <!-- Extra Custom Arguments (Free Text) -->
+      <!-- Extra Custom Arguments (Free Text with Docs Link) -->
       <div class="form-group extra-args-group" id="group-extra-args">
         <div class="label-with-action">
-          <label for="input-extra-args" class="form-label" title="Argumentos e parâmetros adicionais de linha de comando para o yt-dlp">Argumentos Extras (yt-dlp)</label>
+          <a href="https://github.com/yt-dlp/yt-dlp#usage-and-options" target="_blank" rel="noopener noreferrer" class="form-label form-label-link" title="Abrir documentação oficial do yt-dlp com todos os argumentos disponíveis (abre em nova aba)">
+            <span>Argumentos Extras (yt-dlp)</span>
+            <svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" stroke-width="2.5" fill="none">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </a>
           <button id="btn-clear-extra-args" class="btn-link" type="button" title="Limpar argumentos extras">Limpar</button>
         </div>
         <input type="text" id="input-extra-args" class="custom-text-input" placeholder="Ex: --limit-rate 5M --embed-subs --sub-lang pt">

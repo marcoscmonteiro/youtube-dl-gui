@@ -73,6 +73,21 @@ function setupUIEventListeners() {
     if (input) input.value = '';
   });
 
+  // Open external links reliably in a new tab
+  document.querySelectorAll('a[target="_blank"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const href = link.getAttribute('href');
+      if (href) {
+        if (typeof crossBrowser !== 'undefined' && crossBrowser.tabs && crossBrowser.tabs.create) {
+          crossBrowser.tabs.create({ url: href });
+        } else {
+          window.open(href, '_blank', 'noopener,noreferrer');
+        }
+      }
+    });
+  });
+
   // Reset client chips to native yt-dlp default (none selected)
   document.getElementById('btn-reset-clients')?.addEventListener('click', () => {
     document.querySelectorAll('input[name="yt-client"]').forEach(cb => {
@@ -138,16 +153,25 @@ async function inspectCurrentTab() {
     const chkPlaylist = document.getElementById('chk-playlist');
 
     if (tab && tab.url) {
-      titleEl.textContent = tab.title || 'Mídia da Aba Atual';
-      urlEl.textContent = tab.url;
+      if (titleEl) {
+        titleEl.textContent = tab.title || 'Mídia da Aba Atual';
+      }
+      if (urlEl) {
+        urlEl.textContent = tab.url;
+        urlEl.title = tab.title ? `${tab.title}\n(${tab.url})` : tab.url;
+      }
 
       // Auto-detect YouTube or other playlist parameter in URL
       if (tab.url.includes('list=') || tab.url.includes('/playlist') || tab.url.includes('album')) {
         chkPlaylist.checked = true;
       }
     } else {
-      titleEl.textContent = 'Nenhuma aba ativa compatível detectada';
-      urlEl.textContent = 'about:blank';
+      if (titleEl) {
+        titleEl.textContent = 'Nenhuma aba ativa compatível detectada';
+      }
+      if (urlEl) {
+        urlEl.textContent = 'about:blank';
+      }
       document.getElementById('btn-download').disabled = true;
     }
   } catch (err) {
