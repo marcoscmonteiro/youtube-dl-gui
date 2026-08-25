@@ -78,6 +78,15 @@ public partial class MainViewModel : ObservableObject
     public int TotalCompletedCount => Downloads.Count(d => d.Status == DownloadStatus.Completed);
     public int TotalFailedCount => Downloads.Count(d => d.Status == DownloadStatus.Failed);
 
+    public string AppVersion
+    {
+        get
+        {
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            return version != null ? $"v{version.Major}.{version.Minor}" : "v2.0";
+        }
+    }
+
     public Array VideoQualityList => Enum.GetValues(typeof(VideoQuality));
     public Array AudioFormatList => Enum.GetValues(typeof(AudioFormat));
 

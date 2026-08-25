@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:YoutubeDlGui.App.ViewModels"
         mc:Ignorable="d"
-        Title="yt-dlp GUI Modern" Height="720" Width="1040" MinHeight="550" MinWidth="1000"
+        Title="yt-dlp GUI" Height="720" Width="1040" MinHeight="550" MinWidth="1000"
         WindowStartupLocation="CenterScreen"
         Icon="../VideoDownload.ico"
         Background="{DynamicResource WindowBackgroundBrush}">
@@ -36,19 +36,8 @@
 
                 <!-- Brand / Logo -->
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Border Background="{DynamicResource AccentBrush}" CornerRadius="8" Width="36" Height="36" Margin="0,0,12,0">
-                        <TextBlock Text="▶" Foreground="White" FontSize="18" FontWeight="Bold" 
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                    <StackPanel VerticalAlignment="Center">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="yt-dlp GUI" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                            <Border Background="{DynamicResource AccentLightBrush}" CornerRadius="4" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
-                                <TextBlock Text="Modern v2.0" FontSize="10" FontWeight="SemiBold" Foreground="White"/>
-                            </Border>
-                        </StackPanel>
-                        <TextBlock Text="Gerenciador e downloader com suporte a tema escuro" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
-                    </StackPanel>
+                    <Image Source="/VideoDownload.ico" Width="36" Height="36" Margin="0,0,12,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <TextBlock Text="yt-dlp GUI" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <!-- Top Quick Actions & Theme Switcher -->
@@ -95,7 +84,7 @@
                     <Button Grid.Column="2" Content="📋 Colar" Style="{DynamicResource SecondaryButton}" 
                             Command="{Binding PasteFromClipboardCommand}" Margin="8,0,0,0" VerticalAlignment="Center"/>
 
-                    <Button Grid.Column="3" Content="⬇ Iniciar Download" Style="{DynamicResource AccentButton}" 
+                    <Button Grid.Column="3" Content="⬇ Iniciar Download" Style="{DynamicResource RedAccentButton}" 
                             Command="{Binding StartDownloadCommand}" Margin="8,0,0,0" Padding="20,9" VerticalAlignment="Center"/>
                 </Grid>
 
@@ -332,7 +321,7 @@
                     </Border>
                 </StackPanel>
 
-                <TextBlock Grid.Column="2" Text="yt-dlp GUI Modern • Desenvolvido em .NET 8 WPF" 
+                <TextBlock Grid.Column="2" Text="{Binding AppVersion}" 
                            FontSize="11" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center"/>
             </Grid>
         </Border>
