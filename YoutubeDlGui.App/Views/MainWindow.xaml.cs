@@ -23,6 +23,45 @@ public partial class MainWindow : Window
 
         Activated += MainWindow_Activated;
         Closing += MainWindow_Closing;
+        StateChanged += MainWindow_StateChanged;
+    }
+
+    private void MainWindow_StateChanged(object? sender, EventArgs e)
+    {
+        if (WindowState == WindowState.Maximized)
+        {
+            PathMaximize.Data = System.Windows.Media.Geometry.Parse("M 2 0 L 10 0 L 10 8 M 0 2 L 8 2 L 8 10 L 0 10 Z");
+            ButtonMaximize.ToolTip = "Restaurar";
+            RootGrid.Margin = new Thickness(6);
+        }
+        else
+        {
+            PathMaximize.Data = System.Windows.Media.Geometry.Parse("M 0 0 L 10 0 L 10 10 L 0 10 Z");
+            ButtonMaximize.ToolTip = "Maximizar";
+            RootGrid.Margin = new Thickness(0);
+        }
+    }
+
+    private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+    {
+        SystemCommands.MinimizeWindow(this);
+    }
+
+    private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (WindowState == WindowState.Maximized)
+        {
+            SystemCommands.RestoreWindow(this);
+        }
+        else
+        {
+            SystemCommands.MaximizeWindow(this);
+        }
+    }
+
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        SystemCommands.CloseWindow(this);
     }
 
     private void RestoreWindowPlacement()

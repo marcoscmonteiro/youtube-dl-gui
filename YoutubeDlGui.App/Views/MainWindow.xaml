@@ -9,10 +9,18 @@
         WindowStartupLocation="CenterScreen"
         Icon="../VideoDownload.ico"
         Background="{DynamicResource WindowBackgroundBrush}">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="56"
+                      ResizeBorderThickness="6"
+                      GlassFrameThickness="0"
+                      CornerRadius="0"
+                      UseAeroCaptionButtons="False" />
+    </WindowChrome.WindowChrome>
     
-    <Grid>
+    <Grid x:Name="RootGrid">
         <Grid.RowDefinitions>
-            <!-- Header / Top Bar -->
+            <!-- Header / Custom Title Bar -->
             <RowDefinition Height="Auto"/>
             <!-- Input Card -->
             <RowDefinition Height="Auto"/>
@@ -24,39 +32,72 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- 1. Header / Top Navigation Bar -->
+        <!-- 1. Header / Custom Title Bar -->
         <Border Grid.Row="0" Background="{DynamicResource HeaderBackgroundBrush}" 
-                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Padding="20,12">
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Padding="20,10,12,10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Brand / Logo -->
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Image Source="/VideoDownload.ico" Width="36" Height="36" Margin="0,0,12,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
-                    <TextBlock Text="yt-dlp GUI" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                    <Image Source="/VideoDownload.ico" Width="32" Height="32" Margin="0,0,12,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <TextBlock Text="yt-dlp GUI" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <!-- Top Quick Actions & Theme Switcher -->
-                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
                     <Button Content="⚡ Atualizar Engine" Style="{DynamicResource SecondaryButton}" 
+                            WindowChrome.IsHitTestVisibleInChrome="True"
                             Command="{Binding UpdateEngineCommand}" Margin="0,0,8,0"/>
                     <Button Content="❓ Ajuda CLI" Style="{DynamicResource SecondaryButton}" 
+                            WindowChrome.IsHitTestVisibleInChrome="True"
                             Command="{Binding OpenHelpCommand}" Margin="0,0,8,0"/>
                     <Button Content="🔄 Restaurar Padrões" Style="{DynamicResource SecondaryButton}" 
+                            WindowChrome.IsHitTestVisibleInChrome="True"
                             Command="{Binding ResetSettingsCommand}" Margin="0,0,16,0"/>
 
                     <!-- Dark Mode Toggle Switch -->
-                    <Border Background="{DynamicResource CardBackgroundHoverBrush}" CornerRadius="20" Padding="8,4" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                    <Border Background="{DynamicResource CardBackgroundHoverBrush}" CornerRadius="20" Padding="8,4" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                            WindowChrome.IsHitTestVisibleInChrome="True">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="🌙 Tema Escuro" FontSize="12" FontWeight="Medium" Foreground="{DynamicResource TextPrimaryBrush}" 
                                        VerticalAlignment="Center" Margin="0,0,8,0"/>
                             <CheckBox IsChecked="{Binding IsDarkMode, Mode=TwoWay}" Style="{DynamicResource ModernCheckBox}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Border>
+                </StackPanel>
+
+                <!-- Window Control Buttons (Minimize, Maximize/Restore, Close) -->
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- Minimize Button -->
+                    <Button Style="{DynamicResource WindowCaptionButton}"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            Click="MinimizeButton_Click"
+                            ToolTip="Minimizar">
+                        <Path Data="M 0 0 L 10 0" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+
+                    <!-- Maximize / Restore Button -->
+                    <Button x:Name="ButtonMaximize"
+                            Style="{DynamicResource WindowCaptionButton}"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            Click="MaximizeButton_Click"
+                            ToolTip="Maximizar">
+                        <Path x:Name="PathMaximize" Data="M 0 0 L 10 0 L 10 10 L 0 10 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+
+                    <!-- Close Button -->
+                    <Button Style="{DynamicResource WindowCloseButton}"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            Click="CloseButton_Click"
+                            ToolTip="Fechar">
+                        <Path Data="M 0 0 L 10 10 M 0 10 L 10 0" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>
