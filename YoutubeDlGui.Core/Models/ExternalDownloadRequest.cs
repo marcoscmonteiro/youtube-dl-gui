@@ -15,4 +15,5 @@ public class ExternalDownloadRequest
     public string? CookiesText { get; set; }
     public string? PlayerClients { get; set; }
     public string? ExtractorArgs { get; set; }
+    public string? Proxy { get; set; }
 }

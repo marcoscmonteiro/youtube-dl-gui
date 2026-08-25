@@ -13,6 +13,7 @@ $filesToInclude = @(
     "manifest.json",
     "background.js",
     "cookieHelper.js",
+    "proxyHelper.js",
     "icons",
     "popup",
     "options"

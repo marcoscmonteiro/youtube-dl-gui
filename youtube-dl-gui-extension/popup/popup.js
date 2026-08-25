@@ -10,6 +10,7 @@ let serverPort = DEFAULT_PORT;
 let downloadDirectory = '';
 let isAudioMode = false;
 let isConnected = false;
+let detectedProxyInfo = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
   await loadStoredConfig();
@@ -27,6 +28,7 @@ async function loadStoredConfig() {
     downloadPlaylistDefault: false,
     downloadDirectory: '',
     sendCookiesDefault: true,
+    sendProxyDefault: false,
     selectedPlayerClients: [],
     defaultExtraArgs: ''
   });
@@ -52,6 +54,11 @@ async function loadStoredConfig() {
   const chkCookies = document.getElementById('chk-cookies');
   if (chkCookies) {
     chkCookies.checked = config.sendCookiesDefault !== false;
+  }
+
+  const chkProxy = document.getElementById('chk-proxy');
+  if (chkProxy) {
+    chkProxy.checked = config.sendProxyDefault || false;
   }
 
   const clients = Array.isArray(config.selectedPlayerClients) ? config.selectedPlayerClients : [];
@@ -94,6 +101,9 @@ function setupUIEventListeners() {
       cb.checked = false;
     });
   });
+  // Proxy toggle
+  document.getElementById('chk-proxy')?.addEventListener('change', updateProxyDisplay);
+
   // Format mode toggle (Video / Audio)
   const btnModeVideo = document.getElementById('mode-video');
   const btnModeAudio = document.getElementById('mode-audio');
@@ -165,6 +175,9 @@ async function inspectCurrentTab() {
       if (tab.url.includes('list=') || tab.url.includes('/playlist') || tab.url.includes('album')) {
         chkPlaylist.checked = true;
       }
+
+      // Check browser proxy for current URL
+      await checkProxySettings(tab.url);
     } else {
       if (titleEl) {
         titleEl.textContent = 'Nenhuma aba ativa compatível detectada';
@@ -173,9 +186,49 @@ async function inspectCurrentTab() {
         urlEl.textContent = 'about:blank';
       }
       document.getElementById('btn-download').disabled = true;
+      await checkProxySettings('');
     }
   } catch (err) {
     console.error('Erro ao inspecionar aba ativa:', err);
+  }
+}
+
+// Check and resolve browser proxy settings
+async function checkProxySettings(targetUrl) {
+  if (typeof getBrowserProxyForUrl === 'function') {
+    try {
+      detectedProxyInfo = await getBrowserProxyForUrl(targetUrl);
+    } catch (err) {
+      console.warn('Falha ao detectar proxy do navegador:', err);
+      detectedProxyInfo = { hasProxy: false, proxyUrl: null, description: 'Erro na detecção' };
+    }
+  } else {
+    detectedProxyInfo = { hasProxy: false, proxyUrl: null, description: 'Módulo proxyHelper não disponível' };
+  }
+  updateProxyDisplay();
+}
+
+// Update proxy preview UI
+function updateProxyDisplay() {
+  const chkProxy = document.getElementById('chk-proxy');
+  const infoBox = document.getElementById('proxy-info-box');
+  const badge = document.getElementById('proxy-arg-preview');
+  if (!chkProxy || !infoBox || !badge) return;
+
+  if (chkProxy.checked) {
+    infoBox.classList.remove('hidden');
+    if (detectedProxyInfo && detectedProxyInfo.hasProxy && detectedProxyInfo.proxyUrl) {
+      badge.textContent = `--proxy ${detectedProxyInfo.proxyUrl}`;
+      badge.className = 'proxy-arg-badge';
+      badge.title = `Tipo: ${detectedProxyInfo.description}`;
+    } else {
+      const desc = detectedProxyInfo?.description || 'Conexão direta';
+      badge.textContent = `(Nenhum proxy ativo no navegador - ${desc})`;
+      badge.className = 'proxy-arg-badge no-proxy';
+      badge.title = 'O navegador está configurado para acesso direto sem servidor proxy.';
+    }
+  } else {
+    infoBox.classList.add('hidden');
   }
 }
 
@@ -243,6 +296,7 @@ async function onDownloadClicked() {
   const audioFormat = document.getElementById('select-audio-format').value;
   const playlist = document.getElementById('chk-playlist').checked;
   const sendCookies = document.getElementById('chk-cookies')?.checked ?? true;
+  const sendProxy = document.getElementById('chk-proxy')?.checked ?? false;
 
   btn.disabled = true;
   btnText.textContent = 'Enviando...';
@@ -254,6 +308,11 @@ async function onDownloadClicked() {
     } catch (e) {
       console.warn('Falha ao exportar cookies:', e);
     }
+  }
+
+  let proxyUrl = undefined;
+  if (sendProxy && detectedProxyInfo && detectedProxyInfo.hasProxy && detectedProxyInfo.proxyUrl) {
+    proxyUrl = detectedProxyInfo.proxyUrl;
   }
 
   const selectedClients = Array.from(document.querySelectorAll('input[name="yt-client"]:checked'))
@@ -271,7 +330,8 @@ async function onDownloadClicked() {
     downloadDirectory: downloadDirectory || undefined,
     cookiesText: cookiesText || undefined,
     playerClients: playerClients,
-    extraOptions: extraArgs
+    extraOptions: extraArgs,
+    proxy: proxyUrl
   };
 
   try {

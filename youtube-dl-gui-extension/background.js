@@ -4,7 +4,7 @@
  */
 
 try {
-  importScripts('cookieHelper.js');
+  importScripts('cookieHelper.js', 'proxyHelper.js');
 } catch (e) {
   // Firefox or alternate environment
 }
@@ -83,6 +83,7 @@ async function handleDownloadRequest(url, title = '') {
       showNotifications: true,
       downloadDirectory: '',
       sendCookiesDefault: true,
+      sendProxyDefault: false,
       selectedPlayerClients: [],
       defaultExtraArgs: ''
     });
@@ -96,6 +97,18 @@ async function handleDownloadRequest(url, title = '') {
         cookiesText = await getNetscapeCookiesForUrl(url);
       } catch (err) {
         console.warn('Falha ao exportar cookies no background:', err);
+      }
+    }
+
+    let proxyUrl = undefined;
+    if (config.sendProxyDefault && typeof getBrowserProxyForUrl === 'function') {
+      try {
+        const proxyInfo = await getBrowserProxyForUrl(url);
+        if (proxyInfo && proxyInfo.hasProxy && proxyInfo.proxyUrl) {
+          proxyUrl = proxyInfo.proxyUrl;
+        }
+      } catch (err) {
+        console.warn('Falha ao detectar proxy no background:', err);
       }
     }
 
@@ -113,7 +126,8 @@ async function handleDownloadRequest(url, title = '') {
       downloadDirectory: config.downloadDirectory || undefined,
       cookiesText: cookiesText || undefined,
       playerClients: playerClients,
-      extraOptions: config.defaultExtraArgs || undefined
+      extraOptions: config.defaultExtraArgs || undefined,
+      proxy: proxyUrl
     };
 
     const response = await fetch(endpoint, {

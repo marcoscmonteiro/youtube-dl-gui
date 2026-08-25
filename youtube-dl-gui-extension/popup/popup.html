@@ -130,6 +130,19 @@
         </label>
       </div>
 
+      <!-- Proxy Toggle Switch & Dynamic Preview -->
+      <div class="form-group checkbox-group" id="group-proxy-container">
+        <label class="switch-container" title="Detecta e utiliza a configuração de proxy ativa no navegador para o download">
+          <input type="checkbox" id="chk-proxy">
+          <span class="switch-slider"></span>
+          <span class="switch-label">Usar proxy do navegador</span>
+        </label>
+        <div id="proxy-info-box" class="proxy-info-box hidden">
+          <span class="proxy-info-label">Argumento:</span>
+          <code id="proxy-arg-preview" class="proxy-arg-badge">Detectando proxy...</code>
+        </div>
+      </div>
+
       <!-- YouTube Extractor Player Clients Selector -->
       <div class="form-group client-selector-group" id="group-player-clients">
         <div class="label-with-action">
@@ -192,6 +205,7 @@
   </div>
 
   <script src="../cookieHelper.js"></script>
+  <script src="../proxyHelper.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

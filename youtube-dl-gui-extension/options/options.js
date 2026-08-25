@@ -20,6 +20,7 @@ async function loadOptions() {
     showNotifications: true,
     downloadDirectory: '',
     sendCookiesDefault: true,
+    sendProxyDefault: false,
     selectedPlayerClients: [],
     defaultExtraArgs: ''
   });
@@ -30,6 +31,7 @@ async function loadOptions() {
   document.getElementById('default-audio-format').value = data.defaultAudioFormat || 'Mp3';
   document.getElementById('chk-playlist-default').checked = data.downloadPlaylistDefault || false;
   document.getElementById('chk-cookies-default').checked = data.sendCookiesDefault !== false;
+  document.getElementById('chk-proxy-default').checked = data.sendProxyDefault || false;
   document.getElementById('chk-notifications').checked = data.showNotifications !== false;
 
   const clients = Array.isArray(data.selectedPlayerClients) ? data.selectedPlayerClients : [];
@@ -100,6 +102,7 @@ async function saveOptions() {
   const defaultAudioFormat = document.getElementById('default-audio-format').value;
   const downloadPlaylistDefault = document.getElementById('chk-playlist-default').checked;
   const sendCookiesDefault = document.getElementById('chk-cookies-default').checked;
+  const sendProxyDefault = document.getElementById('chk-proxy-default').checked;
   const showNotifications = document.getElementById('chk-notifications').checked;
   const downloadDirectory = document.getElementById('download-directory').value.trim();
   const defaultExtraArgs = document.getElementById('default-extra-args')?.value.trim() || '';
@@ -113,6 +116,7 @@ async function saveOptions() {
     defaultAudioFormat,
     downloadPlaylistDefault,
     sendCookiesDefault,
+    sendProxyDefault,
     showNotifications,
     downloadDirectory,
     selectedPlayerClients,

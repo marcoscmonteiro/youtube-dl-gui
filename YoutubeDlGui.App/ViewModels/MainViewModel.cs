@@ -435,7 +435,8 @@ public partial class MainViewModel : ObservableObject
         string? cookieFilePath = null,
         bool noCacheDir = true,
         bool noPartFile = true,
-        string? playerClients = null)
+        string? playerClients = null,
+        string? proxy = null)
     {
         var sb = new StringBuilder();
         sb.Append("--encoding UTF8 --ignore-config ");
@@ -445,6 +446,13 @@ public partial class MainViewModel : ObservableObject
         if (!string.IsNullOrEmpty(qjsPath) && File.Exists(qjsPath))
         {
             sb.Append($"--js-runtimes \"quickjs:{qjsPath}\" ");
+        }
+
+        // Add custom proxy argument if requested
+        if (!string.IsNullOrWhiteSpace(proxy) &&
+            (string.IsNullOrWhiteSpace(extraOptions) || !extraOptions.Contains("--proxy", StringComparison.OrdinalIgnoreCase)))
+        {
+            sb.Append($"--proxy \"{proxy.Trim()}\" ");
         }
 
         // Add custom player_client extractor-args if specifically requested/selected
@@ -623,7 +631,8 @@ public partial class MainViewModel : ObservableObject
             cookieFilePath: tempCookiePath,
             noCacheDir: true,
             noPartFile: true,
-            playerClients: playerClients
+            playerClients: playerClients,
+            proxy: req.Proxy
         );
 
         var item = new DownloadItem
