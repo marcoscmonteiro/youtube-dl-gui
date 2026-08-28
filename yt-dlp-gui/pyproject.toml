@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yt-dlp-gui"
+version = "2.0.0"
+description = "Downloader multiplataforma moderno desacoplado em Python + PySide6/Qt com streaming em tempo real"
+readme = "README.md"
+authors = [{ name = "Marcos Monteiro" }]
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+    "yt-dlp>=2024.12.0",
+    "PySide6>=6.6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pyinstaller>=6.5.0",
+]
+
+[project.scripts]
+yt-dlp-gui = "frontend.main:main"
+yt-dlp-gui-daemon = "backend.main:main"
+
