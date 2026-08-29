@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using YoutubeDlGui.Core.Enums;
@@ -200,6 +201,7 @@ public class YtDlpEngineService : IDownloadEngineService
             }
 
             File.Move(tempDownloadPath, finalExePath);
+            UnblockFile(finalExePath);
 
             outputProgress?.Report($"\n[Sucesso] yt-dlp.exe instalado com sucesso em:");
             outputProgress?.Report($"{finalExePath}");
@@ -304,6 +306,7 @@ public class YtDlpEngineService : IDownloadEngineService
             }
 
             File.Move(tempDownloadPath, finalExePath);
+            UnblockFile(finalExePath);
 
             outputProgress?.Report($"\n[Sucesso] qjs.exe instalado com sucesso em:");
             outputProgress?.Report($"{finalExePath}");
@@ -657,6 +660,10 @@ public class YtDlpEngineService : IDownloadEngineService
                     outputProgress?.Report("Tentando baixar a versão binária mais recente do GitHub...\n");
                     await DownloadLatestFromGitHubAsync(targetDir, outputProgress, cancellationToken);
                 }
+                else
+                {
+                    UnblockFile(exePath);
+                }
             }
             catch (Exception ex)
             {
@@ -676,5 +683,25 @@ public class YtDlpEngineService : IDownloadEngineService
         }
 
         return output.ToString();
+    }
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true, EntryPoint = "DeleteFileW")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool NativeDeleteFile(string lpFileName);
+
+    private static void UnblockFile(string path)
+    {
+        if (OperatingSystem.IsWindows() && !string.IsNullOrWhiteSpace(path) && File.Exists(path))
+        {
+            try
+            {
+                // Delete NTFS Zone.Identifier stream (Mark of the Web)
+                NativeDeleteFile($"{path}:Zone.Identifier");
+            }
+            catch
+            {
+                // Silently ignore if stream does not exist or file system does not support ADS
+            }
+        }
     }
 }

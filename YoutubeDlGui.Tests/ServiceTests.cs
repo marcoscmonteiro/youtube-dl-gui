@@ -115,4 +115,95 @@ public class ServiceTests
         // May be null or valid path if qjs.exe exists in environment
         Assert.True(resolved == null || resolved.EndsWith("qjs.exe", StringComparison.OrdinalIgnoreCase));
     }
+
+    [Fact]
+    public async Task JsonSettingsService_AtomicSaveAndBackup_CreatesBakFileOnUpdate()
+    {
+        string tempDir = Path.Combine(Path.GetTempPath(), "yt_dlp_test_" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            var service = new JsonSettingsService(tempDir);
+            service.Settings.ExtraOptions = "--first-save";
+            await service.SaveAsync();
+
+            string settingsFile = Path.Combine(tempDir, "settings.json");
+            string backupFile = Path.Combine(tempDir, "settings.json.bak");
+
+            Assert.True(File.Exists(settingsFile));
+
+            // Modify and save again to trigger backup
+            service.Settings.ExtraOptions = "--second-save";
+            await service.SaveAsync();
+
+            Assert.True(File.Exists(backupFile));
+            string bakContent = await File.ReadAllTextAsync(backupFile);
+            Assert.Contains("--first-save", bakContent);
+
+            string currentContent = await File.ReadAllTextAsync(settingsFile);
+            Assert.Contains("--second-save", currentContent);
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                try { Directory.Delete(tempDir, true); } catch { }
+            }
+        }
+    }
+
+    [Fact]
+    public async Task JsonSettingsService_CorruptedSettingsFile_RecoversFromBackup()
+    {
+        string tempDir = Path.Combine(Path.GetTempPath(), "yt_dlp_test_" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            var service = new JsonSettingsService(tempDir);
+            service.Settings.ExtraOptions = "--valid-backup-option";
+            service.Settings.MaxConcurrentDownloads = 7;
+            await service.SaveAsync();
+
+            // Force a second save so .bak contains valid settings
+            service.Settings.ExtraOptions = "--second-valid-option";
+            await service.SaveAsync();
+
+            string settingsFile = Path.Combine(tempDir, "settings.json");
+            
+            // Corrupt the primary settings.json with invalid JSON
+            await File.WriteAllTextAsync(settingsFile, "{ \"Corrupted\": invalid_json ");
+
+            // Create new instance pointing to same directory and load
+            var newService = new JsonSettingsService(tempDir);
+            await newService.LoadAsync();
+
+            // Should have recovered from .bak without crashing or returning default
+            Assert.Equal(7, newService.Settings.MaxConcurrentDownloads);
+            Assert.Equal("--valid-backup-option", newService.Settings.ExtraOptions);
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                try { Directory.Delete(tempDir, true); } catch { }
+            }
+        }
+    }
+
+    [Fact]
+    public void JsonSettingsService_StorageProperties_ExposedCorrectly()
+    {
+        string tempDir = Path.Combine(Path.GetTempPath(), "yt_dlp_test_" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            var service = new JsonSettingsService(tempDir);
+            Assert.Equal(tempDir, service.StorageFolder);
+            Assert.False(service.IsCloudSynced);
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                try { Directory.Delete(tempDir, true); } catch { }
+            }
+        }
+    }
 }
