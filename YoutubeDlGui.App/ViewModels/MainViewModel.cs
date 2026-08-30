@@ -83,7 +83,10 @@ public partial class MainViewModel : ObservableObject
         get
         {
             var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            return version != null ? $"v{version.Major}.{version.Minor}" : "v2.0";
+            if (version == null) return "v2.0.0";
+            return version.Revision > 0
+                ? $"v{version.Major}.{version.Minor}.{version.Build}.{version.Revision}"
+                : $"v{version.Major}.{version.Minor}.{Math.Max(0, version.Build)}";
         }
     }
 
