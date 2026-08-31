@@ -21,7 +21,17 @@ public partial class MainViewModel : ObservableObject
     private readonly IDownloadEngineService _engineService;
     private readonly IDownloadQueueManager _queueManager;
     private readonly ISettingsService _settingsService;
+    private readonly INetworkUpdateService _networkUpdateService;
     private bool _isInitializing = false;
+
+    [ObservableProperty]
+    private bool _isUpdateAvailable;
+
+    [ObservableProperty]
+    private string _availableVersion = string.Empty;
+
+    [ObservableProperty]
+    private bool _isApplyingUpdate;
 
     [ObservableProperty]
     private string _urlInput = string.Empty;
@@ -96,11 +106,13 @@ public partial class MainViewModel : ObservableObject
     public MainViewModel(
         IDownloadEngineService engineService,
         IDownloadQueueManager queueManager,
-        ISettingsService settingsService)
+        ISettingsService settingsService,
+        INetworkUpdateService networkUpdateService)
     {
         _engineService = engineService;
         _queueManager = queueManager;
         _settingsService = settingsService;
+        _networkUpdateService = networkUpdateService;
 
         FilteredDownloads = CollectionViewSource.GetDefaultView(Downloads);
         FilteredDownloads.Filter = FilterDownloadItem;
@@ -113,6 +125,42 @@ public partial class MainViewModel : ObservableObject
         _queueManager.LogLineReceived += OnQueueLogLineReceived;
 
         _ = LoadSavedHistoryAsync();
+        _ = CheckForNetworkUpdatesSilentlyAsync();
+    }
+
+    private async Task CheckForNetworkUpdatesSilentlyAsync()
+    {
+        try
+        {
+            bool hasUpdate = await _networkUpdateService.CheckForUpdatesAsync();
+            if (hasUpdate)
+            {
+                IsUpdateAvailable = true;
+                AvailableVersion = _networkUpdateService.AvailableVersion;
+            }
+        }
+        catch
+        {
+            // Ignorar falhas de verificação em background
+        }
+    }
+
+    [RelayCommand]
+    private async Task ApplyUpdateAsync()
+    {
+        if (IsApplyingUpdate) return;
+
+        var result = MessageBox.Show(
+            $"Deseja fechar o aplicativo e atualizar agora para a versão {AvailableVersion}?",
+            "Atualização Disponível",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Question);
+
+        if (result == MessageBoxResult.Yes)
+        {
+            IsApplyingUpdate = true;
+            await _networkUpdateService.ApplyUpdateAndRestartAsync();
+        }
     }
 
     private void ApplySettingsToProperties(AppSettings s)

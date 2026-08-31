@@ -206,4 +206,55 @@ public class ServiceTests
             }
         }
     }
+
+    [Fact]
+    public async Task NetworkUpdateService_CheckForUpdates_DetectsNewerVersion()
+    {
+        string tempShareDir = Path.Combine(Path.GetTempPath(), "yt_dlp_share_" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(tempShareDir);
+
+        try
+        {
+            // Write a newer version in the mock share
+            string versionJson = "{\"version\":\"99.0.0\",\"networkShare\":\"" + tempShareDir.Replace("\\", "\\\\") + "\"}";
+            await File.WriteAllTextAsync(Path.Combine(tempShareDir, "version.json"), versionJson);
+
+            // Create temporary app base dir with version.json pointing to tempShareDir
+            string tempAppDir = Path.Combine(Path.GetTempPath(), "yt_dlp_app_" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(tempAppDir);
+            await File.WriteAllTextAsync(Path.Combine(tempAppDir, "version.json"), versionJson);
+
+            var service = new NetworkUpdateService();
+            // Test with direct reflection or setting network path if needed
+            var shareField = typeof(NetworkUpdateService).GetProperty("NetworkRepositoryPath", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            shareField?.SetValue(service, tempShareDir);
+
+            bool isAvailable = await service.CheckForUpdatesAsync();
+
+            Assert.True(isAvailable);
+            Assert.True(service.IsUpdateAvailable);
+            Assert.Contains("v99.0.0", service.AvailableVersion);
+        }
+        finally
+        {
+            if (Directory.Exists(tempShareDir))
+            {
+                try { Directory.Delete(tempShareDir, true); } catch { }
+            }
+        }
+    }
+
+    [Fact]
+    public async Task NetworkUpdateService_CheckForUpdates_HandlesUnreachableShareGracefully()
+    {
+        var service = new NetworkUpdateService();
+        var shareField = typeof(NetworkUpdateService).GetProperty("NetworkRepositoryPath", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+        shareField?.SetValue(service, @"\\invalid_server_xyz_123\share\YtDlpGui");
+
+        bool isAvailable = await service.CheckForUpdatesAsync();
+
+        Assert.False(isAvailable);
+        Assert.False(service.IsUpdateAvailable);
+    }
 }
+

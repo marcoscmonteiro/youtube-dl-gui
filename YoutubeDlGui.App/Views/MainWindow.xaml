@@ -362,8 +362,28 @@
                     </Border>
                 </StackPanel>
 
-                <TextBlock Grid.Column="2" Text="{Binding AppVersion}" 
-                           FontSize="11" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- Update Available Button / Badge -->
+                    <Button Command="{Binding ApplyUpdateCommand}" 
+                            Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Background="#2E7D32" Foreground="White" BorderThickness="0"
+                            Cursor="Hand" Margin="0,0,12,0" Padding="8,3" ToolTip="Clique para atualizar a aplicação para a versão mais recente e reiniciar">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="⬆️ Atualização disponível (" FontSize="11" FontWeight="SemiBold" Foreground="White"/>
+                                        <TextBlock Text="{Binding AvailableVersion}" FontSize="11" FontWeight="Bold" Foreground="#A5D6A7"/>
+                                        <TextBlock Text=") - Atualizar" FontSize="11" FontWeight="SemiBold" Foreground="White"/>
+                                    </StackPanel>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <TextBlock Text="{Binding AppVersion}" 
+                               FontSize="11" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
             </Grid>
         </Border>
     </Grid>

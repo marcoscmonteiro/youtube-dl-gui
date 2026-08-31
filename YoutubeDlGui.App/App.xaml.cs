@@ -38,6 +38,7 @@ public partial class App : Application
         services.AddSingleton<ISettingsService, JsonSettingsService>();
         services.AddSingleton<IDownloadEngineService, YtDlpEngineService>();
         services.AddSingleton<IDownloadQueueManager, DownloadQueueManager>();
+        services.AddSingleton<INetworkUpdateService, NetworkUpdateService>();
 
         // ViewModels
         services.AddSingleton<MainViewModel>();

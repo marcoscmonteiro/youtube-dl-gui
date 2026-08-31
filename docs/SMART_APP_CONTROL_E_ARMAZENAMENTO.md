@@ -116,7 +116,34 @@ O `JsonSettingsService.cs` gerencia a persistência desacoplada dos dados do usu
 
 ---
 
-## 6. Configuração do Smart App Control para Desenvolvedores
+## 6. Publicação e Distribuição em Rede Local (`publish-net.ps1`)
+
+Para ambientes com múltiplas estações na rede local (CIFS/SMB), o script `publish-net.ps1` compila e disponibiliza a aplicação em um repositório central com download automático das engines mais recentes e suporte a auto-atualização nas estações de trabalho:
+
+### 6.1 Recursos do Publicador em Rede
+- **Download Oficial das Engines:** Baixa as versões mais recentes do `yt-dlp.exe` e `qjs.exe` diretamente dos lançamentos oficiais do GitHub.
+- **Empacotamento das Extensões:** Empacota automaticamente as extensões para Chrome, Edge e Firefox na subpasta `Extensoes-Navegadores`.
+- **Scripts para Clientes:** Gera `Instalar.ps1` e o launcher transparente `YtDlpGui-Launcher.cmd` / `.vbs` para as estações.
+
+### 6.2 Comandos de Publicação
+| Objetivo | Comando |
+| :--- | :--- |
+| **Publicação Padrão no Servidor de Rede** | `.\publish-net.ps1` |
+| **Publicar em Compartilhamento Customizado** | `.\publish-net.ps1 -NetworkShare "\\outro-servidor\share\YtDlpGui"` |
+| **Publicar Reutilizando Engines Locais** | `.\publish-net.ps1 -SkipEngineDownload` |
+| **Incrementar Versão Menor (Minor)** | `.\publish-net.ps1 -IncrementType Minor` |
+| **Publicar Mantendo a Versão Atual** | `.\publish-net.ps1 -SkipVersionIncrement` |
+
+### 6.3 Instalação nas Estações Clientes
+Em qualquer computador da rede local, execute uma única vez no PowerShell:
+```powershell
+powershell -ExecutionPolicy Bypass -File "\\server.cm.dev.br\Compartilhar\Apps\YtDlpGui\Instalar.ps1"
+```
+Isso instala a aplicação em `%LOCALAPPDATA%\Programs\YtDlpGui` e cria o atalho no Desktop que sincroniza automaticamente atualizações a cada execução sempre que o computador estiver conectado à rede local.
+
+---
+
+## 7. Configuração do Smart App Control para Desenvolvedores
 
 Em ambientes de desenvolvimento no Windows 11 com o Smart App Control ativo:
 1. Abra o menu Iniciar e digite **Segurança do Windows**.
