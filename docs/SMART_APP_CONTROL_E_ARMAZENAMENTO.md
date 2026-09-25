@@ -123,7 +123,8 @@ Para ambientes com múltiplas estações na rede local (CIFS/SMB), o script `pub
 ### 6.1 Recursos do Publicador em Rede
 - **Download Oficial das Engines:** Baixa as versões mais recentes do `yt-dlp.exe` e `qjs.exe` diretamente dos lançamentos oficiais do GitHub.
 - **Empacotamento das Extensões:** Empacota automaticamente as extensões para Chrome, Edge e Firefox na subpasta `Extensoes-Navegadores`.
-- **Scripts para Clientes:** Gera `Instalar.ps1` e o launcher transparente `YtDlpGui-Launcher.cmd` / `.vbs` para as estações.
+- **Auto-Atualização Nativa (*In-App*):** A própria aplicação verifica e aplica atualizações em rede em segundo plano através do `INetworkUpdateService`, permitindo que o atalho seja fixado livremente na Barra de Tarefas do Windows.
+- **Instalador 1-Clique:** Gera o script `Instalar.ps1` no compartilhamento para provisionamento imediato de novas estações.
 
 ### 6.2 Comandos de Publicação
 | Objetivo | Comando |
@@ -139,7 +140,10 @@ Em qualquer computador da rede local, execute uma única vez no PowerShell:
 ```powershell
 powershell -ExecutionPolicy Bypass -File "\\server.cm.dev.br\Compartilhar\Apps\YtDlpGui\Instalar.ps1"
 ```
-Isso instala a aplicação em `%LOCALAPPDATA%\Programs\YtDlpGui` e cria o atalho no Desktop que sincroniza automaticamente atualizações a cada execução sempre que o computador estiver conectado à rede local.
+Isso instala a aplicação em `%LOCALAPPDATA%\Programs\YtDlpGui` e cria o atalho no Desktop apontando diretamente para o executável principal. A aplicação verificará novas versões automaticamente a cada inicialização.
+
+> Para detalhes completos sobre como aplicar essa arquitetura e código-fonte em outros projetos, consulte o guia de referência:  
+> 📖 [Guia de Padrão de Arquitetura para Distribuição em Rede Local](file:///c:/Users/marco/source/youtube-dl-gui/docs/PADRAO_DISTRIBUICAO_E_AUTO_ATUALIZACAO_REDE.md).
 
 ---
 
